@@ -1,0 +1,9 @@
+{
+  "name": "@vue-element-plus-x-shiki/tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "files": [
+    "base.tsconfig.json"
+  ]
+}

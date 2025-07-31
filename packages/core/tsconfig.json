@@ -1,0 +1,7 @@
+{
+  "extends": "@vue-element-plus-x-shiki/tsconfig/base.tsconfig.json",
+  "include": [
+    "./lib/**/*",
+    "./__test__/**/*"
+  ]
+}

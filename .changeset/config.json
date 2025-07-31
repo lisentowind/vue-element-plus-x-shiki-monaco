@@ -1,0 +1,15 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@2.0.0/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "baseBranch": "main",
+  "commit": false,
+  "fixed": [],
+  "linked": [["@vue-element-plus-x-shiki/core", "@vue-element-plus-x-shiki/docs"]],
+  "access": "public",
+  "updateInternalDependencies": "patch",
+  "ignore": ["@vue-element-plus-x-shiki/docs"],
+  "privatePackages": {
+    "version": true,
+    "tag": false
+  }
+}
