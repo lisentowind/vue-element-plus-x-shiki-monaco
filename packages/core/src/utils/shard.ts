@@ -1,0 +1,1 @@
+export const GLOBAL_SHIKI_KEY = Symbol('GLOBAL_SHIKI_KEY');
