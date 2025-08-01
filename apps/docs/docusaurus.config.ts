@@ -90,7 +90,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/your-org/monaco-editor-vue',
+          href: 'https://github.com/lisentowind/vue-element-plus-x-shiki-monaco',
           label: 'GitHub',
           position: 'right',
         },
@@ -121,11 +121,11 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Issues',
-              href: 'https://github.com/your-org/monaco-editor-vue/issues',
+              href: 'https://github.com/lisentowind/vue-element-plus-x-shiki-monaco/issues',
             },
             {
               label: 'GitHub Discussions',
-              href: 'https://github.com/your-org/monaco-editor-vue/discussions',
+              href: 'https://github.com/lisentowind/vue-element-plus-x-shiki-monaco/discussions',
             },
           ],
         },
@@ -134,7 +134,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/your-org/monaco-editor-vue',
+              href: 'https://github.com/lisentowind/vue-element-plus-x-shiki-monaco',
             },
             {
               label: 'NPM',
@@ -143,7 +143,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Shiki Monaco Editor Vue 组件. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Shiki Monaco Editor Vue 组件. by lisentowind`,
     },
     prism: {
       theme: prismThemes.github,
