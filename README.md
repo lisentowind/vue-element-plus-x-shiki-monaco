@@ -1,3 +1,3 @@
-# vue-element-plus-x-shiki
+# vue-element-plus-x-shiki-monaco
 
-#### 自定义高亮库
+#### 自定义高亮库编辑器

@@ -2,7 +2,7 @@ import { defineConfig } from 'rolldown';
 import { dts } from 'rolldown-plugin-dts';
 
 const entries = {
-  index: './lib/index.ts'
+  index: './src/index.ts'
 }
 
 export default defineConfig([
@@ -45,7 +45,7 @@ export default defineConfig([
   },
   // UMD build
   {
-    input: './lib/index.ts',
+    input: './src/index.ts',
     output: {
       file: 'dist/umd/index.js',
       format: 'umd',
