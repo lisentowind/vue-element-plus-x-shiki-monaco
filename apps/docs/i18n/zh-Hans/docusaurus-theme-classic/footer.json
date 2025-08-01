@@ -1,6 +1,46 @@
 {
-  "footer.title.Documentation": "文档",
-  "footer.title.Community": "社区", 
-  "footer.title.More": "更多",
-  "copyright": "Copyright © 2024 Shiki Monaco Editor Vue 组件. by lisentowind"
+  "link.title.文档": {
+    "message": "文档",
+    "description": "The title of the footer links column with title=文档 in the footer"
+  },
+  "link.title.社区": {
+    "message": "社区",
+    "description": "The title of the footer links column with title=社区 in the footer"
+  },
+  "link.title.更多": {
+    "message": "更多",
+    "description": "The title of the footer links column with title=更多 in the footer"
+  },
+  "link.item.label.快速开始": {
+    "message": "快速开始",
+    "description": "The label of footer link with label=快速开始 linking to /docs/getting-started"
+  },
+  "link.item.label.API 参考": {
+    "message": "API 参考",
+    "description": "The label of footer link with label=API 参考 linking to /docs/api"
+  },
+  "link.item.label.使用示例": {
+    "message": "使用示例",
+    "description": "The label of footer link with label=使用示例 linking to /docs/examples"
+  },
+  "link.item.label.GitHub Issues": {
+    "message": "GitHub Issues",
+    "description": "The label of footer link with label=GitHub Issues linking to https://github.com/lisentowind/vue-element-plus-x-shiki-monaco/issues"
+  },
+  "link.item.label.GitHub Discussions": {
+    "message": "GitHub Discussions",
+    "description": "The label of footer link with label=GitHub Discussions linking to https://github.com/lisentowind/vue-element-plus-x-shiki-monaco/discussions"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/lisentowind/vue-element-plus-x-shiki-monaco"
+  },
+  "link.item.label.NPM": {
+    "message": "NPM",
+    "description": "The label of footer link with label=NPM linking to https://www.npmjs.com/package/@vue-element-plus-x-shiki-monaco/core"
+  },
+  "copyright": {
+    "message": "Copyright © 2025 Shiki Monaco Editor Vue 组件. by lisentowind",
+    "description": "The footer copyright"
+  }
 }

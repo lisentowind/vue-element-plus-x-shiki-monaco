@@ -1,4 +1,18 @@
 {
-  "title": "Shiki Monaco Editor Vue 组件",
-  "tagline": "基于 Monaco Editor + Shiki 的现代化 Vue 3 代码编辑器组件"
+  "title": {
+    "message": "Shiki Monaco Editor Vue",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Shiki Monaco Editor Vue Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.文档": {
+    "message": "文档",
+    "description": "Navbar item with label 文档"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
 }
