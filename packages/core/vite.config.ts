@@ -1,19 +1,15 @@
 import type { UserConfig } from 'vite';
 import path from 'node:path';
-import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 import buildConfig from './.build/build';
+import plugins from './.build/plugins';
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const __DEV__ = mode === 'development';
 
   const baseConfig: UserConfig = {
-    plugins: [vue({
-      script: {
-        propsDestructure: true,
-      },
-    })],
+    plugins,
     build: buildConfig,
     resolve: {
       alias: {

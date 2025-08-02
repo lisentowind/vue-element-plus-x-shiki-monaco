@@ -29,7 +29,7 @@
     "esModuleInterop": true, // ES 模块互操作
     "allowSyntheticDefaultImports": true, // 允许合成默认导入
     "forceConsistentCasingInFileNames": true, // 强制文件名大小写一致
-    "resolveJsonModules": true, // 允许导入 JSON 模块
+    "resolveJsonModule": true, // 允许导入 JSON 模块
     "allowUmdGlobalAccess": true, // 允许访问 UMD 全局变量
     /* output */
     "declaration": true, // 生成 .d.ts 文件

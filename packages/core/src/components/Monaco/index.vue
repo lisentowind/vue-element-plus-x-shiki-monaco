@@ -115,7 +115,7 @@ defineExpose({
           <div class="toolbar-left">
             <div class="file-info">
               <span class="file-name">{{ getFileName() }}</span>
-              <span class="file-language">{{ language.toUpperCase() }}</span>
+              <span class="file-language">{{ language?.toUpperCase() }}</span>
             </div>
           </div>
           <div class="toolbar-right">

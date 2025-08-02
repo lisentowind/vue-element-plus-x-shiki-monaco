@@ -1,11 +1,5 @@
-import type { App, Plugin } from 'vue';
-
-// Re-export all component types
+import { Plugin } from 'vue';
 export * from './components';
-
-// Re-export all hook types
 export * from './hooks';
-
-// Plugin type
-export declare const VueElementPlusXShikiMonaco: Plugin;
-export default VueElementPlusXShikiMonaco;
+declare const ElementPlusXShikiMonaco: Plugin;
+export default ElementPlusXShikiMonaco;

@@ -32,7 +32,7 @@ const hooksEntriesObj = Object.fromEntries(
 
 const buildConfig: BuildEnvironmentOptions = {
   lib: {
-    name: 'ElementPlusX',
+    name: 'ElementPlusXShikiMonaco',
     entry: {
       index: resolve(__dirname, '../src/index.ts'),
       components: resolve(__dirname, '../src/components.ts'),
@@ -45,29 +45,36 @@ const buildConfig: BuildEnvironmentOptions = {
     formats: ['es'],
   },
   rollupOptions: {
+    // 确保外部化处理那些你不想打包进库的依赖
     external: [
       'vue', // Vue 3 核心库
       'vue/jsx-runtime', // Vue JSX 运行时
     ],
     output: {
+      // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
       globals: {
         vue: 'Vue',
       },
       exports: 'named', // 确保有命名导出
-      // 将CSS提取到单独的文件中
-      assetFileNames: (assetInfo) => {
-        if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-          return 'es/[name][extname]';
+      assetFileNames: ((info: any) => {
+        const srcName = info.originalFileNames[0];
+        if (srcName) {
+          if (srcName.includes('src/components/')) {
+            const fileName = srcName
+              .replace('src/components/', '')
+              .replace('index.vue', 'index.css');
+            return `es/${fileName}`;
+          }
         }
-        return 'es/[name]-[hash][extname]';
-      },
+        return info.name;
+      }) as unknown as string,
     },
   },
   sourcemap: true,
   // 减少文件大小
   minify: 'terser',
-  // CSS 处理 - 禁用 CSS 代码分割，将所有CSS合并到一个文件
-  cssCodeSplit: false,
+  // CSS 处理
+  cssCodeSplit: true,
   // 确保只生成一个CSS文件
   emptyOutDir: false,
 };

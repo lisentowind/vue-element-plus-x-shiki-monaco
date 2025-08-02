@@ -1,4 +1,4 @@
-import type { BundledLanguage, BundledTheme } from 'shiki';
+import { BundledLanguage, BundledTheme } from 'shiki';
 import * as monaco from 'monaco-editor-core';
 export interface MonacoOptions {
     target: HTMLElement;

@@ -90,9 +90,12 @@
     "postcss"
   ],
   "cSpell.words": [
+    "aeac",
     "Customisations",
+    "esno",
     "lisentowind",
     "oxlint",
-    "rolldown"
+    "rolldown",
+    "unplugin"
   ]
 }

@@ -2,40 +2,31 @@
   "name": "@vue-element-plus-x-shiki-monaco/core",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/cjs/index.cjs",
-  "module": "dist/es/index.mjs",
-  "types": "types/index.d.ts",
-  "browser": "dist/umd/index.js",
-  "unpkg": "dist/umd/index.js",
-  "jsdelivr": "dist/umd/index.js",
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/es/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "browser": "./dist/umd/index.js"
+      "import": "./dist/es/index.js",
+      "require": "./dist/umd/index.js"
     },
-    "./components": {
-      "types": "./types/components.d.ts",
-      "import": "./dist/es/components.mjs",
-      "require": "./dist/cjs/components.cjs"
-    },
-    "./hooks": {
-      "types": "./types/hooks.d.ts", 
-      "import": "./dist/es/hooks.mjs",
-      "require": "./dist/cjs/hooks.cjs"
-    },
-    "./components/*": {
-      "types": "./types/components/*/index.d.ts",
-      "import": "./dist/es/components/*/index.mjs",
-      "require": "./dist/cjs/components/*/index.cjs"
-    },
-    "./hooks/*": {
-      "types": "./types/hooks/*/index.d.ts",
-      "import": "./dist/es/hooks/*/index.mjs",
-      "require": "./dist/cjs/hooks/*/index.cjs"
-    },
-    "./package.json": "./package.json"
+    "./es/*": "./dist/es/*",
+    "./styles/*": "./dist/styles/*",
+    "./types/*": "./types/components/*/types.d.ts"
+  },
+  "main": "dist/es/index.js",
+  "module": "dist/es/index.js",
+  "browser": "dist/umd/index.js",
+  "unpkg": "dist/umd/index.js",
+  "jsdelivr": "dist/umd/index.js",
+  "types": "types/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "": [
+        "./types/index.d.ts"
+      ],
+      "./types/*": [
+        "types/components/*/types.d.ts"
+      ]
+    }
   },
   "type": "module",
   "sideEffects": false,
@@ -52,9 +43,10 @@
     "dev": "storybook dev -p 6006",
     "publish:beta": "npm publish --tag beta",
     "publish:release": "npm publish",
-    "prebuild": "tsx .build/scripts/auto-export-all-components.ts",
-    "build": "rolldown -c rolldown.config.ts",
-    "postbuild": "tsx .build/scripts/generate-types.ts",
+    "build:es": "vue-tsc -b && vite build",
+    "build:umd": "vue-tsc -b && vite build --config vite.config.umd.ts",
+    "build": "rimraf dist && rimraf types && pnpm run aeac && pnpm run build:es && pnpm run build:umd",
+    "aeac": "rimraf src/index.ts && rimraf src/install.ts && esno .build/scripts/auto-export-all-components.js",
     "oxlint": "oxlint",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -95,10 +87,7 @@
     "fs-extra": "^11.2.0",
     "happy-dom": "^14.0.0",
     "oxlint": "^1.8.0",
-    "rolldown": "1.0.0-beta.29",
-    "rolldown-plugin-dts": "^0.14.2",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-vue": "^6.0.0",
+    "rimraf": "^6.0.1",
     "sass": "^1.89.2",
     "storybook": "^8.6.14",
     "storybook-dark-mode": "^4.0.2",
@@ -107,6 +96,9 @@
     "vite": "^7.0.6",
     "vitest": "^2.0.0",
     "vue": "^3.5.18",
-    "vue-tsc": "^2.0.0"
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-lib-inject-css": "^2.2.2",
+    "vue-tsc": "^2.0.0",
+    "@vue/tsconfig": "^0.7.0"
   }
 }
