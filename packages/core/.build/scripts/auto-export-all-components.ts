@@ -1,3 +1,5 @@
+/* eslint-disable regexp/optimal-quantifier-concatenation */
+/* eslint-disable regexp/no-super-linear-backtracking */
 // oxlint-disable no-console
 // build/scripts/auto-export-all-components.ts
 import childProcess from 'node:child_process';
@@ -9,7 +11,7 @@ import fs from 'fs-extra';
 interface ComponentInfo {
   name: string;
   path: string;
-  dirName: string;  // 添加目录名
+  dirName: string; // 添加目录名
   hasInstall?: boolean;
 }
 
@@ -39,7 +41,7 @@ async function scanComponents(): Promise<ComponentInfo[]> {
 
         components.push({
           name: compName,
-          dirName: dir,  // 存储原始目录名
+          dirName: dir, // 存储原始目录名
           path: `./components/${dir}/index.vue`,
           hasInstall: await fs.exists(installPath),
         });
@@ -66,7 +68,7 @@ async function scanHooks(): Promise<HookInfo[]> {
       if (await fs.exists(hookPath)) {
         // 读取hook文件内容来提取导出的类型
         const content = await fs.readFile(hookPath, 'utf-8');
-        const types = extractExportedTypes(content);
+        const types = extractExportedTypes(content as any);
 
         const hookName = dir.replace(/(^\w|-\w)/g, (m: string) =>
           m.replace('-', '').toLowerCase());
