@@ -68,29 +68,6 @@ export const Default: Story = {
     theme: 'vitesse-light',
     height: '700px',
     showToolbar: true,
-    value: `// Monaco Editor 示例
-function fibonacci(n) {
-  if (n <= 1) return n;
-  return fibonacci(n - 1) + fibonacci(n - 2);
-}
-
-// 计算斐波那契数列
-const result = fibonacci(10);
-console.log(\`斐波那契数列第10项: \${result}\`);
-
-// 异步函数示例
-async function fetchUserData(userId) {
-  try {
-    const response = await fetch(\`/api/users/\${userId}\`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch user data');
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error:', error);
-    return null;
-  }
-}`,
   },
   parameters: {
     docs: {

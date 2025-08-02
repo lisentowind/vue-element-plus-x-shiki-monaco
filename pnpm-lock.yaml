@@ -208,6 +208,9 @@ importers:
       vite-plugin-lib-inject-css:
         specifier: ^2.2.2
         version: 2.2.2(vite@7.0.6)
+      vite-plugin-monaco-editor:
+        specifier: ^1.1.0
+        version: 1.1.0(monaco-editor@0.52.2)
       vitest:
         specifier: ^2.0.0
         version: 2.1.9(@types/node@24.0.15)(@vitest/ui@2.1.9)(happy-dom@14.12.3)(sass@1.89.2)
@@ -11908,6 +11911,10 @@ packages:
     resolution: {integrity: sha512-5TOyTUymNx7jB24TGP4Qs5UEVrntDKSMzDUvW3ADaI1CFRO1t7FPhbT2u4m3iIKZf85zTM+mkCxiUSgj+v/YtA==}
     dev: false
 
+  /monaco-editor@0.52.2:
+    resolution: {integrity: sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==}
+    dev: true
+
   /mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -15318,6 +15325,14 @@ packages:
       magic-string: 0.30.17
       picocolors: 1.1.1
       vite: 7.0.6(@types/node@24.0.15)(sass@1.89.2)(tsx@4.20.3)
+    dev: true
+
+  /vite-plugin-monaco-editor@1.1.0(monaco-editor@0.52.2):
+    resolution: {integrity: sha512-IvtUqZotrRoVqwT0PBBDIZPNraya3BxN/bfcNfnxZ5rkJiGcNtO5eAOWWSgT7zullIAEqQwxMU83yL9J5k7gww==}
+    peerDependencies:
+      monaco-editor: '>=0.33.0'
+    dependencies:
+      monaco-editor: 0.52.2
     dev: true
 
   /vite@5.4.19(@types/node@24.0.15)(sass@1.89.2):

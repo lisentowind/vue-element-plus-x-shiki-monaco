@@ -3,7 +3,26 @@ sidebar_position: 3
 title: API 参考
 ---
 
-# Monaco 组件 API
+# API 参考
+
+## Monaco 组件
+
+`Monaco` 是核心的代码编辑器组件，基于 Monaco Editor 和 Shiki 构建。
+
+### 基本用法
+
+```vue
+<template>
+  <Monaco
+    language="javascript"
+    theme="vitesse-light"
+    :value="code"
+    height="400px"
+    @change="handleChange"
+    @ready="handleReady"
+  />
+</template>
+```
 
 ## Props
 
@@ -168,12 +187,92 @@ const resetCode = () => {
 </script>
 ```
 
-## TypeScript 类型
+---
+
+## useMonacoEdit Hook
+
+`useMonacoEdit` 是底层的编辑器初始化钩子，用于创建和管理 Monaco Editor 实例。
+
+### 基本用法
+
+```typescript
+import { useMonacoEdit } from '@vue-element-plus-x-shiki-monaco/core'
+
+const { initMonacoEdit, destroy, registerLanguage } = useMonacoEdit({
+  target: editorElement,
+  languages: ['javascript', 'typescript'],
+  themes: ['vitesse-light', 'vitesse-dark'],
+  codeValue: 'console.log("Hello World")',
+  defaultTheme: 'vitesse-light',
+  defaultLanguage: 'javascript'
+})
+```
+
+### 参数
+
+#### MonacoOptions
+
+```typescript
+interface MonacoOptions {
+  target: HTMLElement          // 编辑器挂载的目标元素
+  languages: BundledLanguage[] // 支持的语言列表
+  codeValue: string           // 初始代码内容
+  themes: BundledTheme[]      // 支持的主题列表
+  defaultTheme: BundledTheme  // 默认主题
+  defaultLanguage: BundledLanguage // 默认语言
+}
+```
+
+### 返回值
+
+#### UseMonacoEditReturn
+
+```typescript
+interface UseMonacoEditReturn {
+  initMonacoEdit: () => Promise<EditInstance>  // 初始化编辑器
+  destroy: () => void                          // 销毁编辑器
+  registerLanguage: (language: string) => void // 注册新语言
+  editInstance: EditInstance | null            // 编辑器实例
+}
+```
+
+### 方法详解
+
+#### initMonacoEdit()
+- **返回**: `Promise<EditInstance>`
+- **描述**: 异步初始化 Monaco Editor 实例
+- **用法**: 
+  ```typescript
+  const editor = await initMonacoEdit()
+  ```
+
+#### destroy()
+- **描述**: 销毁编辑器实例，释放内存
+- **用法**: 
+  ```typescript
+  destroy()
+  ```
+
+#### registerLanguage(language)
+- **参数**: `language: string` - 要注册的语言ID
+- **描述**: 动态注册新的编程语言支持
+- **用法**: 
+  ```typescript
+  registerLanguage('rust')
+  ```
+
+---
+
+## TypeScript 类型定义
+
+### Monaco 组件类型
 
 ```typescript
 import type { BundledLanguage, BundledTheme } from 'shiki'
+import type { EditInstance } from '@vue-element-plus-x-shiki-monaco/core'
 
-interface Props {
+// 组件 Props
+interface MonacoProps {
   language?: BundledLanguage
   theme?: BundledTheme
   value?: string
@@ -181,8 +280,40 @@ interface Props {
   showToolbar?: boolean
 }
 
+// 组件 Emits
 interface MonacoEmits {
   change: [value: string]
   ready: [editor: EditInstance]
 }
+
+// 编辑器实例类型
+type EditInstance = monaco.editor.IStandaloneCodeEditor
+```
+
+### Hook 类型
+
+```typescript
+import type { BundledLanguage, BundledTheme, HighlighterGeneric } from 'shiki'
+import type * as monaco from 'monaco-editor-core'
+
+// Hook 选项
+interface MonacoOptions {
+  target: HTMLElement
+  languages: BundledLanguage[]
+  codeValue: string
+  themes: BundledTheme[]
+  defaultTheme: BundledTheme
+  defaultLanguage: BundledLanguage
+}
+
+// Hook 返回值
+interface UseMonacoEditReturn {
+  initMonacoEdit: () => Promise<EditInstance>
+  destroy: () => void
+  registerLanguage: (language: string) => void
+  editInstance: EditInstance | null
+}
+
+// 编辑器实例
+type EditInstance = monaco.editor.IStandaloneCodeEditor
 ```

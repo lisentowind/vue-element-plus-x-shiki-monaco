@@ -368,17 +368,16 @@ A: 在 Nuxt.js 中使用时，需要在客户端渲染：
 
 ### Q: 如何预加载语言和主题？
 
-A: 组件会自动加载所需的语言和主题，但你也可以预加载：
+A: 组件会自动加载所需的语言和主题。Monaco 编辑器通过 Shiki 自动管理语言和主题的加载，你只需要指定需要的 `languages` 和 `themes` 参数即可：
 
 ```vue
 <script setup>
-import { onMounted } from 'vue'
-import { preloadLanguages, preloadThemes } from '@vue-element-plus-x-shiki-monaco/core'
+import { ref } from 'vue'
+import Monaco from '@vue-element-plus-x-shiki-monaco/core'
 
-onMounted(async () => {
-  await preloadLanguages(['javascript', 'typescript', 'python'])
-  await preloadThemes(['vitesse-light', 'vitesse-dark'])
-})
+// 组件会自动处理多语言和主题的加载
+const languages = ['javascript', 'typescript', 'python']
+const themes = ['vitesse-light', 'vitesse-dark']
 </script>
 ```
 

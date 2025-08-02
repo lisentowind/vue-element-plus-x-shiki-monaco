@@ -1,6 +1,7 @@
 import path, { resolve } from 'node:path';
 import process from 'node:process';
 import { defineConfig } from 'vite';
+import { externalFilter } from './.build/filter';
 import plugins from './.build/plugins';
 
 // https://vite.dev/config/
@@ -31,8 +32,7 @@ export default defineConfig({
     rollupOptions: {
       // 外部依赖配置，这些依赖不会被打包，需要用户自行提供
       external: [
-        'vue', // Vue 3 核心库
-        'vue/jsx-runtime', // Vue JSX 运行时
+        ...externalFilter,
       ],
       output: {
         globals: {

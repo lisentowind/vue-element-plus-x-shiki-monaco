@@ -1177,7 +1177,7 @@
       "always"
     ],
     "no-console": [
-      "error",
+      "info",
       {
         "allow": [
           "warn",

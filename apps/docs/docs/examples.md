@@ -736,4 +736,174 @@ onMounted(() => {
 </style>
 ```
 
+## 直接使用 useMonacoEdit Hook
+
+对于需要更精细控制的场景，可以直接使用底层的 `useMonacoEdit` hook：
+
+```vue
+<template>
+  <div>
+    <div class="controls">
+      <button @click="initEditor" :disabled="editorInitialized">
+        初始化编辑器
+      </button>
+      <button @click="destroyEditor" :disabled="!editorInitialized">
+        销毁编辑器
+      </button>
+      <button @click="getValue" :disabled="!editorInitialized">
+        获取内容
+      </button>
+    </div>
+    
+    <div ref="editorContainer" class="editor-container"></div>
+    
+    <div v-if="currentValue" class="output">
+      <h4>当前编辑器内容：</h4>
+      <pre>{{ currentValue }}</pre>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useMonacoEdit } from '@vue-element-plus-x-shiki-monaco/core'
+
+const editorContainer = ref()
+const editorInitialized = ref(false)
+const currentValue = ref('')
+
+let monacoEditHook = null
+let editorInstance = null
+
+const initEditor = async () => {
+  if (!editorContainer.value || editorInitialized.value) return
+  
+  try {
+    // 使用 useMonacoEdit hook
+    monacoEditHook = useMonacoEdit({
+      target: editorContainer.value,
+      languages: ['javascript', 'typescript'],
+      themes: ['vitesse-light', 'vitesse-dark'],
+      codeValue: `// 使用 useMonacoEdit Hook
+function customEditor() {
+  console.log('这是一个使用 hook 创建的编辑器');
+  
+  // 你可以在这里添加自定义逻辑
+  const features = [
+    '直接控制编辑器实例',
+    '自定义初始化逻辑', 
+    '精细的生命周期管理',
+    '灵活的配置选项'
+  ];
+  
+  return features;
+}
+
+const editor = customEditor();
+console.log('编辑器特性:', editor);`,
+      defaultTheme: 'vitesse-light',
+      defaultLanguage: 'javascript'
+    })
+    
+    // 初始化编辑器
+    editorInstance = await monacoEditHook.initMonacoEdit()
+    editorInitialized.value = true
+    
+    // 监听内容变化
+    editorInstance.onDidChangeModelContent(() => {
+      currentValue.value = editorInstance.getValue()
+    })
+    
+    console.log('编辑器初始化成功:', editorInstance)
+  } catch (error) {
+    console.error('编辑器初始化失败:', error)
+  }
+}
+
+const destroyEditor = () => {
+  if (monacoEditHook && editorInitialized.value) {
+    monacoEditHook.destroy()
+    editorInstance = null
+    editorInitialized.value = false
+    currentValue.value = ''
+    console.log('编辑器已销毁')
+  }
+}
+
+const getValue = () => {
+  if (editorInstance) {
+    currentValue.value = editorInstance.getValue()
+  }
+}
+
+// 组件卸载时清理
+onUnmounted(() => {
+  destroyEditor()
+})
+</script>
+
+<style scoped>
+.controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.controls button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.controls button:hover:not(:disabled) {
+  background: #f5f5f5;
+  border-color: #999;
+}
+
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.editor-container {
+  height: 400px;
+  border: 1px solid #e1e5e9;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.output {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.output h4 {
+  margin: 0 0 0.5rem 0;
+  color: #495057;
+}
+
+.output pre {
+  margin: 0;
+  background: white;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+  font-size: 0.875rem;
+  overflow-x: auto;
+}
+</style>
+```
+
+这个示例展示了如何直接使用 `useMonacoEdit` hook 来获得对编辑器更精细的控制，包括：
+
+- 手动初始化和销毁编辑器
+- 直接访问 Monaco Editor 实例
+- 自定义编辑器配置
+- 生命周期管理
+
 这些示例展示了 Monaco 组件的各种使用场景，从基础用法到高级功能，帮助开发者快速上手并发挥组件的最大潜力。
