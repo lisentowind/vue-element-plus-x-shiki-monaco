@@ -1,7 +1,7 @@
 <script lang='ts' setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import type { EditInstance } from './hooks/useMonacoEdit'
-import { useMonacoEdit } from './hooks/useMonacoEdit'
+import type { EditInstance } from '../../hooks/useMonacoEdit'
+import { useMonacoEdit } from '../../hooks/useMonacoEdit'
 import { BundledLanguage, BundledTheme } from 'shiki'
 
 interface Props {

@@ -14,7 +14,14 @@ export interface MonacoOptions {
 
 export type EditInstance = monaco.editor.IStandaloneCodeEditor;
 
-export function useMonacoEdit(options: MonacoOptions) {
+export interface UseMonacoEditReturn {
+  initMonacoEdit: () => Promise<EditInstance>;
+  destroy: () => void;
+  registerLanguage: (language: string) => void;
+  editInstance: EditInstance | null;
+}
+
+export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
   let editInstance: EditInstance | null = null;
 
   async function initMonacoEdit(): Promise<EditInstance> {

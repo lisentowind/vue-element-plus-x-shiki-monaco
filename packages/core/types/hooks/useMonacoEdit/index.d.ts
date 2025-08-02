@@ -1,8 +1,7 @@
 import type * as monaco from 'monaco-editor-core';
 import type { BundledLanguage, BundledTheme } from 'shiki';
 
-// #region src/hooks/useMonacoEdit/index.d.ts
-interface MonacoOptions {
+export interface MonacoOptions {
   target: HTMLElement;
   languages: BundledLanguage[];
   codeValue: string;
@@ -10,13 +9,14 @@ interface MonacoOptions {
   defaultTheme: BundledTheme;
   defaultLanguage: BundledLanguage;
 }
-type EditInstance = monaco.editor.IStandaloneCodeEditor;
-interface UseMonacoEditReturn {
+
+export interface UseMonacoEditReturn {
   initMonacoEdit: () => Promise<EditInstance>;
   destroy: () => void;
   registerLanguage: (language: string) => void;
   editInstance: EditInstance | null;
 }
-declare function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn;
-// #endregion
-export { EditInstance, MonacoOptions, useMonacoEdit, UseMonacoEditReturn };
+
+export type EditInstance = monaco.editor.IStandaloneCodeEditor;
+
+export declare function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn;

@@ -1,34 +1,13 @@
-import type { App } from 'vue'
-import pkg from '../package.json'
-import * as components from './components'
+import type { App, Plugin } from 'vue';
+import Monaco from './components/Monaco/index.vue';
 
-// 导出所有组件
-export * from './components'
+export * from './components';
+export * from './hooks';
 
-// 导出 hooks 和类型
-// 自动生成的导出
-export { useMonacoEdit } from './components/Monaco/hooks/useMonacoEdit';
-export type { EditInstance, MonacoOptions } from './components/Monaco/hooks/useMonacoEdit';
-export type { MonacoEmits, MonacoExpose, MonacoProps } from './components/Monaco/index.d';
-export { default as Monaco } from './components/Monaco/index.vue';
-
-
-// 定义组件类型接口
-interface ComponentWithInstall {
-  install?: (app: App) => void
-}
-
-// 默认导出插件对象
-export default {
+const VueElementPlusXShikiMonaco: Plugin = {
   install(app: App) {
-    // 遍历所有组件并安装
-    Object.entries(components).forEach(([_componentName, component]) => {
-      const typedComponent = component as ComponentWithInstall
-      if (typeof typedComponent.install === 'function') {
-        typedComponent.install(app)
-      }
-    })
-  },
-  // 导出版本号
-  version: pkg.version,
-}
+    app.component('Monaco', Monaco);
+  }
+};
+
+export default VueElementPlusXShikiMonaco;
