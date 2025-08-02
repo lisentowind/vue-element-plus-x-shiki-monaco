@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import type { EditInstance } from "../../hooks/useMonacoEdit";
 import { useMonacoEdit } from "../../hooks/useMonacoEdit";
-import { BundledLanguage, BundledTheme } from "shiki";
+import type { BundledLanguage, BundledTheme } from "shiki";
 import MonacoHeader from "../Monaco-Header/index.vue";
 import ContextMenu from "../ContextMenu/index.vue";
 import type { ContextMenuItem, MenuItem } from "../../hooks/useContextMenu";
@@ -260,7 +260,7 @@ const setupContextMenu = () => {
     } catch (error) {
       // 忽略权限检查错误
     }
-    
+
     contextMenu.show(event);
   });
 };

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { BundledLanguage } from "shiki";
+import type { BundledLanguage } from "shiki";
 
 interface Props {
   currentLanguage?: BundledLanguage;

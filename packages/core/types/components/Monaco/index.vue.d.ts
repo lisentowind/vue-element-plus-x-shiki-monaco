@@ -1,4 +1,5 @@
 import { BundledLanguage, BundledTheme } from 'shiki';
+import { ContextMenuItem } from '../../hooks/useContextMenu';
 interface Props {
     currentLanguage?: BundledLanguage;
     currentTheme?: BundledTheme;
@@ -10,6 +11,11 @@ interface Props {
     autoResize?: boolean;
     monacoEditClass?: string;
     fileName?: string;
+    contextMenu?: {
+        enabled?: boolean;
+        items?: string[] | "minimal" | "basic" | "full";
+        customItems?: ContextMenuItem[];
+    };
 }
 declare function __VLS_template(): {
     attrs: Partial<{}>;
@@ -33,6 +39,7 @@ declare const __VLS_component: import('vue').DefineComponent<Props, {
     enableAutoResize: () => void | undefined;
     disableAutoResize: () => void | undefined;
     copyCode: () => Promise<void>;
+    pasteCode: () => Promise<void>;
     formatCode: () => void;
 }, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     change: (value: string) => any;
@@ -41,14 +48,19 @@ declare const __VLS_component: import('vue').DefineComponent<Props, {
     onChange?: ((value: string) => any) | undefined;
     onReady?: ((editor: import("monaco-editor-core").editor.IStandaloneCodeEditor) => any) | undefined;
 }>, {
+    currentLanguage: BundledLanguage;
+    showToolbar: boolean;
+    height: string;
     languages: BundledLanguage[];
     themes: BundledTheme[];
     value: string;
-    currentLanguage: BundledLanguage;
     currentTheme: BundledTheme;
-    height: string;
-    showToolbar: boolean;
     autoResize: boolean;
+    contextMenu: {
+        enabled?: boolean;
+        items?: string[] | "minimal" | "basic" | "full";
+        customItems?: ContextMenuItem[];
+    };
 }, {}, {}, {}, string, import('vue').ComponentProvideOptions, false, {
     editorRef: HTMLDivElement;
 }, HTMLDivElement>;
