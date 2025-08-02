@@ -6,3 +6,4 @@ type Story = StoryObj<typeof meta>;
 export declare const Default: Story;
 export declare const DarkTheme: Story;
 export declare const MultipleLanguages: Story;
+export declare const CustomFullDemo: Story;
