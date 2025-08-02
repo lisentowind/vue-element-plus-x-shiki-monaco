@@ -1,7 +1,9 @@
 import { BundledLanguage, BundledTheme } from 'shiki';
 interface Props {
-    language?: BundledLanguage;
-    theme?: BundledTheme;
+    currentLanguage?: BundledLanguage;
+    currentTheme?: BundledTheme;
+    languages?: BundledLanguage[];
+    themes?: BundledTheme[];
     value?: string;
     height?: string;
     showToolbar?: boolean;
@@ -22,6 +24,7 @@ declare const __VLS_component: import('vue').DefineComponent<Props, {
     setValue: (value: string) => void | undefined;
     getValue: () => string;
     focus: () => void | undefined;
+    setTheme: (theme: BundledTheme) => Promise<void> | undefined;
     copyCode: () => Promise<void>;
     formatCode: () => void;
 }, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
@@ -32,8 +35,10 @@ declare const __VLS_component: import('vue').DefineComponent<Props, {
     onReady?: ((editor: import("monaco-editor-core").editor.IStandaloneCodeEditor) => any) | undefined;
 }>, {
     value: string;
-    language: BundledLanguage;
-    theme: BundledTheme;
+    currentLanguage: BundledLanguage;
+    currentTheme: BundledTheme;
+    languages: BundledLanguage[];
+    themes: BundledTheme[];
     height: string;
     showToolbar: boolean;
 }, {}, {}, {}, string, import('vue').ComponentProvideOptions, false, {

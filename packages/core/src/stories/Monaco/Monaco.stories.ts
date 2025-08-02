@@ -8,15 +8,23 @@ const meta: Meta<typeof MonacoSource> = {
   component: Monaco,
   tags: ['autodocs'],
   argTypes: {
-    language: {
+    currentLanguage: {
       control: { type: 'select' },
-      options: ['javascript', 'typescript', 'python', 'html', 'css', 'json'],
-      description: '编程语言',
+      options: ['javascript', 'typescript', 'python', 'html', 'css', 'json', 'vue', 'go', 'rust'],
+      description: '当前编程语言',
     },
-    theme: {
+    currentTheme: {
       control: { type: 'select' },
-      options: ['vitesse-light', 'vitesse-dark'],
-      description: 'Monaco编辑器主题',
+      options: ['vitesse-light', 'vitesse-dark', 'github-light', 'github-dark', 'ayu-dark', 'nord', 'one-dark-pro', 'dracula'],
+      description: '当前Monaco编辑器主题',
+    },
+    languages: {
+      control: { type: 'object' },
+      description: '所有可用的编程语言列表',
+    },
+    themes: {
+      control: { type: 'object' },
+      description: '所有可用的主题列表',
     },
     height: {
       control: { type: 'text' },
@@ -64,8 +72,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    language: 'javascript',
-    theme: 'vitesse-light',
+    currentLanguage: 'javascript',
+    currentTheme: 'vitesse-light',
+    languages: ['javascript', 'typescript', 'python', 'html', 'css', 'json'],
+    themes: ['vitesse-light', 'vitesse-dark', 'github-light', 'github-dark'],
     height: '700px',
     showToolbar: true,
   },
@@ -73,6 +83,42 @@ export const Default: Story = {
     docs: {
       description: {
         story: '默认配置的Monaco编辑器，包含工具栏和JavaScript代码示例',
+      },
+    },
+  },
+};
+
+export const DarkTheme: Story = {
+  args: {
+    currentLanguage: 'typescript',
+    currentTheme: 'github-dark',
+    languages: ['javascript', 'typescript', 'vue', 'python'],
+    themes: ['github-light', 'github-dark', 'vitesse-light', 'vitesse-dark'],
+    height: '500px',
+    showToolbar: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '深色主题的TypeScript编辑器示例',
+      },
+    },
+  },
+};
+
+export const MultipleLanguages: Story = {
+  args: {
+    currentLanguage: 'python',
+    currentTheme: 'vitesse-light',
+    languages: ['javascript', 'typescript', 'python', 'go', 'rust', 'vue', 'html', 'css', 'json'],
+    themes: ['vitesse-light', 'vitesse-dark', 'github-light', 'github-dark', 'ayu-dark', 'nord'],
+    height: '600px',
+    showToolbar: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '支持多种编程语言和主题的编辑器配置示例',
       },
     },
   },

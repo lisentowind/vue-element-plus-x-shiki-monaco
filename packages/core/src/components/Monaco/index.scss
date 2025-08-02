@@ -12,16 +12,13 @@
   --editor-text-muted: #9ca3af;
   --editor-toolbar-shadow: inset 0 -1px 0 #e2e8f0, 0 1px 2px rgba(0, 0, 0, 0.05);
   border: 1px solid var(--editor-border-color);
-  border-top-left-radius: var(--editor-border-radius);
-  border-top-right-radius: var(--editor-border-radius);
+  border-radius: var(--editor-border-radius);
   overflow: hidden;
   background: var(--editor-bg);
   box-shadow: var(--editor-shadow);
   transition: box-shadow 0.2s ease;
 
-  &:hover {
-    box-shadow: var(--editor-shadow-hover);
-  }
+
 
   .editor-toolbar {
     background: var(--editor-toolbar-bg);

@@ -5,19 +5,39 @@ import { useMonacoEdit } from "../../hooks/useMonacoEdit";
 import { BundledLanguage, BundledTheme } from "shiki";
 
 interface Props {
-  language?: BundledLanguage;
-  theme?: BundledTheme;
+  currentLanguage?: BundledLanguage;
+  currentTheme?: BundledTheme;
+  languages?: BundledLanguage[];
+  themes?: BundledTheme[];
   value?: string;
   height?: string;
   showToolbar?: boolean;
+  autoResize?: boolean;
+  monacoEditClass?: string;
+  fileName?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  language: "javascript",
-  theme: "vitesse-light",
+  currentLanguage: "javascript",
+  currentTheme: "vitesse-light",
+  languages: () => [
+    "javascript",
+    "typescript",
+    "python",
+    "html",
+    "css",
+    "json",
+  ],
+  themes: () => [
+    "vitesse-light",
+    "vitesse-dark",
+    "github-light",
+    "github-dark",
+  ],
   value: "",
   height: "400px",
   showToolbar: true,
+  autoResize: true
 });
 
 const emit = defineEmits<{
@@ -27,6 +47,7 @@ const emit = defineEmits<{
 
 const editorRef = ref<HTMLDivElement>();
 let editorInstance: EditInstance | null = null;
+let monacoEditHook: ReturnType<typeof useMonacoEdit> | null = null;
 
 watch(
   () => props.value,
@@ -38,20 +59,47 @@ watch(
   { deep: 1 }
 );
 
-onMounted(async () => {
+watch(
+  () => props.currentTheme,
+  async (newTheme) => {
+    if (monacoEditHook && editorInstance) {
+      try {
+        await monacoEditHook.setTheme(newTheme);
+      } catch (error) {
+        console.error("主题切换失败:", error);
+      }
+    }
+  }
+);
+
+watch(
+  () => props.currentLanguage,
+  async (newLanguage) => {
+    if (monacoEditHook && editorInstance) {
+      try {
+        await monacoEditHook.setLanguage(newLanguage);
+      } catch (error) {
+        console.error("语言切换失败:", error);
+      }
+    }
+  }
+);
+
+// 初始化编辑器
+const initializeEditor = async () => {
   if (!editorRef.value) return;
 
-  const { initMonacoEdit } = useMonacoEdit({
+  monacoEditHook = useMonacoEdit({
     target: editorRef.value,
-    languages: [props.language],
-    themes: [props.theme],
+    languages: props.languages,
+    themes: props.themes,
     codeValue: props.value,
-    defaultTheme: props.theme as any,
-    defaultLanguage: props.language as any,
+    defaultTheme: props.currentTheme,
+    defaultLanguage: props.currentLanguage,
   });
 
   try {
-    editorInstance = await initMonacoEdit();
+    editorInstance = await monacoEditHook.initMonacoEdit();
 
     // 监听内容变化
     editorInstance.onDidChangeModelContent(() => {
@@ -60,14 +108,24 @@ onMounted(async () => {
     });
 
     emit("ready", editorInstance);
+
+    // 启用自动尺寸调整
+    if (props.autoResize) {
+      monacoEditHook.enableAutoResize();
+    }
   } catch (error) {
     console.error("Monaco Editor 初始化失败:", error);
+    throw error;
   }
+};
+
+onMounted(async () => {
+  await initializeEditor();
 });
 
 onUnmounted(() => {
-  if (editorInstance) {
-    editorInstance.dispose();
+  if (monacoEditHook) {
+    monacoEditHook.destroy();
   }
 });
 
@@ -81,7 +139,11 @@ const getFileName = () => {
     css: "style.css",
     json: "data.json",
   };
-  return extensions[props.language as keyof typeof extensions] || "untitled";
+  return (
+    props.fileName ||
+    extensions[props.currentLanguage as keyof typeof extensions] ||
+    "untitled"
+  );
 };
 
 const copyCode = async () => {
@@ -108,20 +170,28 @@ defineExpose({
   setValue: (value: string) => editorInstance?.setValue(value),
   getValue: () => editorInstance?.getValue() || "",
   focus: () => editorInstance?.focus(),
+  setTheme: (theme: BundledTheme) => monacoEditHook?.setTheme(theme),
+  setLanguage: (language: BundledLanguage) =>
+    monacoEditHook?.setLanguage(language),
+  layout: () => monacoEditHook?.layout(),
+  enableAutoResize: () => monacoEditHook?.enableAutoResize(),
+  disableAutoResize: () => monacoEditHook?.disableAutoResize(),
   copyCode,
   formatCode,
 });
 </script>
 
 <template>
-  <div class="monaco-editor-wrapper">
+  <div class="monaco-editor-wrapper" :class="props.monacoEditClass">
     <div v-if="showToolbar || $slots['toolbar']" class="editor-toolbar">
       <slot name="toolbar">
         <div class="default-toolbar">
           <div class="toolbar-left">
             <div class="file-info">
               <span class="file-name">{{ getFileName() }}</span>
-              <span class="file-language">{{ language?.toUpperCase() }}</span>
+              <span class="file-language">{{
+                currentLanguage?.toUpperCase()
+              }}</span>
             </div>
           </div>
           <div class="toolbar-right">
