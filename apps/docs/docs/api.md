@@ -7,7 +7,7 @@ title: API 参考
 
 ## Monaco 组件
 
-`Monaco` 是核心的代码编辑器组件，基于 Monaco Editor 和 Shiki 构建。
+`Monaco` 是核心的代码编辑器组件，基于 Monaco Editor 和 Shiki 构建，提供丰富的代码编辑功能。
 
 ### 基本用法
 
@@ -18,6 +18,9 @@ title: API 参考
     theme="vitesse-light"
     :value="code"
     height="400px"
+    :show-toolbar="true"
+    :auto-resize="true"
+    :context-menu="{ enabled: true, items: 'full' }"
     @change="handleChange"
     @ready="handleReady"
   />
@@ -26,26 +29,44 @@ title: API 参考
 
 ## Props
 
-### language
+### currentLanguage
 - **类型**: `BundledLanguage`
 - **默认值**: `'javascript'`
-- **描述**: 设置编辑器的语言模式
+- **描述**: 设置编辑器的当前语言模式
 
-支持的语言包括：`javascript`, `typescript`, `python`, `html`, `css`, `json`, `markdown` 等。
+支持的语言包括：`javascript`, `typescript`, `python`, `html`, `css`, `json`, `markdown`, `vue`, `react`, `go`, `rust`, `php`, `java`, `c`, `cpp`, `csharp` 等。
 
 ```vue
-<Monaco language="typescript" />
+<Monaco current-language="typescript" />
 ```
 
-### theme
+### currentTheme
 - **类型**: `BundledTheme`
 - **默认值**: `'vitesse-light'`
-- **描述**: 设置编辑器主题
+- **描述**: 设置编辑器当前主题
 
-支持的主题包括：`vitesse-light`, `vitesse-dark`, `github-light`, `github-dark` 等。
+支持的主题包括：`vitesse-light`, `vitesse-dark`, `github-light`, `github-dark`, `one-dark-pro`, `dracula`, `nord`, `material-theme` 等。
 
 ```vue
-<Monaco theme="vitesse-dark" />
+<Monaco current-theme="vitesse-dark" />
+```
+
+### languages
+- **类型**: `BundledLanguage[]`
+- **默认值**: `['javascript', 'typescript', 'python', 'html', 'css', 'json']`
+- **描述**: 编辑器支持的语言列表
+
+```vue
+<Monaco :languages="['javascript', 'typescript', 'vue', 'go']" />
+```
+
+### themes
+- **类型**: `BundledTheme[]`
+- **默认值**: `['vitesse-light', 'vitesse-dark', 'github-light', 'github-dark']`
+- **描述**: 编辑器支持的主题列表
+
+```vue
+<Monaco :themes="['vitesse-light', 'vitesse-dark', 'one-dark-pro']" />
 ```
 
 ### value
@@ -69,10 +90,83 @@ title: API 参考
 ### showToolbar
 - **类型**: `boolean`
 - **默认值**: `true`
-- **描述**: 是否显示工具栏
+- **描述**: 是否显示顶部工具栏
 
 ```vue
 <Monaco :show-toolbar="false" />
+```
+
+### autoResize
+- **类型**: `boolean`
+- **默认值**: `true`
+- **描述**: 是否启用自动尺寸调整
+
+```vue
+<Monaco :auto-resize="false" />
+```
+
+### monacoEditClass
+- **类型**: `string`
+- **默认值**: `undefined`
+- **描述**: 编辑器容器的自定义 CSS 类名
+
+```vue
+<Monaco monaco-edit-class="my-custom-editor" />
+```
+
+### fileName
+- **类型**: `string`
+- **默认值**: `undefined`
+- **描述**: 工具栏显示的文件名
+
+```vue
+<Monaco file-name="main.ts" />
+```
+
+### contextMenu
+- **类型**: `ContextMenuConfig`
+- **默认值**: `{ enabled: true, items: 'full' }`
+- **描述**: 自定义右键菜单配置
+
+#### ContextMenuConfig 接口
+
+```typescript
+interface ContextMenuConfig {
+  enabled?: boolean;                    // 是否启用右键菜单
+  items?: string[] | 'minimal' | 'basic' | 'full';  // 菜单项配置
+  customItems?: ContextMenuItem[];      // 自定义菜单项
+}
+```
+
+#### 预设菜单配置
+
+```vue
+<!-- 最小菜单：复制、粘贴、全选 -->
+<Monaco :context-menu="{ enabled: true, items: 'minimal' }" />
+
+<!-- 基础菜单：复制、剪切、粘贴、全选、撤销、重做 -->
+<Monaco :context-menu="{ enabled: true, items: 'basic' }" />
+
+<!-- 完整菜单：所有功能 -->
+<Monaco :context-menu="{ enabled: true, items: 'full' }" />
+
+<!-- 自定义菜单项 -->
+<Monaco :context-menu="{
+  enabled: true,
+  items: ['copy', 'paste', 'selectAll'],
+  customItems: [
+    {
+      type: 'separator'
+    },
+    {
+      type: 'item',
+      id: 'custom-action',
+      label: '自定义操作',
+      shortcut: 'Ctrl+Shift+X',
+      action: () => console.log('自定义操作')
+    }
+  ]
+}" />
 ```
 
 ## Events
@@ -104,6 +198,7 @@ title: API 参考
     <div class="custom-toolbar">
       <button @click="runCode">运行代码</button>
       <button @click="saveCode">保存</button>
+      <button @click="shareCode">分享</button>
     </div>
   </template>
 </Monaco>
@@ -117,39 +212,199 @@ title: API 参考
 - **返回**: `EditInstance | null`
 - **描述**: 获取 Monaco Editor 实例
 
+```vue
+<script setup>
+const monacoRef = ref()
+
+const getEditorInstance = () => {
+  const editor = monacoRef.value?.getEditor()
+  if (editor) {
+    console.log('编辑器实例:', editor)
+  }
+}
+</script>
+```
+
 ### setValue(value: string)
 - **参数**: `value` - 要设置的代码内容
 - **描述**: 设置编辑器内容
+
+```vue
+<script setup>
+const monacoRef = ref()
+
+const updateCode = () => {
+  monacoRef.value?.setValue('console.log("新代码")')
+}
+</script>
+```
 
 ### getValue()
 - **返回**: `string`
 - **描述**: 获取编辑器当前内容
 
+```vue
+<script setup>
+const monacoRef = ref()
+
+const getCurrentCode = () => {
+  const code = monacoRef.value?.getValue()
+  console.log('当前代码:', code)
+}
+</script>
+```
+
 ### focus()
 - **描述**: 让编辑器获得焦点
 
+```vue
+<script setup>
+const monacoRef = ref()
+
+const focusEditor = () => {
+  monacoRef.value?.focus()
+}
+</script>
+```
+
+### setTheme(theme: BundledTheme)
+- **参数**: `theme` - 要切换的主题
+- **描述**: 动态切换编辑器主题
+
+```vue
+<script setup>
+const monacoRef = ref()
+
+const switchTheme = () => {
+  monacoRef.value?.setTheme('vitesse-dark')
+}
+</script>
+```
+
+### setLanguage(language: BundledLanguage)
+- **参数**: `language` - 要切换的语言
+- **描述**: 动态切换编辑器语言
+
+```vue
+<script setup>
+const monacoRef = ref()
+
+const switchLanguage = () => {
+  monacoRef.value?.setLanguage('typescript')
+}
+</script>
+```
+
+### layout()
+- **描述**: 手动触发编辑器布局更新
+
+```vue
+<script setup>
+const monacoRef = ref()
+
+const refreshLayout = () => {
+  monacoRef.value?.layout()
+}
+</script>
+```
+
+### enableAutoResize()
+- **描述**: 启用自动尺寸调整
+
+```vue
+<script setup>
+const monacoRef = ref()
+
+const enableResize = () => {
+  monacoRef.value?.enableAutoResize()
+}
+</script>
+```
+
+### disableAutoResize()
+- **描述**: 禁用自动尺寸调整
+
+```vue
+<script setup>
+const monacoRef = ref()
+
+const disableResize = () => {
+  monacoRef.value?.disableAutoResize()
+}
+</script>
+```
+
 ### copyCode()
-- **描述**: 复制当前代码到剪贴板
+- **描述**: 复制当前代码到剪贴板（支持多种策略）
+
+```vue
+<script setup>
+const monacoRef = ref()
+
+const copyCurrentCode = () => {
+  monacoRef.value?.copyCode()
+}
+</script>
+```
+
+### pasteCode()
+- **描述**: 从剪贴板粘贴内容到编辑器（支持多种策略）
+
+```vue
+<script setup>
+const monacoRef = ref()
+
+const pasteFromClipboard = () => {
+  monacoRef.value?.pasteCode()
+}
+</script>
+```
 
 ### formatCode()
 - **描述**: 格式化当前代码
 
-## 使用示例
+```vue
+<script setup>
+const monacoRef = ref()
+
+const formatCurrentCode = () => {
+  monacoRef.value?.formatCode()
+}
+</script>
+```
+
+## 完整使用示例
 
 ```vue
 <template>
-  <div>
+  <div class="editor-wrapper">
     <Monaco
       ref="monacoRef"
-      language="typescript"
-      theme="vitesse-dark"
+      :current-language="currentLanguage"
+      :current-theme="currentTheme"
+      :languages="supportedLanguages"
+      :themes="supportedThemes"
       :value="code"
+      :file-name="fileName"
       height="500px"
+      :show-toolbar="showToolbar"
+      :auto-resize="true"
+      :context-menu="contextMenuConfig"
       @change="handleChange"
       @ready="handleReady"
     >
       <template #toolbar>
         <div class="custom-toolbar">
+          <select v-model="currentLanguage">
+            <option v-for="lang in supportedLanguages" :key="lang" :value="lang">
+              {{ lang.toUpperCase() }}
+            </option>
+          </select>
+          <select v-model="currentTheme">
+            <option v-for="theme in supportedThemes" :key="theme" :value="theme">
+              {{ formatThemeName(theme) }}
+            </option>
+          </select>
           <button @click="runCode">运行</button>
           <button @click="resetCode">重置</button>
         </div>
@@ -159,13 +414,43 @@ title: API 参考
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import Monaco from 'vue-shiki-monaco'
 
 const monacoRef = ref()
+const currentLanguage = ref('typescript')
+const currentTheme = ref('vitesse-light')
+const fileName = ref('example.ts')
+const showToolbar = ref(true)
+
+const supportedLanguages = [
+  'javascript', 'typescript', 'python', 'html', 'css', 'json', 'vue'
+]
+
+const supportedThemes = [
+  'vitesse-light', 'vitesse-dark', 'github-light', 'github-dark'
+]
+
+const contextMenuConfig = reactive({
+  enabled: true,
+  items: 'full',
+  customItems: [
+    { type: 'separator' },
+    {
+      type: 'item',
+      id: 'run-code',
+      label: '运行代码',
+      shortcut: 'F5',
+      action: () => runCode()
+    }
+  ]
+})
+
 const code = ref(`function hello(name: string) {
   return \`Hello, \${name}!\`;
-}`)
+}
+
+console.log(hello('Monaco Editor'));`)
 
 const handleChange = (newValue) => {
   console.log('代码变更:', newValue)
@@ -184,6 +469,12 @@ const runCode = () => {
 const resetCode = () => {
   monacoRef.value?.setValue(code.value)
 }
+
+const formatThemeName = (theme) => {
+  return theme.split('-').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ')
+}
 </script>
 ```
 
@@ -198,13 +489,17 @@ const resetCode = () => {
 ```typescript
 import { useMonacoEdit } from 'vue-shiki-monaco'
 
-const { initMonacoEdit, destroy, registerLanguage } = useMonacoEdit({
+const { initMonacoEdit, destroy, setTheme, setLanguage } = useMonacoEdit({
   target: editorElement,
   languages: ['javascript', 'typescript'],
   themes: ['vitesse-light', 'vitesse-dark'],
   codeValue: 'console.log("Hello World")',
   defaultTheme: 'vitesse-light',
-  defaultLanguage: 'javascript'
+  defaultLanguage: 'javascript',
+  contextMenu: {
+    enabled: true,
+    items: 'full'
+  }
 })
 ```
 
@@ -214,12 +509,17 @@ const { initMonacoEdit, destroy, registerLanguage } = useMonacoEdit({
 
 ```typescript
 interface MonacoOptions {
-  target: HTMLElement          // 编辑器挂载的目标元素
-  languages: BundledLanguage[] // 支持的语言列表
-  codeValue: string           // 初始代码内容
-  themes: BundledTheme[]      // 支持的主题列表
-  defaultTheme: BundledTheme  // 默认主题
-  defaultLanguage: BundledLanguage // 默认语言
+  target: HTMLElement;               // 编辑器挂载的目标元素
+  languages: BundledLanguage[];      // 支持的语言列表
+  codeValue: string;                 // 初始代码内容
+  themes: BundledTheme[];           // 支持的主题列表
+  defaultTheme: BundledTheme;       // 默认主题
+  defaultLanguage: BundledLanguage; // 默认语言
+  contextMenu?: {                   // 右键菜单配置
+    enabled?: boolean;
+    items?: string[] | 'minimal' | 'basic' | 'full';
+    customItems?: ContextMenuItem[];
+  };
 }
 ```
 
@@ -229,10 +529,17 @@ interface MonacoOptions {
 
 ```typescript
 interface UseMonacoEditReturn {
-  initMonacoEdit: () => Promise<EditInstance>  // 初始化编辑器
-  destroy: () => void                          // 销毁编辑器
-  registerLanguage: (language: string) => void // 注册新语言
-  editInstance: EditInstance | null            // 编辑器实例
+  initMonacoEdit: () => Promise<EditInstance>;        // 初始化编辑器
+  destroy: () => void;                                // 销毁编辑器
+  registerLanguage: (language: string) => void;       // 注册新语言
+  setTheme: (theme: BundledTheme) => Promise<void>;   // 切换主题
+  setLanguage: (language: BundledLanguage) => Promise<void>; // 切换语言
+  layout: () => void;                                 // 重新布局
+  enableAutoResize: () => void;                       // 启用自动调整
+  disableAutoResize: () => void;                      // 禁用自动调整
+  editInstance: EditInstance | null;                  // 编辑器实例
+  onContextMenu: (callback: (event: MouseEvent) => void) => void; // 右键菜单回调
+  offContextMenu: () => void;                         // 移除右键菜单回调
 }
 ```
 
@@ -247,19 +554,127 @@ interface UseMonacoEditReturn {
   ```
 
 #### destroy()
-- **描述**: 销毁编辑器实例，释放内存
+- **描述**: 销毁编辑器实例，释放内存和事件监听器
 - **用法**:
   ```typescript
   destroy()
   ```
 
-#### registerLanguage(language)
-- **参数**: `language: string` - 要注册的语言ID
-- **描述**: 动态注册新的编程语言支持
+#### setTheme(theme)
+- **参数**: `theme: BundledTheme` - 要切换的主题
+- **返回**: `Promise<void>`
+- **描述**: 动态切换编辑器主题
 - **用法**:
   ```typescript
-  registerLanguage('rust')
+  await setTheme('vitesse-dark')
   ```
+
+#### setLanguage(language)
+- **参数**: `language: BundledLanguage` - 要切换的语言
+- **返回**: `Promise<void>`
+- **描述**: 动态切换编辑器语言
+- **用法**:
+  ```typescript
+  await setLanguage('typescript')
+  ```
+
+#### enableAutoResize() / disableAutoResize()
+- **描述**: 启用或禁用编辑器自动尺寸调整
+- **用法**:
+  ```typescript
+  enableAutoResize()  // 启用
+  disableAutoResize() // 禁用
+  ```
+
+#### onContextMenu(callback) / offContextMenu()
+- **描述**: 注册或移除右键菜单事件回调
+- **用法**:
+  ```typescript
+  onContextMenu((event) => {
+    console.log('右键菜单事件:', event)
+  })
+  
+  offContextMenu() // 移除回调
+  ```
+
+---
+
+## useContextMenu Hook
+
+`useContextMenu` 是用于管理自定义右键菜单的钩子。
+
+### 基本用法
+
+```typescript
+import { useContextMenu } from 'vue-shiki-monaco'
+
+const contextMenu = useContextMenu({
+  items: [
+    {
+      type: 'item',
+      id: 'copy',
+      label: '复制',
+      shortcut: 'Ctrl+C',
+      action: () => console.log('复制')
+    },
+    { type: 'separator' },
+    {
+      type: 'item',
+      id: 'paste',
+      label: '粘贴',
+      shortcut: 'Ctrl+V',
+      action: () => console.log('粘贴')
+    }
+  ]
+})
+```
+
+### 参数和返回值
+
+#### UseContextMenuOptions
+
+```typescript
+interface UseContextMenuOptions {
+  items: ContextMenuItem[];           // 菜单项列表
+  onShow?: () => void;               // 显示时回调
+  onHide?: () => void;               // 隐藏时回调
+}
+```
+
+#### UseContextMenuReturn
+
+```typescript
+interface UseContextMenuReturn {
+  isVisible: Ref<boolean>;                        // 菜单可见性
+  position: ContextMenuPosition;                  // 菜单位置
+  items: Ref<ContextMenuItem[]>;                  // 菜单项
+  show: (event: MouseEvent) => void;              // 显示菜单
+  hide: () => void;                               // 隐藏菜单
+  handleItemClick: (item: MenuItem) => void;      // 处理菜单项点击
+}
+```
+
+#### ContextMenuItem 类型
+
+```typescript
+// 菜单项
+interface MenuItem {
+  type: 'item';
+  id: string;                    // 唯一标识
+  label: string;                 // 显示文本
+  icon?: string;                 // 图标类名
+  shortcut?: string;             // 快捷键文本
+  disabled?: boolean;            // 是否禁用
+  action: () => void;            // 点击回调
+}
+
+// 分隔符
+interface MenuItemSeparator {
+  type: 'separator';
+}
+
+type ContextMenuItem = MenuItem | MenuItemSeparator;
+```
 
 ---
 
@@ -273,47 +688,124 @@ import type { EditInstance } from 'vue-shiki-monaco'
 
 // 组件 Props
 interface MonacoProps {
-  language?: BundledLanguage
-  theme?: BundledTheme
-  value?: string
-  height?: string
-  showToolbar?: boolean
+  currentLanguage?: BundledLanguage;
+  currentTheme?: BundledTheme;
+  languages?: BundledLanguage[];
+  themes?: BundledTheme[];
+  value?: string;
+  height?: string;
+  showToolbar?: boolean;
+  autoResize?: boolean;
+  monacoEditClass?: string;
+  fileName?: string;
+  contextMenu?: {
+    enabled?: boolean;
+    items?: string[] | 'minimal' | 'basic' | 'full';
+    customItems?: ContextMenuItem[];
+  };
 }
 
 // 组件 Emits
 interface MonacoEmits {
-  change: [value: string]
-  ready: [editor: EditInstance]
+  change: [value: string];
+  ready: [editor: EditInstance];
 }
 
 // 编辑器实例类型
-type EditInstance = monaco.editor.IStandaloneCodeEditor
+type EditInstance = monaco.editor.IStandaloneCodeEditor;
 ```
 
 ### Hook 类型
 
 ```typescript
-import type { BundledLanguage, BundledTheme, HighlighterGeneric } from 'shiki'
+import type { BundledLanguage, BundledTheme } from 'shiki'
 import type * as monaco from 'monaco-editor-core'
 
 // Hook 选项
 interface MonacoOptions {
-  target: HTMLElement
-  languages: BundledLanguage[]
-  codeValue: string
-  themes: BundledTheme[]
-  defaultTheme: BundledTheme
-  defaultLanguage: BundledLanguage
+  target: HTMLElement;
+  languages: BundledLanguage[];
+  codeValue: string;
+  themes: BundledTheme[];
+  defaultTheme: BundledTheme;
+  defaultLanguage: BundledLanguage;
+  contextMenu?: {
+    enabled?: boolean;
+    items?: string[] | 'minimal' | 'basic' | 'full';
+    customItems?: ContextMenuItem[];
+  };
 }
 
 // Hook 返回值
 interface UseMonacoEditReturn {
-  initMonacoEdit: () => Promise<EditInstance>
-  destroy: () => void
-  registerLanguage: (language: string) => void
-  editInstance: EditInstance | null
+  initMonacoEdit: () => Promise<EditInstance>;
+  destroy: () => void;
+  registerLanguage: (language: string) => void;
+  setTheme: (theme: BundledTheme) => Promise<void>;
+  setLanguage: (language: BundledLanguage) => Promise<void>;
+  layout: () => void;
+  enableAutoResize: () => void;
+  disableAutoResize: () => void;
+  editInstance: EditInstance | null;
+  onContextMenu: (callback: (event: MouseEvent) => void) => void;
+  offContextMenu: () => void;
 }
 
 // 编辑器实例
-type EditInstance = monaco.editor.IStandaloneCodeEditor
+type EditInstance = monaco.editor.IStandaloneCodeEditor;
 ```
+
+### 右键菜单类型
+
+```typescript
+// 菜单位置
+interface ContextMenuPosition {
+  x: number;
+  y: number;
+}
+
+// 菜单项
+interface MenuItem {
+  type: 'item';
+  id: string;
+  label: string;
+  icon?: string;
+  shortcut?: string;
+  disabled?: boolean;
+  action: () => void;
+}
+
+// 分隔符
+interface MenuItemSeparator {
+  type: 'separator';
+}
+
+// 联合类型
+type ContextMenuItem = MenuItem | MenuItemSeparator;
+
+// 菜单预设
+type MenuPreset = 'minimal' | 'basic' | 'full';
+```
+
+---
+
+## 剪贴板操作
+
+组件提供了强大的剪贴板功能，支持多种策略以确保最佳兼容性：
+
+### 复制功能
+1. **优先策略**: 使用 Monaco Editor 内置复制命令
+2. **备选策略**: 使用 `trigger` 触发内置命令
+3. **兜底策略**: 自定义实现选中文本或当前行复制
+
+### 粘贴功能
+1. **优先策略**: 使用 Monaco Editor 内置粘贴命令
+2. **备选策略**: 使用 `trigger` 触发内置命令
+3. **兜底策略**: 使用 Clipboard API 读取并插入文本
+
+### 剪切功能
+1. **优先策略**: 使用 Monaco Editor 内置剪切命令
+2. **备选策略**: 使用 `trigger` 触发内置命令
+3. **兜底策略**: 自定义实现选中文本或当前行剪切
+
+所有剪贴板操作都会优雅降级，确保在各种环境下都能正常工作。

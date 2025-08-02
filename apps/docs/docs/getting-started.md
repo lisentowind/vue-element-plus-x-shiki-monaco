@@ -35,7 +35,7 @@ import Monaco from 'vue-shiki-monaco'
 ```vue
 <template>
   <Monaco
-    language="javascript"
+    current-language="javascript"
     :value="code"
     height="400px"
     @change="handleChange"
@@ -61,7 +61,7 @@ const handleChange = (newValue) => {
 
 ## 完整示例
 
-这是一个功能完整的代码编辑器示例：
+这是一个功能完整的代码编辑器示例，展示了组件的主要特性：
 
 ```vue
 <template>
@@ -73,6 +73,8 @@ const handleChange = (newValue) => {
         <option value="python">Python</option>
         <option value="html">HTML</option>
         <option value="css">CSS</option>
+        <option value="vue">Vue</option>
+        <option value="json">JSON</option>
       </select>
 
       <select v-model="selectedTheme" @change="changeTheme">
@@ -82,29 +84,47 @@ const handleChange = (newValue) => {
         <option value="github-dark">GitHub 深色</option>
       </select>
 
-      <button @click="formatCode">格式化代码</button>
-      <button @click="copyCode">复制代码</button>
+      <button @click="formatCode">🎨 格式化代码</button>
+      <button @click="copyCode">📋 复制代码</button>
+      <button @click="pasteCode">📄 粘贴代码</button>
     </div>
 
     <Monaco
       ref="monacoRef"
-      :language="selectedLanguage"
-      :theme="selectedTheme"
+      :current-language="selectedLanguage"
+      :current-theme="selectedTheme"
       :value="currentCode"
+      :file-name="fileName"
       height="500px"
+      :show-toolbar="true"
+      :auto-resize="true"
+      :context-menu="contextMenuConfig"
       @change="handleCodeChange"
       @ready="handleEditorReady"
     />
+
+    <!-- 状态栏 -->
+    <div class="status-bar">
+      <span>语言: {{ selectedLanguage.toUpperCase() }}</span>
+      <span>主题: {{ formatThemeName(selectedTheme) }}</span>
+      <span>行数: {{ stats.lines }}</span>
+      <span>字符数: {{ stats.characters }}</span>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import Monaco from 'vue-shiki-monaco'
 
 const monacoRef = ref()
 const selectedLanguage = ref('javascript')
 const selectedTheme = ref('vitesse-light')
+
+const stats = reactive({
+  lines: 0,
+  characters: 0
+})
 
 // 不同语言的示例代码
 const codeTemplates = reactive({
@@ -192,6 +212,8 @@ print("历史记录:", calc.get_history())\`,
                 <li>🔧 代码补全</li>
                 <li>📝 错误检测</li>
                 <li>🚀 高性能</li>
+                <li>📋 智能剪贴板</li>
+                <li>🎯 自定义右键菜单</li>
             </ul>
         </section>
     </main>
@@ -239,34 +261,214 @@ print("历史记录:", calc.get_history())\`,
   padding: 1.5rem;
 }
 
-.card-footer {
-  padding: 1rem 1.5rem;
-  background: #f7fafc;
-  border-top: 1px solid #e2e8f0;
-}
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   .card-container {
     grid-template-columns: 1fr;
     padding: 1rem;
   }
+}\`,
+
+  vue: \`<template>
+  <div class="todo-app">
+    <h1>Vue.js Todo 应用</h1>
+    
+    <form @submit.prevent="addTodo">
+      <input
+        v-model="newTodo"
+        placeholder="添加新任务..."
+        required
+      />
+      <button type="submit">添加</button>
+    </form>
+
+    <ul class="todo-list">
+      <li 
+        v-for="todo in todos" 
+        :key="todo.id"
+        :class="{ completed: todo.completed }"
+      >
+        <input
+          type="checkbox"
+          v-model="todo.completed"
+        />
+        <span>{{ todo.text }}</span>
+        <button @click="removeTodo(todo.id)">删除</button>
+      </li>
+    </ul>
+
+    <p>
+      剩余任务: {{ remainingTodos }} / 总计: {{ todos.length }}
+    </p>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+
+const newTodo = ref('')
+const todos = ref([
+  { id: 1, text: '学习 Vue.js', completed: false },
+  { id: 2, text: '使用 Monaco Editor', completed: true }
+])
+
+const remainingTodos = computed(() => 
+  todos.value.filter(todo => !todo.completed).length
+)
+
+const addTodo = () => {
+  if (newTodo.value.trim()) {
+    todos.value.push({
+      id: Date.now(),
+      text: newTodo.value,
+      completed: false
+    })
+    newTodo.value = ''
+  }
+}
+
+const removeTodo = (id) => {
+  todos.value = todos.value.filter(todo => todo.id !== id)
+}
+</script>
+
+<style scoped>
+.todo-app {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+}
+
+.todo-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.completed span {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+</style>\`,
+
+  json: \`{
+  "name": "vue-shiki-monaco",
+  "version": "1.0.0",
+  "description": "现代化的 Vue.js Monaco Editor 组件",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "vue",
+    "monaco",
+    "editor",
+    "code",
+    "syntax-highlighting",
+    "typescript"
+  ],
+  "dependencies": {
+    "vue": "^3.3.0",
+    "monaco-editor-core": "^0.44.0",
+    "shiki": "^0.14.0",
+    "@shikijs/monaco": "^0.14.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.4.0",
+    "typescript": "^5.2.0",
+    "vite": "^4.5.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/vue-shiki-monaco.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/vue-shiki-monaco/issues"
+  },
+  "homepage": "https://vue-shiki-monaco.netlify.app"
 }\`
 })
 
 const currentCode = ref(codeTemplates.javascript)
 
+// 文件名映射
+const fileName = computed(() => {
+  const extensions = {
+    javascript: 'example.js',
+    typescript: 'example.ts',
+    python: 'example.py',
+    html: 'index.html',
+    css: 'styles.css',
+    vue: 'App.vue',
+    json: 'package.json'
+  }
+  return extensions[selectedLanguage.value] || 'untitled.txt'
+})
+
+// 右键菜单配置
+const contextMenuConfig = reactive({
+  enabled: true,
+  items: 'full',
+  customItems: [
+    { type: 'separator' },
+    {
+      type: 'item',
+      id: 'run-code',
+      label: '▶️ 运行代码',
+      shortcut: 'F5',
+      action: () => {
+        console.log('运行代码:', currentCode.value)
+        alert('代码运行功能（演示）')
+      }
+    },
+    {
+      type: 'item',
+      id: 'save-file',
+      label: '💾 保存文件',
+      shortcut: 'Ctrl+S',
+      action: () => {
+        console.log('保存文件:', fileName.value)
+        alert(`文件 ${fileName.value} 已保存（演示）`)
+      }
+    }
+  ]
+})
+
 const handleCodeChange = (newValue) => {
   currentCode.value = newValue
+  updateStats(newValue)
 }
 
 const handleEditorReady = (editor) => {
   console.log('编辑器已准备就绪:', editor)
-  // 可以在这里进行一些初始化操作
+  updateStats(currentCode.value)
+  
+  // 聚焦编辑器
   editor.focus()
 }
 
+const updateStats = (code) => {
+  stats.lines = code.split('\\n').length
+  stats.characters = code.length
+}
+
 const changeLanguage = () => {
+  // 切换语言时加载对应的示例代码
   currentCode.value = codeTemplates[selectedLanguage.value]
 }
 
@@ -278,14 +480,28 @@ const changeTheme = () => {
 const formatCode = () => {
   if (monacoRef.value) {
     monacoRef.value.formatCode()
+    console.log('代码已格式化')
   }
 }
 
 const copyCode = async () => {
   if (monacoRef.value) {
     await monacoRef.value.copyCode()
-    alert('代码已复制到剪贴板！')
+    console.log('代码已复制到剪贴板')
   }
+}
+
+const pasteCode = async () => {
+  if (monacoRef.value) {
+    await monacoRef.value.pasteCode()
+    console.log('已从剪贴板粘贴内容')
+  }
+}
+
+const formatThemeName = (theme) => {
+  return theme.split('-').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ')
 }
 </script>
 
@@ -304,6 +520,7 @@ const copyCode = async () => {
   background: #f8f9fa;
   border-radius: 8px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .controls select,
@@ -314,30 +531,149 @@ const copyCode = async () => {
   background: white;
   cursor: pointer;
   font-size: 0.875rem;
+  transition: all 0.2s ease;
 }
 
 .controls button {
   background: #007bff;
   color: white;
   border-color: #007bff;
-  transition: background-color 0.2s ease;
 }
 
 .controls button:hover {
   background: #0056b3;
+  border-color: #0056b3;
+}
+
+.controls select:hover {
+  border-color: #adb5bd;
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  font-size: 0.875rem;
+  color: #6c757d;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 @media (max-width: 768px) {
   .controls {
     flex-direction: column;
+    align-items: stretch;
   }
 
   .controls select,
   .controls button {
     width: 100%;
   }
+
+  .status-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
 }
 </style>
+```
+
+## 核心特性
+
+### 🎨 语法高亮
+
+基于 Shiki 提供精确的语法高亮，支持 100+ 编程语言：
+
+- **JavaScript/TypeScript** - 完整的 ES2023+ 语法支持
+- **Python** - Python 3.x 语法高亮
+- **HTML/CSS** - Web 前端语言支持
+- **Vue/React** - 现代前端框架支持
+- **Go/Rust/Java** - 系统编程语言支持
+- **更多语言** - 支持几乎所有主流编程语言
+
+### 📋 智能剪贴板
+
+强大的剪贴板功能，支持多种策略：
+
+```vue
+<template>
+  <Monaco
+    :context-menu="{
+      enabled: true,
+      items: 'full' // 包含完整的剪贴板功能
+    }"
+    @ready="(editor) => {
+      // 编辑器实例可以直接调用剪贴板方法
+      editor.copyCode()  // 复制代码
+      editor.pasteCode() // 粘贴代码
+    }"
+  />
+</template>
+```
+
+### 🎯 自定义右键菜单
+
+灵活的右键菜单配置：
+
+```vue
+<template>
+  <Monaco
+    :context-menu="{
+      enabled: true,
+      items: ['copy', 'paste', 'selectAll'],
+      customItems: [
+        { type: 'separator' },
+        {
+          type: 'item',
+          id: 'custom-action',
+          label: '自定义操作',
+          shortcut: 'Ctrl+Shift+X',
+          action: () => console.log('自定义操作')
+        }
+      ]
+    }"
+  />
+</template>
+```
+
+### 🔧 动态配置
+
+支持运行时动态切换语言和主题：
+
+```vue
+<script setup>
+const monacoRef = ref()
+
+// 动态切换语言
+const switchLanguage = (language) => {
+  monacoRef.value?.setLanguage(language)
+}
+
+// 动态切换主题
+const switchTheme = (theme) => {
+  monacoRef.value?.setTheme(theme)
+}
+</script>
+```
+
+### 📱 响应式设计
+
+自动适配不同屏幕尺寸：
+
+```vue
+<template>
+  <Monaco
+    :height="isMobile ? '300px' : '500px'"
+    :show-toolbar="!isMobile"
+    :auto-resize="true"
+  />
+</template>
 ```
 
 ## 下一步
@@ -347,6 +683,7 @@ const copyCode = async () => {
 - 📖 查看 [API 文档](./api) 了解所有可用的属性和方法
 - 💡 浏览 [使用示例](./examples) 获取更多灵感
 - 🎨 学习如何自定义主题和样式
+- 🔌 了解如何使用 `useMonacoEdit` hook 进行高级定制
 
 ## 常见问题
 
@@ -358,7 +695,7 @@ A: 在 Nuxt.js 中使用时，需要在客户端渲染：
 <template>
   <ClientOnly>
     <Monaco
-      language="javascript"
+      current-language="javascript"
       :value="code"
       @change="handleChange"
     />
@@ -368,33 +705,69 @@ A: 在 Nuxt.js 中使用时，需要在客户端渲染：
 
 ### Q: 如何预加载语言和主题？
 
-A: 组件会自动加载所需的语言和主题。Monaco 编辑器通过 Shiki 自动管理语言和主题的加载，你只需要指定需要的 `languages` 和 `themes` 参数即可：
+A: 组件会自动加载所需的语言和主题。你只需要在 `languages` 和 `themes` 参数中指定需要的选项：
 
 ```vue
-<script setup>
-import { ref } from 'vue'
-import Monaco from 'vue-shiki-monaco'
-
-// 组件会自动处理多语言和主题的加载
-const languages = ['javascript', 'typescript', 'python']
-const themes = ['vitesse-light', 'vitesse-dark']
-</script>
+<template>
+  <Monaco
+    :languages="['javascript', 'typescript', 'python']"
+    :themes="['vitesse-light', 'vitesse-dark']"
+    current-language="javascript"
+    current-theme="vitesse-light"
+  />
+</template>
 ```
 
 ### Q: 如何处理大文件？
 
-A: 对于大文件，建议使用虚拟滚动和懒加载：
+A: 对于大文件，建议禁用一些性能消耗较大的功能：
 
 ```vue
-<Monaco
-  language="javascript"
-  :value="largeFileContent"
-  height="600px"
-  :options="{
+<script setup>
+const handleReady = (editor) => {
+  editor.updateOptions({
     scrollBeyondLastLine: false,
-    readOnly: false,
     minimap: { enabled: false },
-    wordWrap: 'on'
-  }"
-/>
+    wordWrap: 'on',
+    readOnly: false,
+    // 对于大文件，可以禁用一些功能以提升性能
+    quickSuggestions: false,
+    parameterHints: { enabled: false }
+  })
+}
+</script>
+```
+
+### Q: 如何自定义快捷键？
+
+A: 可以通过监听编辑器实例来添加自定义快捷键：
+
+```vue
+<script setup>
+const handleReady = (editor) => {
+  // 添加自定义快捷键
+  editor.addAction({
+    id: 'custom-save',
+    label: 'Save File',
+    keybindings: [
+      monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS
+    ],
+    run: () => {
+      console.log('保存文件')
+    }
+  })
+}
+</script>
+```
+
+### Q: 如何集成到现有项目中？
+
+A: 组件设计为即插即用，可以轻松集成到任何 Vue 3 项目中：
+
+1. **安装依赖**：`npm install vue-shiki-monaco`
+2. **导入组件**：`import Monaco from 'vue-shiki-monaco'`
+3. **使用组件**：在模板中使用 `<Monaco />` 标签
+4. **配置选项**：根据需要设置 props 和事件监听器
+
+组件与主流的 Vue 3 生态系统兼容，包括 Vite、Nuxt.js、Quasar 等框架。
 ```
