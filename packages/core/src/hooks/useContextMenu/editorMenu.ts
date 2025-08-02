@@ -286,7 +286,35 @@ export function createEditorContextMenu(
     filteredItems.push(...customItems);
   }
 
-  return filteredItems;
+  return cleanupSeparators(filteredItems);
+}
+
+// 清理多余的分隔符
+function cleanupSeparators(items: ContextMenuItem[]): ContextMenuItem[] {
+  const result: ContextMenuItem[] = [];
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+
+    // 跳过开头的分隔符
+    if (item?.type === 'separator' && result.length === 0) {
+      continue;
+    }
+
+    // 跳过连续的分隔符
+    if (item?.type === 'separator' && result[result.length - 1]?.type === 'separator') {
+      continue;
+    }
+
+    item && result.push(item);
+  }
+
+  // 移除末尾的分隔符
+  while (result.length > 0 && result[result.length - 1]?.type === 'separator') {
+    result.pop();
+  }
+
+  return result;
 }
 
 // 预定义的菜单项组合

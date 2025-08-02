@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 import type MonacoSource from '../../components/Monaco/index.vue';
+import FullDemo from './examples/custom-edit.vue';
 import Monaco from './index.vue';
 
 const meta: Meta<typeof MonacoSource> = {
@@ -10,12 +11,31 @@ const meta: Meta<typeof MonacoSource> = {
   argTypes: {
     currentLanguage: {
       control: { type: 'select' },
-      options: ['javascript', 'typescript', 'python', 'html', 'css', 'json', 'vue', 'go', 'rust'],
+      options: [
+        'javascript',
+        'typescript',
+        'python',
+        'html',
+        'css',
+        'json',
+        'vue',
+        'go',
+        'rust',
+      ],
       description: '当前编程语言',
     },
     currentTheme: {
       control: { type: 'select' },
-      options: ['vitesse-light', 'vitesse-dark', 'github-light', 'github-dark', 'ayu-dark', 'nord', 'one-dark-pro', 'dracula'],
+      options: [
+        'vitesse-light',
+        'vitesse-dark',
+        'github-light',
+        'github-dark',
+        'ayu-dark',
+        'nord',
+        'one-dark-pro',
+        'dracula',
+      ],
       description: '当前Monaco编辑器主题',
     },
     languages: {
@@ -110,8 +130,25 @@ export const MultipleLanguages: Story = {
   args: {
     currentLanguage: 'python',
     currentTheme: 'vitesse-light',
-    languages: ['javascript', 'typescript', 'python', 'go', 'rust', 'vue', 'html', 'css', 'json'],
-    themes: ['vitesse-light', 'vitesse-dark', 'github-light', 'github-dark', 'ayu-dark', 'nord'],
+    languages: [
+      'javascript',
+      'typescript',
+      'python',
+      'go',
+      'rust',
+      'vue',
+      'html',
+      'css',
+      'json',
+    ],
+    themes: [
+      'vitesse-light',
+      'vitesse-dark',
+      'github-light',
+      'github-dark',
+      'ayu-dark',
+      'nord',
+    ],
     height: '600px',
     showToolbar: true,
   },
@@ -122,4 +159,17 @@ export const MultipleLanguages: Story = {
       },
     },
   },
+};
+
+export const CustomFullDemo: Story = {
+  args: {},
+  render: args => ({
+    components: {
+      FullDemo,
+    },
+    setup() {
+      return { attrs: args };
+    },
+    template: `<FullDemo v-bind="attrs"  />`,
+  }),
 };
