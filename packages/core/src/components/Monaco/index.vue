@@ -162,12 +162,27 @@ onUnmounted(() => {
 // 头部工具栏事件处理
 const handleCopy = async () => {
   if (editorInstance) {
-    const code = editorInstance.getValue();
     try {
+      // 优先使用Monaco的内置复制命令
+      const copyAction = editorInstance.getAction('editor.action.clipboardCopyAction');
+      if (copyAction) {
+        copyAction.run();
+        return;
+      }
+
+      // 备选方案1: 使用trigger触发内置命令
+      try {
+        editorInstance.trigger('keyboard', 'editor.action.clipboardCopyAction', null);
+        return;
+      } catch (triggerError) {
+        console.warn('Monaco内置复制命令触发失败:', triggerError);
+      }
+
+      // 备选方案2: 自定义复制实现 (复制全部内容)
+      const code = editorInstance.getValue();
       await navigator.clipboard.writeText(code);
-      // 这里可以添加成功提示
-    } catch (err) {
-      console.error("复制失败:", err);
+    } catch (error) {
+      console.error("复制失败:", error);
     }
   }
 };
@@ -175,6 +190,44 @@ const handleCopy = async () => {
 const handleFormat = () => {
   if (editorInstance) {
     editorInstance.getAction("editor.action.formatDocument")?.run();
+  }
+};
+
+// 添加粘贴功能给工具栏使用
+const handlePaste = async () => {
+  if (editorInstance) {
+    try {
+      // 优先使用Monaco的内置粘贴命令
+      const pasteAction = editorInstance.getAction('editor.action.clipboardPasteAction');
+      if (pasteAction) {
+        pasteAction.run();
+        return;
+      }
+
+      // 备选方案1: 使用trigger触发内置命令
+      try {
+        editorInstance.trigger('keyboard', 'editor.action.clipboardPasteAction', null);
+        return;
+      } catch (triggerError) {
+        console.warn('Monaco内置粘贴命令触发失败:', triggerError);
+      }
+
+      // 备选方案2: 自定义粘贴实现
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        const selection = editorInstance.getSelection();
+        if (selection) {
+          editorInstance.executeEdits('paste', [{
+            range: selection,
+            text: text,
+            forceMoveMarkers: true,
+          }]);
+          editorInstance.focus();
+        }
+      }
+    } catch (error) {
+      console.error("粘贴失败:", error);
+    }
   }
 };
 
@@ -234,6 +287,7 @@ defineExpose({
   enableAutoResize: () => monacoEditHook?.enableAutoResize(),
   disableAutoResize: () => monacoEditHook?.disableAutoResize(),
   copyCode: handleCopy,
+  pasteCode: handlePaste,
   formatCode: handleFormat,
 });
 </script>

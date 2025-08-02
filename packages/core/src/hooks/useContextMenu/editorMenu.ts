@@ -18,15 +18,50 @@ export function createEditorContextMenu(
       id: 'copy',
       label: '复制',
       shortcut: 'Ctrl+C',
-      action: () => {
-        // 完全依赖Monaco的内置复制命令
-        const copyAction = editor.getAction('editor.action.clipboardCopyAction');
-        if (copyAction) {
-          copyAction.run();
+      action: async () => {
+        try {
+          // 优先使用Monaco的内置复制命令
+          const copyAction = editor.getAction(
+            'editor.action.clipboardCopyAction',
+          );
+          if (copyAction) {
+            copyAction.run();
+            return;
+          }
+
+          // 备选方案1: 使用trigger触发内置命令
+          try {
+            editor.trigger('source', 'editor.action.clipboardCopyAction', null);
+            return;
+          }
+          catch (triggerError) {
+            console.warn('Monaco内置复制命令触发失败:', triggerError);
+          }
+
+          // 备选方案2: 自定义复制实现
+          const selection = editor.getSelection();
+          let textToCopy = '';
+
+          if (selection && !selection.isEmpty()) {
+            // 复制选中的文本
+            textToCopy = editor.getModel()?.getValueInRange(selection) || '';
+          }
+          else {
+            // 如果没有选中内容，复制当前行
+            const position = editor.getPosition();
+            if (position) {
+              const lineContent
+                = editor.getModel()?.getLineContent(position.lineNumber) || '';
+              textToCopy = lineContent;
+            }
+          }
+
+          if (textToCopy) {
+            await navigator.clipboard.writeText(textToCopy);
+          }
         }
-        else {
-          // 备选方案：触发copy事件
-          editor.trigger('copy', 'copy', null);
+        catch (error) {
+          console.error('复制失败:', error);
         }
       },
     },
@@ -35,15 +70,72 @@ export function createEditorContextMenu(
       id: 'cut',
       label: '剪切',
       shortcut: 'Ctrl+X',
-      action: () => {
-        // 完全依赖Monaco的内置剪切命令
-        const cutAction = editor.getAction('editor.action.clipboardCutAction');
-        if (cutAction) {
-          cutAction.run();
+      disabled: true,
+      action: async () => {
+        try {
+          // 优先使用Monaco的内置剪切命令
+          const cutAction = editor.getAction(
+            'editor.action.clipboardCutAction',
+          );
+          if (cutAction) {
+            cutAction.run();
+            return;
+          }
+
+          // 备选方案1: 使用trigger触发内置命令
+          try {
+            editor.trigger('source', 'editor.action.clipboardCutAction', null);
+            return;
+          }
+          catch (triggerError) {
+            console.warn('Monaco内置剪切命令触发失败:', triggerError);
+          }
+
+          // 备选方案2: 自定义剪切实现
+          const selection = editor.getSelection();
+          let textToCut = '';
+
+          if (selection && !selection.isEmpty()) {
+            // 剪切选中的文本
+            textToCut = editor.getModel()?.getValueInRange(selection) || '';
+            if (textToCut) {
+              await navigator.clipboard.writeText(textToCut);
+              editor.executeEdits('cut', [
+                {
+                  range: selection,
+                  text: '',
+                  forceMoveMarkers: true,
+                },
+              ]);
+            }
+          }
+          else {
+            // 如果没有选中内容，剪切当前行
+            const position = editor.getPosition();
+            if (position) {
+              const lineNumber = position.lineNumber;
+              const lineContent
+                = editor.getModel()?.getLineContent(lineNumber) || '';
+              const fullRange = {
+                startLineNumber: lineNumber,
+                startColumn: 1,
+                endLineNumber: lineNumber + 1,
+                endColumn: 1,
+              };
+
+              await navigator.clipboard.writeText(`${lineContent} \n`);
+              editor.executeEdits('cut', [
+                {
+                  range: fullRange,
+                  text: '',
+                  forceMoveMarkers: true,
+                },
+              ]);
+            }
+          }
         }
-        else {
-          // 备选方案：触发cut事件
-          editor.trigger('cut', 'cut', null);
+        catch (error) {
+          console.error('剪切失败:', error);
         }
       },
     },
@@ -52,16 +144,65 @@ export function createEditorContextMenu(
       id: 'paste',
       label: '粘贴',
       shortcut: 'Ctrl+V',
-      action: () => {
-        // 完全依赖Monaco的内置粘贴命令，它有最好的权限处理
-        const pasteAction = editor.getAction('editor.action.clipboardPasteAction');
-        if (pasteAction) {
-          pasteAction.run();
+      disabled: true,
+      action: async () => {
+        try {
+          // 优先使用Monaco的内置粘贴命令
+          const pasteAction = editor.getAction(
+            'editor.action.clipboardPasteAction',
+          );
+          if (pasteAction) {
+            pasteAction.run();
+            return;
+          }
+
+          // 备选方案1: 使用trigger触发内置命令
+          try {
+            editor.trigger(
+              'source',
+              'editor.action.clipboardPasteAction',
+              null,
+            );
+            return;
+          }
+          catch (triggerError) {
+            console.warn('Monaco内置粘贴命令触发失败:', triggerError);
+          }
+
+          // 备选方案2: 自定义粘贴实现
+          try {
+            const text = await navigator.clipboard.readText();
+            if (text) {
+              const selection = editor.getSelection();
+              if (selection) {
+                editor.executeEdits('paste', [
+                  {
+                    range: selection,
+                    text,
+                    forceMoveMarkers: true,
+                  },
+                ]);
+
+                // 聚焦编辑器
+                editor.focus();
+              }
+            }
+          }
+          catch (clipboardError) {
+            console.warn('剪贴板读取失败:', clipboardError);
+
+            // 备选方案3: 使用document.execCommand (已废弃但某些情况下仍可用)
+            try {
+              editor.focus();
+              document.execCommand('paste');
+            }
+            catch (execError) {
+              console.error('所有粘贴方案都失败了:', execError);
+            }
+          }
         }
-        else {
-          // 如果没有粘贴动作，直接触发键盘事件
-          editor.trigger('keyboard', 'type', { text: '' });
-          editor.trigger('paste', 'paste', null);
+        catch (error) {
+          console.error('粘贴失败:', error);
         }
       },
     },

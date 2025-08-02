@@ -45,6 +45,13 @@ const handleCopy = () => {
 const handleFormat = () => {
   emit("format");
 };
+
+defineExpose({
+  getFileName,
+  handleCopy,
+  handleFormat,
+});
+
 </script>
 
 <template>
@@ -73,19 +80,6 @@ const handleFormat = () => {
               <path
                 d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
               ></path>
-            </svg>
-          </button>
-          <button class="toolbar-btn" @click="handleFormat" title="格式化代码">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <polyline points="16 18 22 12 16 6"></polyline>
-              <polyline points="8 6 2 12 8 18"></polyline>
             </svg>
           </button>
         </div>
