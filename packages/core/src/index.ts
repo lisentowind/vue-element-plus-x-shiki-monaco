@@ -4,10 +4,10 @@ import Monaco from './components/Monaco/index.vue';
 export * from './components';
 export * from './hooks';
 
-const ElementPlusXShikiMonaco: Plugin = {
+const VueShikiMonaco: Plugin = {
   install(app: App) {
     app.component('Monaco', Monaco);
   },
 };
 
-export default ElementPlusXShikiMonaco;
+export default VueShikiMonaco;

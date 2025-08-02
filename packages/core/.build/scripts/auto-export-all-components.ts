@@ -35,7 +35,7 @@ async function generateAutoEntry() {
 
   // 生成入口文件内容
   const entryContent = [
-    '// Auto-Element-Plus-X by auto-export-all-components script',
+    '// Auto by auto-export-all-components script',
     ...components.map(c => `export { default as ${c.name} } from '${c.path}'`),
     '',
   ].join('\n');
@@ -48,13 +48,13 @@ async function generateAutoEntry() {
     `export * from './components'`,
     `export * from './hooks'`,
     '',
-    'const ElementPlusXShikiMonaco: Plugin = {',
+    'const VueShikiMonaco: Plugin = {',
     'install(app: App) {',
     ...components.map(c => `app.component('${c.name}', ${c.name})`),
     '}',
     '}',
     '',
-    'export default ElementPlusXShikiMonaco',
+    'export default VueShikiMonaco',
   ].join('\n');
 
   // 写入文件

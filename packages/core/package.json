@@ -1,5 +1,5 @@
 {
-  "name": "@vue-element-plus-x-shiki-monaco/core",
+  "name": "@vue-shiki-monaco/core",
   "version": "0.0.1",
   "description": "",
   "exports": {
@@ -81,7 +81,7 @@
     "@types/hast": "^3.0.4",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitest/ui": "^2.0.0",
-    "@vue-element-plus-x-shiki-monaco/tsconfig": "workspace:^",
+    "@vue-shiki-monaco/tsconfig": "workspace:^",
     "@vue/runtime-core": "^3.5.18",
     "@vue/tsconfig": "^0.7.0",
     "fast-glob": "^3.3.3",
@@ -97,7 +97,6 @@
     "vite": "^7.0.6",
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-lib-inject-css": "^2.2.2",
-    "vite-plugin-monaco-editor": "^1.1.0",
     "vitest": "^2.0.0",
     "vue": "^3.5.18",
     "vue-tsc": "^2.0.0"

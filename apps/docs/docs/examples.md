@@ -11,7 +11,7 @@ title: 使用示例
 
 ```vue
 <template>
-  <Monaco 
+  <Monaco
     language="javascript"
     :value="code"
     @change="handleChange"
@@ -20,7 +20,7 @@ title: 使用示例
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 const code = ref(`console.log('Hello Monaco!')`)
 
@@ -44,8 +44,8 @@ const handleChange = (newValue) => {
       <option value="html">HTML</option>
       <option value="css">CSS</option>
     </select>
-    
-    <Monaco 
+
+    <Monaco
       :language="currentLanguage"
       :value="codeExamples[currentLanguage]"
       height="400px"
@@ -55,7 +55,7 @@ const handleChange = (newValue) => {
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 const currentLanguage = ref('javascript')
 
@@ -65,7 +65,7 @@ const codeExamples = {
 }
 
 console.log(greet('World'));`,
-  
+
   typescript: `interface Person {
   name: string;
   age: number;
@@ -77,13 +77,13 @@ function greet(person: Person): string {
 
 const user: Person = { name: 'Alice', age: 30 };
 console.log(greet(user));`,
-  
+
   python: `def greet(name):
     return f"Hello, {name}!"
 
 if __name__ == "__main__":
     print(greet("World"))`,
-  
+
   html: `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     <p>这是一个 HTML 示例</p>
 </body>
 </html>`,
-  
+
   css: `/* 现代化样式 */
 .container {
   max-width: 1200px;
@@ -129,7 +129,7 @@ const changeLanguage = (event) => {
 <template>
   <div>
     <div class="theme-switcher">
-      <button 
+      <button
         @click="toggleTheme"
         class="theme-btn"
         :class="{ dark: isDark }"
@@ -137,8 +137,8 @@ const changeLanguage = (event) => {
         {{ isDark ? '🌙' : '☀️' }} {{ isDark ? '深色模式' : '浅色模式' }}
       </button>
     </div>
-    
-    <Monaco 
+
+    <Monaco
       language="typescript"
       :theme="isDark ? 'vitesse-dark' : 'vitesse-light'"
       :value="code"
@@ -149,17 +149,17 @@ const changeLanguage = (event) => {
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 const isDark = ref(false)
 const code = ref(`// 主题切换示例
 class ThemeManager {
   private currentTheme: 'light' | 'dark' = 'light';
-  
+
   constructor() {
     this.initTheme();
   }
-  
+
   private initTheme(): void {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
     if (savedTheme) {
@@ -167,13 +167,13 @@ class ThemeManager {
       this.applyTheme();
     }
   }
-  
+
   toggleTheme(): void {
     this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
     this.applyTheme();
     localStorage.setItem('theme', this.currentTheme);
   }
-  
+
   private applyTheme(): void {
     document.documentElement.setAttribute('data-theme', this.currentTheme);
   }
@@ -222,7 +222,7 @@ const toggleTheme = () => {
 
 ```vue
 <template>
-  <Monaco 
+  <Monaco
     language="javascript"
     :value="code"
     @change="handleChange"
@@ -236,7 +236,7 @@ const toggleTheme = () => {
             {{ isModified ? '● 已修改' : '● 已保存' }}
           </span>
         </div>
-        
+
         <div class="toolbar-right">
           <button @click="formatCode" class="btn" title="格式化代码">
             🎨 格式化
@@ -251,7 +251,7 @@ const toggleTheme = () => {
       </div>
     </template>
   </Monaco>
-  
+
   <!-- 输出面板 -->
   <div v-if="output" class="output-panel">
     <h4>输出结果：</h4>
@@ -261,7 +261,7 @@ const toggleTheme = () => {
 
 <script setup>
 import { ref, watch } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 const fileName = ref('example.js')
 const isModified = ref(false)
@@ -311,13 +311,13 @@ const runCode = () => {
     console.log = (...args) => {
       logs.push(args.join(' '))
     }
-    
+
     // 执行代码
     eval(code.value)
-    
+
     // 恢复 console.log
     console.log = originalLog
-    
+
     output.value = logs.join('\\n')
     isModified.value = false
     originalCode.value = code.value
@@ -426,7 +426,7 @@ const runCode = () => {
 ```vue
 <template>
   <div class="responsive-editor">
-    <Monaco 
+    <Monaco
       language="javascript"
       :value="code"
       :height="editorHeight"
@@ -437,7 +437,7 @@ const runCode = () => {
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 const editorHeight = ref('400px')
 const code = ref(`// 响应式编辑器示例
@@ -457,7 +457,7 @@ console.log('屏幕信息:', screenInfo);`)
 const updateEditorHeight = () => {
   const vh = window.innerHeight
   const isMobile = window.innerWidth < 768
-  
+
   if (isMobile) {
     editorHeight.value = Math.min(vh * 0.4, 300) + 'px'
   } else {
@@ -516,8 +516,8 @@ onUnmounted(() => {
     <div class="users-panel">
       <h4>在线用户</h4>
       <div class="user-list">
-        <div 
-          v-for="user in users" 
+        <div
+          v-for="user in users"
           :key="user.id"
           class="user-item"
           :style="{ borderColor: user.color }"
@@ -529,8 +529,8 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-    
-    <Monaco 
+
+    <Monaco
       ref="monacoRef"
       language="javascript"
       :value="code"
@@ -538,12 +538,12 @@ onUnmounted(() => {
       @change="handleChange"
       @ready="handleReady"
     />
-    
+
     <div class="activity-log">
       <h4>活动日志</h4>
       <div class="log-list">
-        <div 
-          v-for="(log, index) in activityLog" 
+        <div
+          v-for="(log, index) in activityLog"
           :key="index"
           class="log-item"
         >
@@ -560,7 +560,7 @@ onUnmounted(() => {
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 const monacoRef = ref()
 const users = ref([
@@ -577,16 +577,16 @@ class CollaborativeEditor {
     this.changes = [];
     this.init();
   }
-  
+
   init() {
     console.log('协作编辑器初始化完成');
     this.broadcastUserJoined('当前用户');
   }
-  
+
   broadcastUserJoined(username) {
     console.log(\`用户 \${username} 加入了编辑会话\`);
   }
-  
+
   handleTextChange(change) {
     // 处理文本变更
     this.changes.push({
@@ -594,11 +594,11 @@ class CollaborativeEditor {
       change: change,
       user: 'current_user'
     });
-    
+
     // 广播变更给其他用户
     this.broadcastChange(change);
   }
-  
+
   broadcastChange(change) {
     console.log('广播变更:', change);
   }
@@ -624,7 +624,7 @@ const addActivityLog = (action, user) => {
     user,
     action
   })
-  
+
   // 保持日志数量在合理范围内
   if (activityLog.value.length > 20) {
     activityLog.value = activityLog.value.slice(0, 20)
@@ -636,11 +636,11 @@ onMounted(() => {
   const activities = [
     '查看了代码',
     '添加了注释',
-    '修复了bug', 
+    '修复了bug',
     '重构了函数',
     '更新了文档'
   ]
-  
+
   setInterval(() => {
     if (Math.random() > 0.7) { // 30% 概率触发活动
       const randomUser = users.value[Math.floor(Math.random() * users.value.length)]
@@ -728,7 +728,7 @@ onMounted(() => {
     grid-template-rows: auto 1fr auto;
     height: auto;
   }
-  
+
   .users-panel, .activity-log {
     max-height: 200px;
   }
@@ -754,9 +754,9 @@ onMounted(() => {
         获取内容
       </button>
     </div>
-    
+
     <div ref="editorContainer" class="editor-container"></div>
-    
+
     <div v-if="currentValue" class="output">
       <h4>当前编辑器内容：</h4>
       <pre>{{ currentValue }}</pre>
@@ -766,7 +766,7 @@ onMounted(() => {
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useMonacoEdit } from '@vue-element-plus-x-shiki-monaco/core'
+import { useMonacoEdit } from '@vue-shiki-monaco/core'
 
 const editorContainer = ref()
 const editorInitialized = ref(false)
@@ -777,7 +777,7 @@ let editorInstance = null
 
 const initEditor = async () => {
   if (!editorContainer.value || editorInitialized.value) return
-  
+
   try {
     // 使用 useMonacoEdit hook
     monacoEditHook = useMonacoEdit({
@@ -787,15 +787,15 @@ const initEditor = async () => {
       codeValue: `// 使用 useMonacoEdit Hook
 function customEditor() {
   console.log('这是一个使用 hook 创建的编辑器');
-  
+
   // 你可以在这里添加自定义逻辑
   const features = [
     '直接控制编辑器实例',
-    '自定义初始化逻辑', 
+    '自定义初始化逻辑',
     '精细的生命周期管理',
     '灵活的配置选项'
   ];
-  
+
   return features;
 }
 
@@ -804,16 +804,16 @@ console.log('编辑器特性:', editor);`,
       defaultTheme: 'vitesse-light',
       defaultLanguage: 'javascript'
     })
-    
+
     // 初始化编辑器
     editorInstance = await monacoEditHook.initMonacoEdit()
     editorInitialized.value = true
-    
+
     // 监听内容变化
     editorInstance.onDidChangeModelContent(() => {
       currentValue.value = editorInstance.getValue()
     })
-    
+
     console.log('编辑器初始化成功:', editorInstance)
   } catch (error) {
     console.error('编辑器初始化失败:', error)

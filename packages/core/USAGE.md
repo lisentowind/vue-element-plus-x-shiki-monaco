@@ -1,9 +1,9 @@
-# Vue Element Plus X Shiki Monaco 使用指南
+# Vue Shiki Monaco 使用指南
 
 ## 安装
 
 ```bash
-npm install @vue-element-plus-x-shiki-monaco/core
+npm install @vue-shiki-monaco/core
 ```
 
 ## 自动化导出生成
@@ -19,7 +19,7 @@ npm run build            # 构建前会自动运行导出生成
 
 - `src/index.ts` - 主入口文件
 - `src/components.ts` - 仅组件导出
-- `src/hooks.ts` - 仅hooks导出  
+- `src/hooks.ts` - 仅hooks导出
 - `src/types.ts` - 类型定义文件
 - `src/resolver.ts` - 自动导入解析器
 - `types/` 目录下的所有类型声明文件
@@ -29,45 +29,45 @@ npm run build            # 构建前会自动运行导出生成
 ### 全量导入
 
 ```typescript
-import VueElementPlusXShikiMonaco from '@vue-element-plus-x-shiki-monaco/core';
-import type { MonacoProps } from '@vue-element-plus-x-shiki-monaco/core';
+import type { MonacoProps } from '@vue-shiki-monaco/core';
+import VueVueShikiMonaco from '@vue-shiki-monaco/core';
 
-app.use(VueElementPlusXShikiMonaco);
+app.use(VueVueShikiMonaco);
 ```
 
 ### 按需导入组件
 
 ```typescript
 // 导入单个组件
-import { Monaco } from '@vue-element-plus-x-shiki-monaco/core';
+import { Monaco } from '@vue-shiki-monaco/core';
 // 或使用 MonacoWithInstall 获得安装能力
-import { MonacoWithInstall } from '@vue-element-plus-x-shiki-monaco/core';
+import { MonacoWithInstall } from '@vue-shiki-monaco/core';
 
 // 仅导入组件（不包含插件）
-import { Monaco } from '@vue-element-plus-x-shiki-monaco/core/components';
+import { Monaco } from '@vue-shiki-monaco/core/components';
 ```
 
 ### 按需导入 Hooks
 
 ```typescript
+import type { UseMonacoEditReturn } from '@vue-shiki-monaco/core';
 // 导入 hooks
-import { useMonacoEdit } from '@vue-element-plus-x-shiki-monaco/core';
-import type { UseMonacoEditReturn } from '@vue-element-plus-x-shiki-monaco/core';
+import { useMonacoEdit } from '@vue-shiki-monaco/core';
 
 // 仅导入 hooks
-import { useMonacoEdit } from '@vue-element-plus-x-shiki-monaco/core/hooks';
+import { useMonacoEdit } from '@vue-shiki-monaco/core/hooks';
 ```
 
 ### 导入类型
 
 ```typescript
-import type { 
-  MonacoInstance, 
-  MonacoProps, 
-  EditInstance, 
-  MonacoOptions, 
-  UseMonacoEditReturn 
-} from '@vue-element-plus-x-shiki-monaco/core';
+import type {
+  EditInstance,
+  MonacoInstance,
+  MonacoOptions,
+  MonacoProps,
+  UseMonacoEditReturn
+} from '@vue-shiki-monaco/core';
 ```
 
 ## 自动导入配置
@@ -75,9 +75,9 @@ import type {
 ### 使用 unplugin-vue-components
 
 ```typescript
-import { defineConfig } from 'vite';
+import { resolverHelper } from '@vue-shiki-monaco/core/resolver';
 import Components from 'unplugin-vue-components/vite';
-import { resolverHelper } from '@vue-element-plus-x-shiki-monaco/core/resolver';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
@@ -91,15 +91,15 @@ export default defineConfig({
 ### 使用 unplugin-auto-import
 
 ```typescript
-import { defineConfig } from 'vite';
 import AutoImport from 'unplugin-auto-import/vite';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
     AutoImport({
       imports: [
         {
-          '@vue-element-plus-x-shiki-monaco/core': ['useMonacoEdit'],
+          '@vue-shiki-monaco/core': ['useMonacoEdit'],
         },
       ],
     }),
@@ -119,12 +119,12 @@ export default defineConfig({
 
 ## 模块格式支持
 
-| 格式 | 入口文件 | 用途 |
-|------|----------|------|
-| ESM | `dist/es/index.mjs` | 现代打包工具 (Vite, Rollup) |
-| CommonJS | `dist/cjs/index.cjs` | Node.js 和旧版打包工具 |
-| UMD | `dist/umd/index.js` | 浏览器直接引入 |
-| TypeScript | `types/index.d.ts` | 类型定义 |
+| 格式       | 入口文件             | 用途                        |
+| ---------- | -------------------- | --------------------------- |
+| ESM        | `dist/es/index.mjs`  | 现代打包工具 (Vite, Rollup) |
+| CommonJS   | `dist/cjs/index.cjs` | Node.js 和旧版打包工具      |
+| UMD        | `dist/umd/index.js`  | 浏览器直接引入              |
+| TypeScript | `types/index.d.ts`   | 类型定义                    |
 
 ## 导出路径一览
 

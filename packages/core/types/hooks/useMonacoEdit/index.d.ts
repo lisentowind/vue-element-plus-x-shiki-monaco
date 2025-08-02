@@ -13,6 +13,11 @@ export interface UseMonacoEditReturn {
     initMonacoEdit: () => Promise<EditInstance>;
     destroy: () => void;
     registerLanguage: (language: string) => void;
+    setTheme: (theme: BundledTheme) => Promise<void>;
+    setLanguage: (language: BundledLanguage) => Promise<void>;
+    layout: () => void;
+    enableAutoResize: () => void;
+    disableAutoResize: () => void;
     editInstance: EditInstance | null;
 }
 export declare function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn;

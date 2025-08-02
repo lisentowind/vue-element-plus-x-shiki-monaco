@@ -33,7 +33,7 @@ slug: /
 ### 安装
 
 ```bash
-npm install @vue-element-plus-x-shiki-monaco/core
+npm install @vue-shiki-monaco/core
 ```
 
 ### 基础使用
@@ -51,7 +51,7 @@ npm install @vue-element-plus-x-shiki-monaco/core
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 const code = ref(`// Hello Monaco Editor with Shiki!
 function greet(name) {

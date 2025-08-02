@@ -4,10 +4,10 @@
   "baseBranch": "main",
   "commit": false,
   "fixed": [],
-  "linked": [["@vue-element-plus-x-shiki-monaco/core", "@vue-element-plus-x-shiki-monaco/docs"]],
+  "linked": [["@vue-shiki-monaco/core", "@vue-shiki-monaco/docs"]],
   "access": "public",
   "updateInternalDependencies": "patch",
-  "ignore": ["@vue-element-plus-x-shiki-monaco/docs"],
+  "ignore": ["@vue-shiki-monaco/docs"],
   "privatePackages": {
     "version": true,
     "tag": false

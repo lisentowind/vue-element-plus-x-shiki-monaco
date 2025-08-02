@@ -4,16 +4,14 @@ import { create } from '@storybook/theming';
 
 const theme = create({
   base: 'light',
-  brandTitle: 'vue-element-plus-x',
-  brandUrl: 'https://element-plus-x.com',
-  brandImage: '/logo.svg'
+  brandTitle: 'vue-shiki-monaco',
+  brandImage: '/logo.svg',
 });
 
 const darkTheme = create({
   base: 'dark',
-  brandTitle: 'vue-element-plus-x',
-  brandUrl: 'https://element-plus-x.com',
-  brandImage: '/logo.svg'
+  brandTitle: 'vue-shiki-monaco',
+  brandImage: '/logo.svg',
 });
 
 addons.setConfig({
@@ -51,7 +49,7 @@ addons.setConfig({
     showToolbar(state: State, defaultValue: boolean) {
       // 当视图模式为'docs'时隐藏工具栏，其他情况使用默认设置
       return state.viewMode === 'docs' ? false : defaultValue;
-    }
+    },
   },
 
   // 侧边栏配置
@@ -59,7 +57,7 @@ addons.setConfig({
     // 是否显示根目录节点
     showRoots: false,
     // 默认折叠的根目录（数组中的名称对应故事分类）
-    collapsedRoots: ['other']
+    collapsedRoots: ['other'],
   },
 
   // 顶部工具栏配置
@@ -75,6 +73,6 @@ addons.setConfig({
     // 全屏控件
     fullscreen: { hidden: false },
     // 刷新控件
-    remount: { hidden: false }
-  }
+    remount: { hidden: false },
+  },
 });

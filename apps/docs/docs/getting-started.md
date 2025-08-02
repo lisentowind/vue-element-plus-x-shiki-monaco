@@ -11,13 +11,13 @@ title: 快速开始
 
 ```bash
 # npm
-npm install @vue-element-plus-x-shiki-monaco/core
+npm install @vue-shiki-monaco/core
 
 # yarn
-yarn add @vue-element-plus-x-shiki-monaco/core
+yarn add @vue-shiki-monaco/core
 
 # pnpm
-pnpm add @vue-element-plus-x-shiki-monaco/core
+pnpm add @vue-shiki-monaco/core
 ```
 
 ## 基础使用
@@ -26,7 +26,7 @@ pnpm add @vue-element-plus-x-shiki-monaco/core
 
 ```vue
 <script setup>
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 </script>
 ```
 
@@ -34,7 +34,7 @@ import Monaco from '@vue-element-plus-x-shiki-monaco/core'
 
 ```vue
 <template>
-  <Monaco 
+  <Monaco
     language="javascript"
     :value="code"
     height="400px"
@@ -44,7 +44,7 @@ import Monaco from '@vue-element-plus-x-shiki-monaco/core'
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 const code = ref(`// 你的代码
 function hello(name) {
@@ -74,19 +74,19 @@ const handleChange = (newValue) => {
         <option value="html">HTML</option>
         <option value="css">CSS</option>
       </select>
-      
+
       <select v-model="selectedTheme" @change="changeTheme">
         <option value="vitesse-light">浅色主题</option>
         <option value="vitesse-dark">深色主题</option>
         <option value="github-light">GitHub 浅色</option>
         <option value="github-dark">GitHub 深色</option>
       </select>
-      
+
       <button @click="formatCode">格式化代码</button>
       <button @click="copyCode">复制代码</button>
     </div>
-    
-    <Monaco 
+
+    <Monaco
       ref="monacoRef"
       :language="selectedLanguage"
       :theme="selectedTheme"
@@ -100,7 +100,7 @@ const handleChange = (newValue) => {
 
 <script setup>
 import { ref, reactive } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 const monacoRef = ref()
 const selectedLanguage = ref('javascript')
@@ -126,11 +126,11 @@ interface User {
 
 class UserManager {
   private users: User[] = [];
-  
+
   addUser(user: User): void {
     this.users.push(user);
   }
-  
+
   findUserById(id: number): User | undefined {
     return this.users.find(user => user.id === id);
   }
@@ -143,12 +143,12 @@ manager.addUser({ id: 1, name: 'John', email: 'john@example.com' });\`,
 class Calculator:
     def __init__(self):
         self.history = []
-    
+
     def add(self, a, b):
         result = a + b
         self.history.append(f"{a} + {b} = {result}")
         return result
-    
+
     def get_history(self):
         return self.history
 
@@ -183,7 +183,7 @@ print("历史记录:", calc.get_history())\`,
         <h1>欢迎使用 Monaco Editor</h1>
         <p class="highlight">现代化的代码编辑器组件</p>
     </header>
-    
+
     <main>
         <section>
             <h2>功能特点</h2>
@@ -209,7 +209,7 @@ print("历史记录:", calc.get_history())\`,
 .card {
   background: white;
   border-radius: 12px;
-  box-shadow: 
+  box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   overflow: hidden;
@@ -218,7 +218,7 @@ print("历史记录:", calc.get_history())\`,
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 
+  box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
@@ -331,7 +331,7 @@ const copyCode = async () => {
   .controls {
     flex-direction: column;
   }
-  
+
   .controls select,
   .controls button {
     width: 100%;
@@ -357,7 +357,7 @@ A: 在 Nuxt.js 中使用时，需要在客户端渲染：
 ```vue
 <template>
   <ClientOnly>
-    <Monaco 
+    <Monaco
       language="javascript"
       :value="code"
       @change="handleChange"
@@ -373,7 +373,7 @@ A: 组件会自动加载所需的语言和主题。Monaco 编辑器通过 Shiki 
 ```vue
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 // 组件会自动处理多语言和主题的加载
 const languages = ['javascript', 'typescript', 'python']
@@ -386,7 +386,7 @@ const themes = ['vitesse-light', 'vitesse-dark']
 A: 对于大文件，建议使用虚拟滚动和懒加载：
 
 ```vue
-<Monaco 
+<Monaco
   language="javascript"
   :value="largeFileContent"
   height="600px"

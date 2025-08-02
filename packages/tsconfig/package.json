@@ -1,5 +1,5 @@
 {
-  "name": "@vue-element-plus-x-shiki-monaco/tsconfig",
+  "name": "@vue-shiki-monaco/tsconfig",
   "version": "0.0.1",
   "private": true,
   "license": "MIT",

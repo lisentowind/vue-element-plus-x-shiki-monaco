@@ -1,5 +1,5 @@
 {
-  "extends": "@vue-element-plus-x-shiki-monaco/tsconfig/base.tsconfig.json",
+  "extends": "@vue-shiki-monaco/tsconfig/base.tsconfig.json",
   "include": [
     "./src/**/*",
     "./lib/**/*",

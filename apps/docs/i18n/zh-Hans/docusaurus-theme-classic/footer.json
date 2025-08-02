@@ -25,19 +25,19 @@
   },
   "link.item.label.GitHub Issues": {
     "message": "GitHub Issues",
-    "description": "The label of footer link with label=GitHub Issues linking to https://github.com/lisentowind/vue-element-plus-x-shiki-monaco/issues"
+    "description": "The label of footer link with label=GitHub Issues linking to https://github.com/lisentowind/vue-shiki-monaco/issues"
   },
   "link.item.label.GitHub Discussions": {
     "message": "GitHub Discussions",
-    "description": "The label of footer link with label=GitHub Discussions linking to https://github.com/lisentowind/vue-element-plus-x-shiki-monaco/discussions"
+    "description": "The label of footer link with label=GitHub Discussions linking to https://github.com/lisentowind/vue-shiki-monaco/discussions"
   },
   "link.item.label.GitHub": {
     "message": "GitHub",
-    "description": "The label of footer link with label=GitHub linking to https://github.com/lisentowind/vue-element-plus-x-shiki-monaco"
+    "description": "The label of footer link with label=GitHub linking to https://github.com/lisentowind/vue-shiki-monaco"
   },
   "link.item.label.NPM": {
     "message": "NPM",
-    "description": "The label of footer link with label=NPM linking to https://www.npmjs.com/package/@vue-element-plus-x-shiki-monaco/core"
+    "description": "The label of footer link with label=NPM linking to https://www.npmjs.com/package/@vue-shiki-monaco/core"
   },
   "copyright": {
     "message": "Copyright © 2025 Shiki Monaco Editor Vue 组件. by lisentowind",

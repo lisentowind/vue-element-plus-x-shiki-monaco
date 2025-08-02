@@ -160,7 +160,7 @@ title: API 参考
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-element-plus-x-shiki-monaco/core'
+import Monaco from '@vue-shiki-monaco/core'
 
 const monacoRef = ref()
 const code = ref(`function hello(name: string) {
@@ -196,7 +196,7 @@ const resetCode = () => {
 ### 基本用法
 
 ```typescript
-import { useMonacoEdit } from '@vue-element-plus-x-shiki-monaco/core'
+import { useMonacoEdit } from '@vue-shiki-monaco/core'
 
 const { initMonacoEdit, destroy, registerLanguage } = useMonacoEdit({
   target: editorElement,
@@ -241,14 +241,14 @@ interface UseMonacoEditReturn {
 #### initMonacoEdit()
 - **返回**: `Promise<EditInstance>`
 - **描述**: 异步初始化 Monaco Editor 实例
-- **用法**: 
+- **用法**:
   ```typescript
   const editor = await initMonacoEdit()
   ```
 
 #### destroy()
 - **描述**: 销毁编辑器实例，释放内存
-- **用法**: 
+- **用法**:
   ```typescript
   destroy()
   ```
@@ -256,7 +256,7 @@ interface UseMonacoEditReturn {
 #### registerLanguage(language)
 - **参数**: `language: string` - 要注册的语言ID
 - **描述**: 动态注册新的编程语言支持
-- **用法**: 
+- **用法**:
   ```typescript
   registerLanguage('rust')
   ```
@@ -269,7 +269,7 @@ interface UseMonacoEditReturn {
 
 ```typescript
 import type { BundledLanguage, BundledTheme } from 'shiki'
-import type { EditInstance } from '@vue-element-plus-x-shiki-monaco/core'
+import type { EditInstance } from '@vue-shiki-monaco/core'
 
 // 组件 Props
 interface MonacoProps {

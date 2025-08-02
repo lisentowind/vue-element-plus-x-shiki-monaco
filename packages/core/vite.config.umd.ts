@@ -21,7 +21,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      name: 'ElementPlusXShikiMonaco',
+      name: 'VueShikiMonaco',
       entry: resolve(__dirname, './src/index.ts'),
       formats: ['umd'],
       fileName: (format) => {

@@ -18,12 +18,12 @@ const config: Config = {
   url: 'https://lisentowind.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/vue-element-plus-x-shiki-monaco/',
+  baseUrl: '/vue-shiki-monaco/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'lisentowind', // Usually your GitHub org/user name.
-  projectName: 'vue-element-plus-x-shiki-monaco', // Usually your repo name.
+  projectName: 'vue-shiki-monaco', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -42,7 +42,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/lisentowind/vue-element-plus-x-shiki-monaco/edit/main/apps/docs/',
+          editUrl: 'https://github.com/lisentowind/vue-shiki-monaco/edit/main/apps/docs/',
         },
         blog: {
           showReadingTime: true,
@@ -87,7 +87,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/lisentowind/vue-element-plus-x-shiki-monaco',
+          href: 'https://github.com/lisentowind/vue-shiki-monaco',
           label: 'GitHub',
           position: 'right',
         },
@@ -118,11 +118,11 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Issues',
-              href: 'https://github.com/lisentowind/vue-element-plus-x-shiki-monaco/issues',
+              href: 'https://github.com/lisentowind/vue-shiki-monaco/issues',
             },
             {
               label: 'GitHub Discussions',
-              href: 'https://github.com/lisentowind/vue-element-plus-x-shiki-monaco/discussions',
+              href: 'https://github.com/lisentowind/vue-shiki-monaco/discussions',
             },
           ],
         },
@@ -131,11 +131,11 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/lisentowind/vue-element-plus-x-shiki-monaco',
+              href: 'https://github.com/lisentowind/vue-shiki-monaco',
             },
             {
               label: 'NPM',
-              href: 'https://www.npmjs.com/package/@vue-element-plus-x-shiki-monaco/core',
+              href: 'https://www.npmjs.com/package/@vue-shiki-monaco/core',
             },
           ],
         },

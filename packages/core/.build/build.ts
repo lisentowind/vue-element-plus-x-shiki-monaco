@@ -33,7 +33,7 @@ const hooksEntriesObj = Object.fromEntries(
 
 const buildConfig: BuildEnvironmentOptions = {
   lib: {
-    name: 'ElementPlusXShikiMonaco',
+    name: 'VueShikiMonaco',
     entry: {
       index: resolve(__dirname, '../src/index.ts'),
       components: resolve(__dirname, '../src/components.ts'),

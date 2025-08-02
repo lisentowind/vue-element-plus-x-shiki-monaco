@@ -7,6 +7,9 @@ interface Props {
     value?: string;
     height?: string;
     showToolbar?: boolean;
+    autoResize?: boolean;
+    monacoEditClass?: string;
+    fileName?: string;
 }
 declare function __VLS_template(): {
     attrs: Partial<{}>;
@@ -25,6 +28,10 @@ declare const __VLS_component: import('vue').DefineComponent<Props, {
     getValue: () => string;
     focus: () => void | undefined;
     setTheme: (theme: BundledTheme) => Promise<void> | undefined;
+    setLanguage: (language: BundledLanguage) => Promise<void> | undefined;
+    layout: () => void | undefined;
+    enableAutoResize: () => void | undefined;
+    disableAutoResize: () => void | undefined;
     copyCode: () => Promise<void>;
     formatCode: () => void;
 }, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
@@ -34,13 +41,14 @@ declare const __VLS_component: import('vue').DefineComponent<Props, {
     onChange?: ((value: string) => any) | undefined;
     onReady?: ((editor: import("monaco-editor-core").editor.IStandaloneCodeEditor) => any) | undefined;
 }>, {
+    languages: BundledLanguage[];
+    themes: BundledTheme[];
     value: string;
     currentLanguage: BundledLanguage;
     currentTheme: BundledTheme;
-    languages: BundledLanguage[];
-    themes: BundledTheme[];
     height: string;
     showToolbar: boolean;
+    autoResize: boolean;
 }, {}, {}, {}, string, import('vue').ComponentProvideOptions, false, {
     editorRef: HTMLDivElement;
 }, HTMLDivElement>;
