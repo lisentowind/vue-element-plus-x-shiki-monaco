@@ -26,37 +26,63 @@ pnpm add vue-shiki-monaco
 
 ```vue
 <script setup>
-import Monaco from 'vue-shiki-monaco'
+import { Monaco } from "vue-shiki-monaco";
 </script>
 ```
 
 ### 2. 在模板中使用
 
 ```vue
+<script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
+import { Monaco } from "vue-shiki-monaco";
+
+// 重复10次
+const mockCode = `
+  function helloWorld() {
+    console.log("Hello, World!");
+  }
+
+  helloWorld();
+  `.repeat(10);
+
+const timer = ref();
+const index = ref(0);
+function start() {
+  timer.value = setInterval(() => {
+    index.value += 250;
+    if (index.value > mockCode.length) {
+      clearInterval(timer.value);
+      index.value = mockCode.length;
+    }
+  }, 100);
+}
+
+const content = computed(() => {
+  return mockCode.slice(0, index.value);
+});
+
+const handleChange = (value: string) => {
+  console.log('handleChange');
+};
+
+onMounted(() => {
+  start();
+});
+</script>
+
 <template>
-  <Monaco
-    current-language="javascript"
-    :value="code"
-    height="400px"
-    @change="handleChange"
-  />
+  <div>
+    <Monaco
+      :language="'javascript'"
+      :theme="'github-dark'"
+      :value="content"
+      :show-toolbar="true"
+      @change="handleChange"
+    />
+  </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import Monaco from 'vue-shiki-monaco'
-
-const code = ref(`// 你的代码
-function hello(name) {
-  return \`Hello, \${name}!\`;
-}
-
-console.log(hello('World'));`)
-
-const handleChange = (newValue) => {
-  console.log('代码已更新:', newValue)
-}
-</script>
 ```
 
 ## 完整示例
@@ -114,35 +140,35 @@ const handleChange = (newValue) => {
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import Monaco from 'vue-shiki-monaco'
+import { ref, reactive, computed, watch } from "vue";
+import { Monaco } from "vue-shiki-monaco";
 
-const monacoRef = ref()
-const selectedLanguage = ref('javascript')
-const selectedTheme = ref('vitesse-light')
+const monacoRef = ref<InstanceType<typeof Monaco>>();
+const selectedLanguage = ref("javascript");
+const selectedTheme = ref("vitesse-light");
 
 const stats = reactive({
   lines: 0,
-  characters: 0
-})
+  characters: 0,
+});
 
 // 不同语言的示例代码
 const codeTemplates = reactive({
-  javascript: \`// JavaScript 示例
+  javascript: `// JavaScript 示例
 function calculateSum(numbers) {
   return numbers.reduce((sum, num) => sum + num, 0);
 }
 
 const numbers = [1, 2, 3, 4, 5];
 const result = calculateSum(numbers);
-console.log('Sum:', result);\`,
+console.log('Sum:', result);`,
 
-  typescript: \`// TypeScript 示例
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
+  typescript: `
+  interface User {
+    id: number;
+    name: string;
+    email: string;
+  }
 
 class UserManager {
   private users: User[] = [];
@@ -157,9 +183,9 @@ class UserManager {
 }
 
 const manager = new UserManager();
-manager.addUser({ id: 1, name: 'John', email: 'john@example.com' });\`,
+manager.addUser({ id: 1, name: 'John', email: 'john@example.com' });`,
 
-  python: \`# Python 示例
+  python: `# Python 示例
 class Calculator:
     def __init__(self):
         self.history = []
@@ -175,9 +201,9 @@ class Calculator:
 calc = Calculator()
 result = calc.add(10, 20)
 print(f"结果: {result}")
-print("历史记录:", calc.get_history())\`,
+print("历史记录:", calc.get_history())`,
 
-  html: \`<!DOCTYPE html>
+  html: `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -218,9 +244,9 @@ print("历史记录:", calc.get_history())\`,
         </section>
     </main>
 </body>
-</html>\`,
+</html>`,
 
-  css: \`/* CSS 示例 - 现代化卡片设计 */
+  css: `/* CSS 示例 - 现代化卡片设计 */
 .card-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -267,12 +293,11 @@ print("历史记录:", calc.get_history())\`,
     grid-template-columns: 1fr;
     padding: 1rem;
   }
-}\`,
-
-  vue: \`<template>
+}`,
+  vue: `<template>
   <div class="todo-app">
     <h1>Vue.js Todo 应用</h1>
-    
+
     <form @submit.prevent="addTodo">
       <input
         v-model="newTodo"
@@ -283,8 +308,8 @@ print("历史记录:", calc.get_history())\`,
     </form>
 
     <ul class="todo-list">
-      <li 
-        v-for="todo in todos" 
+      <li
+        v-for="todo in todos"
         :key="todo.id"
         :class="{ completed: todo.completed }"
       >
@@ -303,7 +328,7 @@ print("历史记录:", calc.get_history())\`,
   </div>
 </template>
 
-<script setup>
+<\script setup>
 import { ref, computed } from 'vue'
 
 const newTodo = ref('')
@@ -312,7 +337,7 @@ const todos = ref([
   { id: 2, text: '使用 Monaco Editor', completed: true }
 ])
 
-const remainingTodos = computed(() => 
+const remainingTodos = computed(() =>
   todos.value.filter(todo => !todo.completed).length
 )
 
@@ -330,7 +355,7 @@ const addTodo = () => {
 const removeTodo = (id) => {
   todos.value = todos.value.filter(todo => todo.id !== id)
 }
-</script>
+<\/script>
 
 <style scoped>
 .todo-app {
@@ -355,9 +380,9 @@ const removeTodo = (id) => {
   text-decoration: line-through;
   opacity: 0.6;
 }
-</style>\`,
+</style>`,
 
-  json: \`{
+  json: `{
   "name": "vue-shiki-monaco",
   "version": "1.0.0",
   "description": "现代化的 Vue.js Monaco Editor 组件",
@@ -401,108 +426,116 @@ const removeTodo = (id) => {
     "url": "https://github.com/your-username/vue-shiki-monaco/issues"
   },
   "homepage": "https://vue-shiki-monaco.netlify.app"
-}\`
-})
+}`,
+});
 
-const currentCode = ref(codeTemplates.javascript)
+const currentCode = ref(codeTemplates.javascript);
 
 // 文件名映射
 const fileName = computed(() => {
   const extensions = {
-    javascript: 'example.js',
-    typescript: 'example.ts',
-    python: 'example.py',
-    html: 'index.html',
-    css: 'styles.css',
-    vue: 'App.vue',
-    json: 'package.json'
-  }
-  return extensions[selectedLanguage.value] || 'untitled.txt'
-})
+    javascript: "example.js",
+    typescript: "example.ts",
+    python: "example.py",
+    html: "index.html",
+    css: "styles.css",
+    vue: "App.vue",
+    json: "package.json",
+  };
+  return extensions[selectedLanguage.value] || "untitled.txt";
+});
 
 // 右键菜单配置
 const contextMenuConfig = reactive({
   enabled: true,
-  items: 'full',
+  items: "full",
   customItems: [
-    { type: 'separator' },
+    { type: "separator" },
     {
-      type: 'item',
-      id: 'run-code',
-      label: '▶️ 运行代码',
-      shortcut: 'F5',
+      type: "item",
+      id: "run-code",
+      label: "▶️ 运行代码",
+      shortcut: "F5",
       action: () => {
-        console.log('运行代码:', currentCode.value)
-        alert('代码运行功能（演示）')
-      }
+        console.log("运行代码:", currentCode.value);
+        alert("代码运行功能（演示）");
+      },
     },
     {
-      type: 'item',
-      id: 'save-file',
-      label: '💾 保存文件',
-      shortcut: 'Ctrl+S',
+      type: "item",
+      id: "save-file",
+      label: "💾 保存文件",
+      shortcut: "Ctrl+S",
       action: () => {
-        console.log('保存文件:', fileName.value)
-        alert(`文件 ${fileName.value} 已保存（演示）`)
-      }
-    }
-  ]
-})
+        console.log("保存文件:", fileName.value);
+        alert(`文件 ${fileName.value} 已保存（演示）`);
+      },
+    },
+  ],
+});
 
 const handleCodeChange = (newValue) => {
-  currentCode.value = newValue
-  updateStats(newValue)
-}
+  currentCode.value = newValue;
+  updateStats(newValue);
+};
 
 const handleEditorReady = (editor) => {
-  console.log('编辑器已准备就绪:', editor)
-  updateStats(currentCode.value)
-  
+  console.log("编辑器已准备就绪:", editor);
+  updateStats(currentCode.value);
+
   // 聚焦编辑器
-  editor.focus()
-}
+  editor.focus();
+};
 
 const updateStats = (code) => {
-  stats.lines = code.split('\\n').length
-  stats.characters = code.length
-}
+  stats.lines = code.split("\\n").length;
+  stats.characters = code.length;
+};
 
 const changeLanguage = () => {
   // 切换语言时加载对应的示例代码
-  currentCode.value = codeTemplates[selectedLanguage.value]
-}
+  currentCode.value = codeTemplates[selectedLanguage.value];
+};
 
 const changeTheme = () => {
   // 主题会自动应用
-  console.log('主题已切换到:', selectedTheme.value)
-}
+  console.log("主题已切换到:", selectedTheme.value);
+};
 
 const formatCode = () => {
   if (monacoRef.value) {
-    monacoRef.value.formatCode()
-    console.log('代码已格式化')
+    monacoRef.value.formatCode();
+    console.log("代码已格式化");
   }
-}
+};
 
 const copyCode = async () => {
   if (monacoRef.value) {
-    await monacoRef.value.copyCode()
-    console.log('代码已复制到剪贴板')
+    await monacoRef.value.copyCode();
+    console.log("代码已复制到剪贴板");
   }
-}
+};
 
 const pasteCode = async () => {
   if (monacoRef.value) {
-    await monacoRef.value.pasteCode()
-    console.log('已从剪贴板粘贴内容')
+    await monacoRef.value.pasteCode();
+    console.log("已从剪贴板粘贴内容");
   }
-}
+};
 
 const formatThemeName = (theme) => {
-  return theme.split('-').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ')
-}
+  return theme
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
+watch(
+  () => currentCode.value,
+  (v) => {
+    monacoRef.value.setValue(v);
+  }
+);
 </script>
 
 <style scoped>
@@ -582,6 +615,7 @@ const formatThemeName = (theme) => {
   }
 }
 </style>
+
 ```
 
 ## 核心特性
@@ -597,24 +631,40 @@ const formatThemeName = (theme) => {
 - **Go/Rust/Java** - 系统编程语言支持
 - **更多语言** - 支持几乎所有主流编程语言
 
-### 📋 智能剪贴板
+### 📋 编辑器实例
 
 强大的剪贴板功能，支持多种策略：
 
 ```vue
+<script setup lang="ts">
+import { Monaco, type EditInstance } from "vue-shiki-monaco";
+
+// 重复10次
+const mockCode = `
+  function helloWorld() {
+    console.log("Hello, World!");
+  }
+
+  helloWorld();
+  `.repeat(10);
+const handleReady = (editor: EditInstance) => {
+  console.log(editor);
+};
+</script>
+
 <template>
-  <Monaco
-    :context-menu="{
-      enabled: true,
-      items: 'full' // 包含完整的剪贴板功能
-    }"
-    @ready="(editor) => {
-      // 编辑器实例可以直接调用剪贴板方法
-      editor.copyCode()  // 复制代码
-      editor.pasteCode() // 粘贴代码
-    }"
-  />
+  <div>
+    <Monaco
+      :value="mockCode"
+      :context-menu="{
+        enabled: true,
+        items: 'minimal',
+      }"
+      @ready="handleReady"
+    />
+  </div>
 </template>
+
 ```
 
 ### 🎯 自定义右键菜单
@@ -770,4 +820,7 @@ A: 组件设计为即插即用，可以轻松集成到任何 Vue 3 项目中：
 4. **配置选项**：根据需要设置 props 和事件监听器
 
 组件与主流的 Vue 3 生态系统兼容，包括 Vite、Nuxt.js、Quasar 等框架。
+
+```
+
 ```

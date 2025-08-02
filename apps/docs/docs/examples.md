@@ -20,7 +20,7 @@ title: 使用示例
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from 'vue-shiki-monaco'
+import { Monaco } from 'vue-shiki-monaco'
 
 const code = ref(`console.log('Hello Monaco!')`)
 
@@ -58,7 +58,7 @@ const handleChange = (newValue) => {
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from 'vue-shiki-monaco'
+import { Monaco } from 'vue-shiki-monaco'
 
 const currentLanguage = ref('javascript')
 
@@ -192,7 +192,7 @@ const changeLanguage = (event) => {
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from 'vue-shiki-monaco'
+import { Monaco } from 'vue-shiki-monaco'
 
 const isDark = ref(false)
 const code = ref(`// 主题切换示例
@@ -306,7 +306,7 @@ const toggleTheme = () => {
 
 <script setup>
 import { ref, computed } from 'vue'
-import Monaco from 'vue-shiki-monaco'
+import { Monaco } from 'vue-shiki-monaco'
 
 const menuType = ref('full')
 const actionLog = ref([])
@@ -314,12 +314,12 @@ const actionLog = ref([])
 const code = ref(`// 右键菜单示例
 function demonstrateContextMenu() {
   // 在编辑器中右键点击，体验不同的菜单配置：
-  
+
   // 1. 最小菜单：只有复制、粘贴、全选
   // 2. 基础菜单：包含基本的编辑操作
   // 3. 完整菜单：所有功能齐全
   // 4. 自定义菜单：添加了特殊功能
-  
+
   const features = [
     '智能复制粘贴',
     '多级降级策略',
@@ -327,7 +327,7 @@ function demonstrateContextMenu() {
     '快捷键支持',
     '分隔符组织'
   ];
-  
+
   console.log('右键菜单功能:', features);
   return '体验强大的右键菜单功能！';
 }
@@ -381,7 +381,7 @@ const contextMenuConfig = computed(() => {
 const logAction = (action) => {
   const timestamp = new Date().toLocaleTimeString()
   actionLog.value.unshift(`[${timestamp}] ${action}`)
-  
+
   // 保持日志长度
   if (actionLog.value.length > 10) {
     actionLog.value = actionLog.value.slice(0, 10)
@@ -457,8 +457,8 @@ const handleChange = (newValue) => {
       <div class="custom-toolbar">
         <div class="toolbar-left">
           <div class="file-info">
-            <input 
-              v-model="fileName" 
+            <input
+              v-model="fileName"
               class="file-name-input"
               @blur="updateFileName"
             />
@@ -514,7 +514,7 @@ const handleChange = (newValue) => {
 
 <script setup>
 import { ref, watch } from 'vue'
-import Monaco from 'vue-shiki-monaco'
+import { Monaco } from 'vue-shiki-monaco'
 
 const monacoRef = ref()
 const fileName = ref('example.js')
@@ -666,7 +666,7 @@ watch(fileName, (newName) => {
     css: 'css',
     json: 'json'
   }
-  
+
   if (langMap[ext] && langMap[ext] !== selectedLanguage.value) {
     selectedLanguage.value = langMap[ext]
     changeLanguage()
@@ -924,7 +924,7 @@ watch(fileName, (newName) => {
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import Monaco from 'vue-shiki-monaco'
+import { Monaco } from 'vue-shiki-monaco'
 
 const monacoRef = ref()
 const editorHeight = ref('400px')
@@ -947,7 +947,7 @@ class ResponsiveEditor {
       tablet: 1024,
       desktop: 1200
     };
-    
+
     this.init();
   }
 
@@ -958,7 +958,7 @@ class ResponsiveEditor {
 
   setupResponsiveLayout() {
     const screenType = this.getScreenType();
-    
+
     switch (screenType) {
       case 'mobile':
         this.enableMobileMode();
@@ -974,7 +974,7 @@ class ResponsiveEditor {
 
   getScreenType() {
     const width = window.innerWidth;
-    
+
     if (width < this.breakpoints.mobile) {
       return 'mobile';
     } else if (width < this.breakpoints.tablet) {
@@ -1075,7 +1075,7 @@ const runCode = () => {
 onMounted(() => {
   updateEditorHeight()
   window.addEventListener('resize', updateWindowWidth)
-  
+
   // 监听屏幕方向变化（移动端）
   if (screen.orientation) {
     screen.orientation.addEventListener('change', updateEditorHeight)
@@ -1084,7 +1084,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', updateWindowWidth)
-  
+
   if (screen.orientation) {
     screen.orientation.removeEventListener('change', updateEditorHeight)
   }
@@ -1254,11 +1254,15 @@ onUnmounted(() => {
       <div class="demo-sidebar">
         <div class="feature-list">
           <h4>功能特性</h4>
-          <div class="feature-item" v-for="feature in features" :key="feature.id">
+          <div
+            class="feature-item"
+            v-for="feature in features"
+            :key="feature.id"
+          >
             <label>
-              <input 
-                type="checkbox" 
-                v-model="feature.enabled" 
+              <input
+                type="checkbox"
+                v-model="feature.enabled"
                 @change="toggleFeature(feature)"
               />
               {{ feature.name }}
@@ -1311,14 +1315,22 @@ onUnmounted(() => {
               </div>
 
               <div class="toolbar-section">
-                <button @click="insertSnippet" class="btn">📝 插入代码片段</button>
+                <button @click="insertSnippet" class="btn">
+                  📝 插入代码片段
+                </button>
                 <button @click="findAndReplace" class="btn">🔍 查找替换</button>
                 <button @click="goToLine" class="btn">📍 跳转行</button>
               </div>
 
               <div class="toolbar-section">
                 <button @click="saveSnapshot" class="btn">📸 保存快照</button>
-                <button @click="loadSnapshot" class="btn" :disabled="!hasSnapshot">📁 恢复快照</button>
+                <button
+                  @click="loadSnapshot"
+                  class="btn"
+                  :disabled="!hasSnapshot"
+                >
+                  📁 恢复快照
+                </button>
               </div>
             </div>
           </template>
@@ -1335,83 +1347,92 @@ onUnmounted(() => {
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, nextTick } from 'vue'
-import Monaco from 'vue-shiki-monaco'
+import { ref, reactive, computed, watch, nextTick } from "vue";
+import { Monaco } from "vue-shiki-monaco";
 
-const monacoRef = ref()
-const isFullscreen = ref(false)
-const hasSnapshot = ref(false)
-const snapshot = ref('')
-const demoOutput = ref('')
+const monacoRef = ref();
+const isFullscreen = ref(false);
+const hasSnapshot = ref(false);
+const snapshot = ref("");
+const demoOutput = ref("");
 
-const currentLanguage = ref('javascript')
-const currentTheme = ref('vitesse-light')
+const currentLanguage = ref("javascript");
+const currentTheme = ref("vitesse-light");
 
-const languages = ['javascript', 'typescript', 'python', 'html', 'css', 'json', 'vue']
-const themes = ['vitesse-light', 'vitesse-dark', 'github-light', 'github-dark']
+const languages = [
+  "javascript",
+  "typescript",
+  "python",
+  "html",
+  "css",
+  "json",
+  "vue",
+];
+const themes = ["vitesse-light", "vitesse-dark", "github-light", "github-dark"];
 
 const features = reactive([
   {
-    id: 'autocomplete',
-    name: '智能补全',
-    description: '提供智能的代码补全建议',
-    enabled: true
+    id: "autocomplete",
+    name: "智能补全",
+    description: "提供智能的代码补全建议",
+    enabled: true,
   },
   {
-    id: 'error-checking',
-    name: '错误检查',
-    description: '实时检查语法错误',
-    enabled: true
+    id: "error-checking",
+    name: "错误检查",
+    description: "实时检查语法错误",
+    enabled: true,
   },
   {
-    id: 'code-folding',
-    name: '代码折叠',
-    description: '折叠代码块以提高可读性',
-    enabled: true
+    id: "code-folding",
+    name: "代码折叠",
+    description: "折叠代码块以提高可读性",
+    enabled: true,
   },
   {
-    id: 'bracket-matching',
-    name: '括号匹配',
-    description: '高亮显示匹配的括号',
-    enabled: true
+    id: "bracket-matching",
+    name: "括号匹配",
+    description: "高亮显示匹配的括号",
+    enabled: true,
   },
   {
-    id: 'word-highlight',
-    name: '词汇高亮',
-    description: '高亮相同的词汇',
-    enabled: true
-  }
-])
+    id: "word-highlight",
+    name: "词汇高亮",
+    description: "高亮相同的词汇",
+    enabled: true,
+  },
+]);
 
 const stats = reactive({
   lines: 0,
   characters: 0,
-  selection: '无'
-})
+  selection: "无",
+});
 
 const contextMenuConfig = ref({
   enabled: true,
-  items: 'full',
+  items: "full",
   customItems: [
-    { type: 'separator' },
+    { type: "separator" },
     {
-      type: 'item',
-      id: 'insert-comment',
-      label: '💬 插入注释',
-      action: () => insertComment()
+      type: "item",
+      id: "insert-comment",
+      label: "💬 插入注释",
+      action: () => insertComment(),
     },
     {
-      type: 'item',
-      id: 'wrap-selection',
-      label: '🎁 包装选择',
-      action: () => wrapSelection()
-    }
-  ]
-})
+      type: "item",
+      id: "wrap-selection",
+      label: "🎁 包装选择",
+      action: () => wrapSelection(),
+    },
+  ],
+});
 
-const editorHeight = computed(() => isFullscreen.value ? '80vh' : '500px')
+const editorHeight = computed(() => (isFullscreen.value ? "80vh" : "500px"));
 
-const demoCode = ref(`// Monaco Editor 高级功能演示
+const demoCode = ref(`
+// Monaco Editor 高级功能演示
 class AdvancedDemo {
   constructor() {
     this.features = new Map();
@@ -1420,13 +1441,13 @@ class AdvancedDemo {
 
   setupDemo() {
     console.log('初始化高级功能演示...');
-    
+
     // 演示智能补全
     this.demonstrateAutoComplete();
-    
+
     // 演示语法高亮
     this.demonstrateSyntaxHighlighting();
-    
+
     // 演示右键菜单
     this.demonstrateContextMenu();
   }
@@ -1436,7 +1457,7 @@ class AdvancedDemo {
     const suggestions = [
       'log', 'warn', 'error', 'info', 'debug'
     ];
-    
+
     return suggestions;
   }
 
@@ -1447,7 +1468,7 @@ class AdvancedDemo {
     const boolean = true;
     const array = [1, 2, 3, 4, 5];
     const object = { key: 'value' };
-    
+
     return { string, number, boolean, array, object };
   }
 
@@ -1493,185 +1514,192 @@ const demo = new AdvancedDemo();
 // 5. 代码格式化：选择 demonstrateFormatting 方法并格式化
 // 6. 代码折叠：点击行号旁的箭头折叠代码块
 
-console.log('高级功能演示准备就绪！');`)
+console.log('高级功能演示准备就绪！');`);
 
 const handleCodeChange = (newValue) => {
-  updateStats(newValue)
-}
+  updateStats(newValue);
+};
 
 const handleEditorReady = (editor) => {
-  console.log('编辑器准备就绪')
-  updateStats(demoCode.value)
-  
+  console.log("编辑器准备就绪");
+  updateStats(demoCode.value);
+
   // 设置编辑器选项
   editor.updateOptions({
     fontSize: 14,
     lineHeight: 1.5,
     minimap: { enabled: true },
     scrollBeyondLastLine: false,
-    wordWrap: 'on'
-  })
+    wordWrap: "on",
+  });
 
   // 监听选择变化
   editor.onDidChangeCursorSelection((e) => {
-    const model = editor.getModel()
+    const model = editor.getModel();
     if (model) {
-      const selection = model.getValueInRange(e.selection)
-      stats.selection = selection ? `${selection.length} 字符` : '无'
+      const selection = model.getValueInRange(e.selection);
+      stats.selection = selection ? `${selection.length} 字符` : "无";
     }
-  })
-}
+  });
+};
 
 const updateStats = (code) => {
-  stats.lines = code.split('\\n').length
-  stats.characters = code.length
-}
+  stats.lines = code.split("\\n").length;
+  stats.characters = code.length;
+};
 
 const changeLanguage = () => {
   if (monacoRef.value) {
-    monacoRef.value.setLanguage(currentLanguage.value)
+    monacoRef.value.setLanguage(currentLanguage.value);
   }
-}
+};
 
 const changeTheme = () => {
   if (monacoRef.value) {
-    monacoRef.value.setTheme(currentTheme.value)
+    monacoRef.value.setTheme(currentTheme.value);
   }
-}
+};
 
 const formatThemeName = (theme) => {
-  return theme.split('-').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ')
-}
+  return theme
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
 
 const toggleFeature = (feature) => {
-  const editor = monacoRef.value?.getEditor()
-  if (!editor) return
+  const editor = monacoRef.value?.getEditor();
+  if (!editor) return;
 
   switch (feature.id) {
-    case 'autocomplete':
+    case "autocomplete":
       editor.updateOptions({
         suggestOnTriggerCharacters: feature.enabled,
-        quickSuggestions: feature.enabled
-      })
-      break
-    case 'code-folding':
+        quickSuggestions: feature.enabled,
+      });
+      break;
+    case "code-folding":
       editor.updateOptions({
-        folding: feature.enabled
-      })
-      break
-    case 'bracket-matching':
+        folding: feature.enabled,
+      });
+      break;
+    case "bracket-matching":
       editor.updateOptions({
-        matchBrackets: feature.enabled ? 'always' : 'never'
-      })
-      break
-    case 'word-highlight':
+        matchBrackets: feature.enabled ? "always" : "never",
+      });
+      break;
+    case "word-highlight":
       editor.updateOptions({
-        occurrencesHighlight: feature.enabled
-      })
-      break
+        occurrencesHighlight: feature.enabled,
+      });
+      break;
   }
 
-  demoOutput.value = `${feature.name} ${feature.enabled ? '已启用' : '已禁用'}`
-  setTimeout(() => demoOutput.value = '', 2000)
-}
+  demoOutput.value = `${feature.name} ${feature.enabled ? "已启用" : "已禁用"}`;
+  setTimeout(() => (demoOutput.value = ""), 2000);
+};
 
 const insertSnippet = () => {
-  const editor = monacoRef.value?.getEditor()
+  const editor = monacoRef.value?.getEditor();
   if (editor) {
-    const position = editor.getPosition()
+    const position = editor.getPosition();
     const snippet = `
 // 插入的代码片段
 function newFunction() {
   console.log('这是插入的代码片段');
   return 'success';
 }
-`
-    editor.executeEdits('insert-snippet', [{
-      range: {
-        startLineNumber: position.lineNumber,
-        startColumn: position.column,
-        endLineNumber: position.lineNumber,
-        endColumn: position.column
+`;
+    editor.executeEdits("insert-snippet", [
+      {
+        range: {
+          startLineNumber: position.lineNumber,
+          startColumn: position.column,
+          endLineNumber: position.lineNumber,
+          endColumn: position.column,
+        },
+        text: snippet,
       },
-      text: snippet
-    }])
+    ]);
   }
-}
+};
 
 const findAndReplace = () => {
-  const editor = monacoRef.value?.getEditor()
+  const editor = monacoRef.value?.getEditor();
   if (editor) {
     // 触发查找替换对话框
-    editor.getAction('editor.action.startFindReplaceAction')?.run()
+    editor.getAction("editor.action.startFindReplaceAction")?.run();
   }
-}
+};
 
 const goToLine = () => {
-  const editor = monacoRef.value?.getEditor()
+  const editor = monacoRef.value?.getEditor();
   if (editor) {
     // 触发跳转到行对话框
-    editor.getAction('editor.action.gotoLine')?.run()
+    editor.getAction("editor.action.gotoLine")?.run();
   }
-}
+};
 
 const saveSnapshot = () => {
-  snapshot.value = monacoRef.value?.getValue() || ''
-  hasSnapshot.value = true
-  demoOutput.value = '代码快照已保存'
-  setTimeout(() => demoOutput.value = '', 2000)
-}
+  snapshot.value = monacoRef.value?.getValue() || "";
+  hasSnapshot.value = true;
+  demoOutput.value = "代码快照已保存";
+  setTimeout(() => (demoOutput.value = ""), 2000);
+};
 
 const loadSnapshot = () => {
   if (hasSnapshot.value && snapshot.value) {
-    monacoRef.value?.setValue(snapshot.value)
-    demoOutput.value = '代码快照已恢复'
-    setTimeout(() => demoOutput.value = '', 2000)
+    monacoRef.value?.setValue(snapshot.value);
+    demoOutput.value = "代码快照已恢复";
+    setTimeout(() => (demoOutput.value = ""), 2000);
   }
-}
+};
 
 const insertComment = () => {
-  const editor = monacoRef.value?.getEditor()
+  const editor = monacoRef.value?.getEditor();
   if (editor) {
-    const selection = editor.getSelection()
-    const comment = '// 自定义注释\\n'
-    editor.executeEdits('insert-comment', [{
-      range: selection,
-      text: comment
-    }])
+    const selection = editor.getSelection();
+    const comment = "// 自定义注释\\n";
+    editor.executeEdits("insert-comment", [
+      {
+        range: selection,
+        text: comment,
+      },
+    ]);
   }
-}
+};
 
 const wrapSelection = () => {
-  const editor = monacoRef.value?.getEditor()
+  const editor = monacoRef.value?.getEditor();
   if (editor) {
-    const selection = editor.getSelection()
-    const selectedText = editor.getModel()?.getValueInRange(selection) || ''
-    
+    const selection = editor.getSelection();
+    const selectedText = editor.getModel()?.getValueInRange(selection) || "";
+
     if (selectedText) {
-      const wrappedText = \`console.log(\${selectedText});\`
-      editor.executeEdits('wrap-selection', [{
-        range: selection,
-        text: wrappedText
-      }])
+      const wrappedText = `console.log(${selectedText});`;
+      editor.executeEdits("wrap-selection", [
+        {
+          range: selection,
+          text: wrappedText,
+        },
+      ]);
     }
   }
-}
+};
 
 const resetDemo = () => {
-  monacoRef.value?.setValue(demoCode.value)
-  features.forEach(feature => feature.enabled = true)
-  demoOutput.value = '演示已重置'
-  setTimeout(() => demoOutput.value = '', 2000)
-}
+  monacoRef.value?.setValue(demoCode.value);
+  features.forEach((feature) => (feature.enabled = true));
+  demoOutput.value = "演示已重置";
+  setTimeout(() => (demoOutput.value = ""), 2000);
+};
 
 const toggleFullscreen = () => {
-  isFullscreen.value = !isFullscreen.value
+  isFullscreen.value = !isFullscreen.value;
   nextTick(() => {
-    monacoRef.value?.layout()
-  })
-}
+    monacoRef.value?.layout();
+  });
+};
 </script>
 
 <style scoped>
@@ -1847,7 +1875,7 @@ const toggleFullscreen = () => {
 
 .demo-output pre {
   margin: 0;
-  font-family: 'Consolas', 'Monaco', monospace;
+  font-family: "Consolas", "Monaco", monospace;
   font-size: 0.875rem;
   color: #495057;
   white-space: pre-wrap;
@@ -1894,6 +1922,7 @@ const toggleFullscreen = () => {
   }
 }
 </style>
+
 ```
 
 ## 直接使用 useMonacoEdit Hook
@@ -1954,7 +1983,7 @@ function customEditorDemo() {
   // 你可以在这里添加自定义逻辑
   const features = [
     '直接控制编辑器实例',
-    '自定义初始化逻辑', 
+    '自定义初始化逻辑',
     '精细的生命周期管理',
     '灵活的配置选项',
     '自定义右键菜单',
@@ -2034,7 +2063,7 @@ const getValue = () => {
 
 const addCustomMenu = () => {
   if (!editorInstance) return
-  
+
   // 动态添加自定义菜单功能
   monacoEditHook.onContextMenu((event) => {
     console.log('自定义右键菜单处理:', event)

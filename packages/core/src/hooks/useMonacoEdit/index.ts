@@ -71,7 +71,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
         value: options.codeValue,
         language: defaultLanguage,
         theme: defaultTheme,
-        contextmenu: false, // 禁用默认右键菜单
+        contextmenu: !options.contextMenu, // 禁用默认右键菜单
       });
 
       // 如果启用了自定义右键菜单，添加事件监听
