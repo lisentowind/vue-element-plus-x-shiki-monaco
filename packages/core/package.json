@@ -1,7 +1,12 @@
 {
   "name": "vue-shiki-monaco",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.2",
+  "description": "一个封shiki和monaco-editor的Vue组件",
+  "homepage": "https://lisentowind.github.io/vue-shiki-monaco/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lisentowind/vue-shiki-monaco.git"
+  },
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
@@ -53,7 +58,16 @@
     "lint:fix": "eslint --fix .",
     "lint": "eslint ."
   },
-  "keywords": [],
+  "keywords": [
+    "shiki",
+    "monaco",
+    "monaco-editor",
+    "monaco-editor-core",
+    "vue-shiki-monaco",
+    "vue-shiki-monaco-core",
+    "vue-shiki-monaco-editor",
+    "vue-shiki-monaco-editor-core"
+  ],
   "author": "tingfeng",
   "license": "MIT",
   "peerDependencies": {
