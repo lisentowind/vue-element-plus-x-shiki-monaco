@@ -1,5 +1,5 @@
-import type { BundledLanguage, BundledTheme } from 'shiki';
 import type { DefineComponent } from 'vue';
+import type { BundledLanguage, BundledTheme } from 'shiki';
 import type { EditInstance } from '../../hooks/useMonacoEdit';
 
 export interface MonacoProps {

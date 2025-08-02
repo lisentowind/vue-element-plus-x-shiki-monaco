@@ -207,21 +207,36 @@ function generateHooksIndex(hooks: Hook[]): void {
 }
 
 /**
- * 生成主 index.ts 文件 - Vue 组件库风格
+ * 生成主 index.ts 文件 - 新的现代化导出风格
  */
 function generateMainIndex(components: Component[]): void {
   const content = `import type { App, Plugin } from 'vue';
 ${components.map(c => `import ${c.name} from './components/${c.name}/index.vue';`).join('\n')}
 
-export * from './components';
+// 组件导出
+${components.map(c => `export { default as ${c.name} } from './components/${c.name}/index.vue';`).join('\n')}
+${components.map(c => {
+    const installPath = path.join(srcDir, 'components', c.name, 'install.ts');
+    return fs.existsSync(installPath) ? `export { default as ${c.name}WithInstall } from './components/${c.name}/install';` : '';
+  }).filter(Boolean).join('\n')}
+
+// Hooks 导出
 export * from './hooks';
 
+// 类型导出
+export type * from './types';
+
+// 全量导出（保持向后兼容）
+export * from './components';
+
+// 全局插件
 const VueElementPlusXShikiMonaco: Plugin = {
   install(app: App) {
 ${components.map(c => `    app.component('${c.name}', ${c.name});`).join('\n')}
   }
 };
 
+export { VueElementPlusXShikiMonaco };
 export default VueElementPlusXShikiMonaco;`;
 
   fs.writeFileSync(indexPath, content);
@@ -229,8 +244,133 @@ export default VueElementPlusXShikiMonaco;`;
 }
 
 /**
- * 生成 types/components/index.d.ts 文件
+ * 生成 components-only.ts 文件
  */
+function generateComponentsOnly(components: Component[]): void {
+  const content = `// 仅组件导出，不包含插件
+${components.map(c => `export { default as ${c.name} } from './components/${c.name}/index.vue';`).join('\n')}
+${components.map(c => {
+    const installPath = path.join(srcDir, 'components', c.name, 'install.ts');
+    return fs.existsSync(installPath) ? `export { default as ${c.name}WithInstall } from './components/${c.name}/install';` : '';
+  }).filter(Boolean).join('\n')}`;
+
+  const componentsOnlyPath = path.join(srcDir, 'components-only.ts');
+  fs.writeFileSync(componentsOnlyPath, content);
+  console.log('✅ 已生成 src/components-only.ts');
+}
+
+/**
+ * 生成 hooks-only.ts 文件
+ */
+function generateHooksOnly(hooks: Hook[]): void {
+  let content = '// 仅 hooks 导出\n';
+  
+  for (const hook of hooks) {
+    // 导出函数
+    if (hook.exports.functions.length > 0) {
+      const functions = hook.exports.functions.sort().join(', ');
+      content += `export { ${functions} } from './hooks/${hook.name}';\n`;
+    }
+
+    // 导出类型和接口
+    const types = [...hook.exports.types, ...hook.exports.interfaces];
+    if (types.length > 0) {
+      const typeList = types.sort().join(', ');
+      content += `export type { ${typeList} } from './hooks/${hook.name}';\n`;
+    }
+  }
+
+  const hooksOnlyPath = path.join(srcDir, 'hooks-only.ts');
+  fs.writeFileSync(hooksOnlyPath, content);
+  console.log('✅ 已生成 src/hooks-only.ts');
+}
+
+/**
+ * 生成 types.ts 文件
+ */
+function generateTypes(components: Component[], hooks: Hook[]): void {
+  const content = `// 全局类型定义文件
+import type { Plugin } from 'vue';
+
+// Vue 应用扩展类型声明（必须在顶层）
+declare module '@vue/runtime-core' {
+  interface GlobalComponents {
+${components.map(c => `    ${c.name}: typeof import('./components/${c.name}/index.vue')['default'];`).join('\n')}
+  }
+}
+
+// 导出组件实例类型
+${components.map(c => `export type ${c.name}Instance = InstanceType<typeof import('./components/${c.name}/index.vue')['default']>;`).join('\n')}
+
+// 导出 hooks 相关类型
+${hooks.map(hook => {
+    const types = [...hook.exports.types, ...hook.exports.interfaces];
+    if (types.length > 0) {
+      const typeList = types.sort().join(', ');
+      return `export type { ${typeList} } from './hooks/${hook.name}';`;
+    }
+    return '';
+  }).filter(Boolean).join('\n')}
+
+// 导出插件类型
+export interface VueElementPlusXShikiMonacoOptions {
+  // 未来可能的配置选项
+}
+
+export type VueElementPlusXShikiMonacoPlugin = Plugin & {
+  // 可能的额外方法
+};
+
+// 导出常用类型工具
+export type ComponentProps<T> = T extends (...args: any) => any
+  ? never
+  : T extends new (...args: any) => any
+    ? InstanceType<T>['$props']
+    : never;
+
+${components.map(c => `export type ${c.name}Props = ComponentProps<typeof import('./components/${c.name}/index.vue')['default']>;`).join('\n')}`;
+
+  const typesPath = path.join(srcDir, 'types.ts');
+  fs.writeFileSync(typesPath, content);
+  console.log('✅ 已生成 src/types.ts');
+}
+
+/**
+ * 生成 resolver.ts 文件
+ */
+function generateResolver(components: Component[]): void {
+  const content = `// 组件名与路径映射，支持 unplugin-vue-components 自动导入
+export const resolverHelper = {
+  // 组件解析器
+  components: {
+${components.map(c => `    ${c.name}: () => import('@vue-element-plus-x-shiki-monaco/core/${c.name}'),`).join('\n')}
+  },
+  
+  // 样式解析器
+  styles: {
+${components.map(c => `    ${c.name}: '@vue-element-plus-x-shiki-monaco/core/${c.name}/style.css',`).join('\n')}
+  },
+  
+  // 自定义解析器函数
+  resolver: (componentName: string) => {
+    const componentMap = {
+${components.map(c => `      '${c.name}': {
+        name: '${c.name}',
+        from: '@vue-element-plus-x-shiki-monaco/core/${c.name}',
+        sideEffects: '@vue-element-plus-x-shiki-monaco/core/${c.name}/style.css'
+      }`).join(',\n')}
+    };
+    
+    return componentMap[componentName as keyof typeof componentMap];
+  }
+};
+
+export default resolverHelper;`;
+
+  const resolverPath = path.join(srcDir, 'resolver.ts');
+  fs.writeFileSync(resolverPath, content);
+  console.log('✅ 已生成 src/resolver.ts');
+}
 function generateTypesComponentsIndex(components: Component[]): void {
   const typesComponentsDir = path.join(typesDir, 'components');
   ensureDir(typesComponentsDir);
@@ -414,6 +554,10 @@ function main(): void {
   generateComponentsIndex(components);
   generateHooksIndex(hooks);
   generateMainIndex(components);
+  generateComponentsOnly(components);
+  generateHooksOnly(hooks);
+  generateTypes(components, hooks);
+  generateResolver(components);
   generateTypesComponentsIndex(components);
   generateTypesHooksIndex(hooks);
   generateComponentTypeFiles(components);
