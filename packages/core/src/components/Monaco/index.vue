@@ -4,7 +4,14 @@ import type { EditInstance } from "../../hooks/useMonacoEdit";
 import { useMonacoEdit } from "../../hooks/useMonacoEdit";
 import { BundledLanguage, BundledTheme } from "shiki";
 import MonacoHeader from "../Monaco-Header/index.vue";
-import "../../assets/style/global.scss"
+import ContextMenu from "../ContextMenu/index.vue";
+import type { ContextMenuItem, MenuItem } from "../../hooks/useContextMenu";
+import { useContextMenu } from "../../hooks/useContextMenu";
+import {
+  createEditorContextMenu,
+  MENU_PRESETS,
+} from "../../hooks/useContextMenu/editorMenu";
+import "../../assets/style/global.scss";
 
 interface Props {
   currentLanguage?: BundledLanguage;
@@ -17,6 +24,11 @@ interface Props {
   autoResize?: boolean;
   monacoEditClass?: string;
   fileName?: string;
+  contextMenu?: {
+    enabled?: boolean;
+    items?: string[] | "minimal" | "basic" | "full";
+    customItems?: ContextMenuItem[];
+  };
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,6 +52,10 @@ const props = withDefaults(defineProps<Props>(), {
   height: "400px",
   showToolbar: true,
   autoResize: true,
+  contextMenu: () => ({
+    enabled: true,
+    items: "full",
+  }),
 });
 
 const emit = defineEmits<{
@@ -50,6 +66,12 @@ const emit = defineEmits<{
 const editorRef = ref<HTMLDivElement>();
 let editorInstance: EditInstance | null = null;
 let monacoEditHook: ReturnType<typeof useMonacoEdit> | null = null;
+
+// 右键菜单相关
+const contextMenuItems = ref<ContextMenuItem[]>([]);
+const contextMenu = useContextMenu({
+  items: contextMenuItems.value,
+});
 
 watch(
   () => props.value,
@@ -98,6 +120,7 @@ const initializeEditor = async () => {
     codeValue: props.value,
     defaultTheme: props.currentTheme,
     defaultLanguage: props.currentLanguage,
+    contextMenu: props.contextMenu,
   });
 
   try {
@@ -110,6 +133,11 @@ const initializeEditor = async () => {
     });
 
     emit("ready", editorInstance);
+
+    // 设置右键菜单
+    if (props.contextMenu?.enabled !== false) {
+      setupContextMenu();
+    }
 
     // 启用自动尺寸调整
     if (props.autoResize) {
@@ -150,6 +178,49 @@ const handleFormat = () => {
   }
 };
 
+// 设置右键菜单
+const setupContextMenu = () => {
+  if (!editorInstance || !monacoEditHook) return;
+
+  // 获取菜单项配置
+  let enabledItems: string[] = [];
+  if (typeof props.contextMenu?.items === "string") {
+    enabledItems = MENU_PRESETS[props.contextMenu.items] as any;
+  } else if (Array.isArray(props.contextMenu?.items)) {
+    enabledItems = props.contextMenu.items;
+  }
+
+  // 创建菜单项
+  contextMenuItems.value = createEditorContextMenu({
+    editor: editorInstance,
+    enabledItems,
+    customItems: props.contextMenu?.customItems ?? [],
+  });
+
+  // 绑定右键菜单事件
+  monacoEditHook.onContextMenu(async (event) => {
+    // 尝试预先请求剪贴板权限（可选）
+    try {
+      if ('permissions' in navigator) {
+        await (navigator as any).permissions.query({ name: 'clipboard-read' });
+      }
+    } catch (error) {
+      // 忽略权限检查错误
+    }
+    
+    contextMenu.show(event);
+  });
+};
+
+// 处理菜单项点击
+const handleContextMenuItemClick = (item: ContextMenuItem) => {
+  if (item.type === "item") {
+    // 直接调用菜单项的action
+    (item as MenuItem).action();
+    contextMenu.hide();
+  }
+};
+
 // 暴露方法给父组件
 defineExpose({
   getEditor: () => editorInstance,
@@ -185,6 +256,15 @@ defineExpose({
       class="monaco-editor"
       :style="{ height: props.height }"
     ></div>
+
+    <!-- 自定义右键菜单 -->
+    <ContextMenu
+      :visible="contextMenu.isVisible.value"
+      :position="contextMenu.position"
+      :items="contextMenuItems"
+      @item-click="handleContextMenuItemClick"
+      @hide="contextMenu.hide"
+    />
   </div>
 </template>
 

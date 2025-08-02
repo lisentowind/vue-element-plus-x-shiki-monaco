@@ -1176,15 +1176,7 @@
       "error",
       "always"
     ],
-    "no-console": [
-      "info",
-      {
-        "allow": [
-          "warn",
-          "error"
-        ]
-      }
-    ],
+    "no-console": "off",
     "no-const-assign": "error",
     "no-control-regex": "error",
     "no-debugger": "error",

@@ -49,3 +49,31 @@ body.dark {
   --btn-hover: rgba(96, 165, 250, 0.08);
   --btn-active: rgba(96, 165, 250, 0.12);
 }
+
+body.dark {
+  .context-menu .context-menu-content {
+    background: rgba(15, 23, 42, 0.95);
+    border-color: rgba(51, 65, 85, 0.8);
+  }
+
+  .context-menu .context-menu-item {
+    color: #e2e8f0;
+
+    &:hover:not(.disabled) {
+      background: rgba(96, 165, 250, 0.08);
+      color: #60a5fa;
+    }
+
+    &.disabled {
+      color: #64748b;
+    }
+
+    .menu-item-shortcut {
+      color: #64748b;
+    }
+  }
+
+  .context-menu .context-menu-separator {
+    background: rgba(51, 65, 85, 0.6);
+  }
+}

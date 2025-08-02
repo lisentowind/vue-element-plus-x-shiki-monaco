@@ -1,4 +1,5 @@
 import type { BundledLanguage, BundledTheme, HighlighterGeneric } from 'shiki';
+import type { ContextMenuItem } from '../useContextMenu';
 import { shikiToMonaco } from '@shikijs/monaco';
 import * as monaco from 'monaco-editor-core';
 import { createHighlighter } from 'shiki';
@@ -10,6 +11,11 @@ export interface MonacoOptions {
   themes: BundledTheme[];
   defaultTheme: BundledTheme;
   defaultLanguage: BundledLanguage;
+  contextMenu?: {
+    enabled?: boolean;
+    items?: string[] | 'minimal' | 'basic' | 'full';
+    customItems?: ContextMenuItem[];
+  };
 }
 
 export type EditInstance = monaco.editor.IStandaloneCodeEditor;
@@ -24,6 +30,8 @@ export interface UseMonacoEditReturn {
   enableAutoResize: () => void;
   disableAutoResize: () => void;
   editInstance: EditInstance | null;
+  onContextMenu: (callback: (event: MouseEvent) => void) => void;
+  offContextMenu: () => void;
 }
 
 export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
@@ -37,6 +45,9 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
   // 自动尺寸调整相关
   let resizeObserver: ResizeObserver | null = null;
   let autoResizeEnabled = false;
+
+  // 右键菜单相关
+  let contextMenuCallback: ((event: MouseEvent) => void) | null = null;
 
   async function initMonacoEdit(): Promise<EditInstance> {
     const { target, languages, themes, defaultTheme = 'vitesse-light', defaultLanguage = 'javascript' } = options;
@@ -60,7 +71,13 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
         value: options.codeValue,
         language: defaultLanguage,
         theme: defaultTheme,
+        contextmenu: false, // 禁用默认右键菜单
       });
+
+      // 如果启用了自定义右键菜单，添加事件监听
+      if (options.contextMenu?.enabled !== false) {
+        setupCustomContextMenu();
+      }
 
       return editInstance;
     }
@@ -148,6 +165,12 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
 
   function destroy() {
     if (editInstance) {
+      // 清理右键菜单事件监听器
+      const domNode = editInstance.getDomNode();
+      if (domNode) {
+        domNode.removeEventListener('contextmenu', handleContextMenu);
+      }
+
       editInstance.dispose();
     }
 
@@ -156,6 +179,9 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
       resizeObserver.disconnect();
       resizeObserver = null;
     }
+
+    // 清理右键菜单回调
+    contextMenuCallback = null;
   }
 
   function layout(): void {
@@ -194,6 +220,37 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
     }
   }
 
+  // 设置自定义右键菜单
+  function setupCustomContextMenu(): void {
+    if (!editInstance)
+      return;
+
+    const domNode = editInstance.getDomNode();
+    if (domNode) {
+      domNode.addEventListener('contextmenu', handleContextMenu);
+    }
+  }
+
+  // 处理右键菜单事件
+  function handleContextMenu(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (contextMenuCallback) {
+      contextMenuCallback(event);
+    }
+  }
+
+  // 注册右键菜单回调
+  function onContextMenu(callback: (event: MouseEvent) => void): void {
+    contextMenuCallback = callback;
+  }
+
+  // 取消右键菜单回调
+  function offContextMenu(): void {
+    contextMenuCallback = null;
+  }
+
   return {
     initMonacoEdit,
     destroy,
@@ -204,5 +261,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
     enableAutoResize,
     disableAutoResize,
     editInstance,
+    onContextMenu,
+    offContextMenu,
   };
 }

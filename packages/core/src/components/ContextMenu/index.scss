@@ -1,0 +1,91 @@
+.context-menu {
+  position: fixed;
+  z-index: 10000;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: auto;
+
+  .context-menu-content {
+    background: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 8px;
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.15),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 4px;
+    min-width: 180px;
+    max-width: 250px;
+    animation: contextMenuShow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .context-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    font-size: 13px;
+    color: var(--text-primary, #1e293b);
+
+    &:hover:not(.disabled) {
+      background: rgba(59, 130, 246, 0.08);
+      color: var(--accent-color, #3b82f6);
+    }
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      color: var(--text-muted, #94a3b8);
+    }
+
+    .menu-item-content {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 8px;
+    }
+
+    .menu-item-icon {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .menu-item-label {
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .menu-item-shortcut {
+      font-size: 11px;
+      color: var(--text-muted, #94a3b8);
+      font-weight: 400;
+      margin-left: auto;
+    }
+  }
+
+  .context-menu-separator {
+    height: 1px;
+    background: rgba(226, 232, 240, 0.6);
+    margin: 4px 8px;
+  }
+}
+
+
+// 显示动画
+@keyframes contextMenuShow {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
