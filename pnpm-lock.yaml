@@ -174,6 +174,9 @@ importers:
       rolldown-plugin-dts:
         specifier: ^0.14.2
         version: 0.14.2(rolldown@1.0.0-beta.29)(typescript@5.6.3)
+      rollup-plugin-vue:
+        specifier: ^6.0.0
+        version: 6.0.0(@vue/compiler-sfc@3.5.18)
       sass:
         specifier: ^1.89.2
         version: 1.89.2
@@ -186,12 +189,15 @@ importers:
       storybook-dark-mode:
         specifier: ^4.0.2
         version: 4.0.2(react-dom@18.3.1)(react@18.3.1)(storybook@8.6.14)
+      tsx:
+        specifier: ^4.20.3
+        version: 4.20.3
       typescript:
         specifier: ~5.6.2
         version: 5.6.3
       vite:
         specifier: ^7.0.6
-        version: 7.0.6(@types/node@24.0.15)(sass@1.89.2)
+        version: 7.0.6(@types/node@24.0.15)(sass@1.89.2)(tsx@4.20.3)
       vitest:
         specifier: ^2.0.0
         version: 2.1.9(@types/node@24.0.15)(@vitest/ui@2.1.9)(happy-dom@14.12.3)(sass@1.89.2)
@@ -5376,7 +5382,7 @@ packages:
       browser-assert: 1.2.1
       storybook: 8.6.14(prettier@3.6.2)
       ts-dedent: 2.2.0
-      vite: 7.0.6(@types/node@24.0.15)(sass@1.89.2)
+      vite: 7.0.6(@types/node@24.0.15)(sass@1.89.2)(tsx@4.20.3)
     dev: true
 
   /@storybook/channels@7.6.17:
@@ -5661,7 +5667,7 @@ packages:
       magic-string: 0.30.17
       storybook: 8.6.14(prettier@3.6.2)
       typescript: 5.9.2
-      vite: 7.0.6(@types/node@24.0.15)(sass@1.89.2)
+      vite: 7.0.6(@types/node@24.0.15)(sass@1.89.2)(tsx@4.20.3)
       vue-component-meta: 2.2.12(typescript@5.9.2)
       vue-docgen-api: 4.79.2(vue@3.5.18)
     transitivePeerDependencies:
@@ -5685,7 +5691,7 @@ packages:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.18(typescript@5.6.3)
-      vue-component-type-helpers: 3.0.4
+      vue-component-type-helpers: 3.0.5
     dev: true
 
   /@stylistic/eslint-plugin@5.2.1(eslint@9.31.0):
@@ -6412,7 +6418,7 @@ packages:
       vue: ^3.2.25
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.29
-      vite: 7.0.6(@types/node@24.0.15)(sass@1.89.2)
+      vite: 7.0.6(@types/node@24.0.15)(sass@1.89.2)(tsx@4.20.3)
       vue: 3.5.18(typescript@5.6.3)
     dev: true
 
@@ -9315,6 +9321,10 @@ packages:
     dependencies:
       '@types/estree-jsx': 1.0.5
       '@types/unist': 3.0.3
+
+  /estree-walker@0.6.1:
+    resolution: {integrity: sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==}
+    dev: true
 
   /estree-walker@2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
@@ -13821,6 +13831,25 @@ packages:
       '@rolldown/binding-win32-x64-msvc': 1.0.0-beta.29
     dev: true
 
+  /rollup-plugin-vue@6.0.0(@vue/compiler-sfc@3.5.18):
+    resolution: {integrity: sha512-oVvUd84d5u73M2HYM3XsMDLtZRIA/tw2U0dmHlXU2UWP5JARYHzh/U9vcxaN/x/9MrepY7VH3pHFeOhrWpxs/Q==}
+    peerDependencies:
+      '@vue/compiler-sfc': '*'
+    dependencies:
+      '@vue/compiler-sfc': 3.5.18
+      debug: 4.4.1
+      hash-sum: 2.0.0
+      rollup-pluginutils: 2.8.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /rollup-pluginutils@2.8.2:
+    resolution: {integrity: sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==}
+    dependencies:
+      estree-walker: 0.6.1
+    dev: true
+
   /rollup@4.45.1:
     resolution: {integrity: sha512-4iya7Jb76fVpQyLoiVpzUrsjQ12r3dM7fIVz+4NwoYvZOShknRmiv+iu9CClZml5ZLGb0XMcYLutK6w9tgxHDw==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
@@ -14710,6 +14739,17 @@ packages:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
     requiresBuild: true
 
+  /tsx@4.20.3:
+    resolution: {integrity: sha512-qjbnuR9Tr+FJOMBqJCW5ehvIo/buZq7vH7qD7JziU98h6l3qGy0a/yPFjwO+y0/T7GFpNgNAvEcPPVfyT8rrPQ==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+    dependencies:
+      esbuild: 0.25.8
+      get-tsconfig: 4.10.1
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: true
+
   /turbo-darwin-64@2.5.5:
     resolution: {integrity: sha512-RYnTz49u4F5tDD2SUwwtlynABNBAfbyT2uU/brJcyh5k6lDLyNfYKdKmqd3K2ls4AaiALWrFKVSBsiVwhdFNzQ==}
     cpu: [x64]
@@ -15125,7 +15165,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vite@7.0.6(@types/node@24.0.15)(sass@1.89.2):
+  /vite@7.0.6(@types/node@24.0.15)(sass@1.89.2)(tsx@4.20.3):
     resolution: {integrity: sha512-MHFiOENNBd+Bd9uvc8GEsIzdkn1JxMmEeYX35tI3fv0sJBUTfW5tQsoaOwuY4KhBI09A3dUJ/DXf2yxPVPUceg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
@@ -15173,6 +15213,7 @@ packages:
       rollup: 4.45.1
       sass: 1.89.2
       tinyglobby: 0.2.14
+      tsx: 4.20.3
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
@@ -15265,8 +15306,8 @@ packages:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
     dev: true
 
-  /vue-component-type-helpers@3.0.4:
-    resolution: {integrity: sha512-WtR3kPk8vqKYfCK/HGyT47lK/T3FaVyWxaCNuosaHYE8h9/k0lYRZ/PI/+T/z2wP+uuNKmL6z30rOcBboOu/YA==}
+  /vue-component-type-helpers@3.0.5:
+    resolution: {integrity: sha512-uoNZaJ+a1/zppa/Vgmi8zIOP2PHXDN2rT8NyF+zQRK6ZG94lNB9prcV0GdLJbY9i9lrD47JOVIH92SaiA7oJ1A==}
     dev: true
 
   /vue-docgen-api@4.79.2(vue@3.5.18):

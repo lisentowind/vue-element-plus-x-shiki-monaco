@@ -69,7 +69,7 @@ onUnmounted(() => {
 const getFileName = () => {
   const extensions = {
     javascript: 'main.js',
-    typescript: 'main.ts', 
+    typescript: 'main.ts',
     python: 'main.py',
     html: 'index.html',
     css: 'style.css',

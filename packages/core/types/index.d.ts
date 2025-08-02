@@ -1,19 +1,44 @@
-import type { Root } from 'hast';
-import type { BundledHighlighterOptions, CodeToHastOptions, CodeToTokensBaseOptions, CodeToTokensOptions, CodeToTokensWithThemesOptions, GrammarState, HighlighterGeneric, RequireKeys, ThemedToken, ThemedTokenWithVariants, TokensResult } from 'shiki';
+import { BundledLanguage, BundledTheme } from "shiki";
+import * as monaco from "monaco-editor-core";
+import { DefineComponent } from "vue";
 
-// #region src/hooks/useShiki.d.ts
-interface GlobalShiki {
-  codeToHtml: (code: string, options: CodeToHastOptions<string, string>) => Promise<string>;
-  codeToHast: (code: string, options: CodeToHastOptions<string, string>) => Promise<Root>;
-  codeToTokensBase: (code: string, options: RequireKeys<CodeToTokensBaseOptions<string, string>, 'theme' | 'lang'>) => Promise<ThemedToken[][]>;
-  codeToTokens: (code: string, options: CodeToTokensOptions<string, string>) => Promise<TokensResult>;
-  codeToTokensWithThemes: (code: string, options: RequireKeys<CodeToTokensWithThemesOptions<string, string>, 'lang' | 'themes'>) => Promise<ThemedTokenWithVariants[][]>;
-  getSingletonHighlighter: (options?: Partial<BundledHighlighterOptions<string, string>>) => Promise<HighlighterGeneric<string, string>>;
-  getLastGrammarState: ((element: ThemedToken[][] | Root) => GrammarState) | ((code: string, options: CodeToTokensBaseOptions<string, string>) => Promise<GrammarState>);
+//#region src/components/Monaco/hooks/useMonacoEdit.d.ts
+interface MonacoOptions {
+  target: HTMLElement;
+  languages: BundledLanguage[];
+  codeValue: string;
+  themes: BundledTheme[];
+  defaultTheme: BundledTheme;
+  defaultLanguage: BundledLanguage;
 }
-interface UseShikiOptions {
-  provideKey: symbol;
+type EditInstance = monaco.editor.IStandaloneCodeEditor;
+declare function useMonacoEdit(options: MonacoOptions): {
+  initMonacoEdit: () => Promise<EditInstance>;
+  destroy: () => void;
+  registerLanguage: (language: string) => void;
+  editInstance: null;
+};
+//#endregion
+//#region src/components/Monaco/index.d.ts
+interface MonacoProps {
+  language?: BundledLanguage;
+  theme?: BundledTheme;
+  value?: string;
+  height?: string;
+  showToolbar?: boolean;
 }
-declare function useShiki(options?: UseShikiOptions): GlobalShiki;
-// #endregion
-export { useShiki as default, GlobalShiki, useShiki, UseShikiOptions };
+interface MonacoEmits {
+  change: (value: string) => void;
+  ready: (editor: EditInstance) => void;
+}
+interface MonacoExpose {
+  getEditor: () => EditInstance | null;
+  setValue: (value: string) => void;
+  getValue: () => string;
+  focus: () => void;
+  copyCode: () => Promise<void>;
+  formatCode: () => void;
+}
+declare const Monaco: DefineComponent<MonacoProps, {}, {}, {}, {}, {}, {}, MonacoEmits, string, {}, string, MonacoExpose>;
+//#endregion
+export { type EditInstance, type Monaco, type MonacoEmits, type MonacoExpose, type MonacoOptions, type MonacoProps, useMonacoEdit };

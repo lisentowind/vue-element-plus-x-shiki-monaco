@@ -1,17 +1,14 @@
 import type { App } from 'vue'
-import pkg from '../package.json'
 import * as components from './components'
+import pkg from '../package.json'
 
 // 导出所有组件
 export * from './components'
 
 // 导出 hooks 和类型
-// 自动生成的导出
-export { useMonacoEdit } from './components/Monaco/hooks/useMonacoEdit';
-export type { EditInstance, MonacoOptions } from './components/Monaco/hooks/useMonacoEdit';
-export type { MonacoEmits, MonacoExpose, MonacoProps } from './components/Monaco/index.d';
-export { default as Monaco } from './components/Monaco/index.vue';
-
+export { useMonacoEdit } from './components/Monaco/hooks/useMonacoEdit'
+export type { EditInstance, MonacoOptions } from './components/Monaco/hooks/useMonacoEdit'
+export type { MonacoProps, MonacoEmits, MonacoExpose } from './components/Monaco/index.d'
 
 // 定义组件类型接口
 interface ComponentWithInstall {
