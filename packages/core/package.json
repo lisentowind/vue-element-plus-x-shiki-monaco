@@ -15,6 +15,26 @@
       "require": "./dist/cjs/index.cjs",
       "browser": "./dist/umd/index.js"
     },
+    "./components": {
+      "types": "./types/components.d.ts",
+      "import": "./dist/es/components.mjs",
+      "require": "./dist/cjs/components.cjs"
+    },
+    "./hooks": {
+      "types": "./types/hooks.d.ts", 
+      "import": "./dist/es/hooks.mjs",
+      "require": "./dist/cjs/hooks.cjs"
+    },
+    "./components/*": {
+      "types": "./types/components/*/index.d.ts",
+      "import": "./dist/es/components/*/index.mjs",
+      "require": "./dist/cjs/components/*/index.cjs"
+    },
+    "./hooks/*": {
+      "types": "./types/hooks/*/index.d.ts",
+      "import": "./dist/es/hooks/*/index.mjs",
+      "require": "./dist/cjs/hooks/*/index.cjs"
+    },
     "./package.json": "./package.json"
   },
   "type": "module",
@@ -32,7 +52,9 @@
     "dev": "storybook dev -p 6006",
     "publish:beta": "npm publish --tag beta",
     "publish:release": "npm publish",
+    "prebuild": "tsx .build/scripts/auto-export-all-components.ts",
     "build": "rolldown -c rolldown.config.ts",
+    "postbuild": "tsx .build/scripts/generate-types.ts",
     "oxlint": "oxlint",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -70,6 +92,7 @@
     "@vue-element-plus-x-shiki-monaco/tsconfig": "workspace:^",
     "@vue/runtime-core": "^3.5.18",
     "fast-glob": "^3.3.3",
+    "fs-extra": "^11.2.0",
     "happy-dom": "^14.0.0",
     "oxlint": "^1.8.0",
     "rolldown": "1.0.0-beta.29",
@@ -83,6 +106,7 @@
     "typescript": "~5.6.2",
     "vite": "^7.0.6",
     "vitest": "^2.0.0",
-    "vue": "^3.5.18"
+    "vue": "^3.5.18",
+    "vue-tsc": "^2.0.0"
   }
 }

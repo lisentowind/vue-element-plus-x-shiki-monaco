@@ -1,10 +1,11 @@
 import { defineConfig } from 'rolldown';
-import { dts } from 'rolldown-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
 import vue from 'rollup-plugin-vue';
 
 const entries = {
-  index: './src/index.ts',
+  'index': './src/index.ts',
+  'components': './src/components.ts',
+  'hooks': './src/hooks.ts',
 };
 
 export default defineConfig([
@@ -32,9 +33,12 @@ export default defineConfig([
       dir: 'dist/es',
       format: 'esm',
       entryFileNames: '[name].mjs',
-      chunkFileNames: '[name].mjs',
+      chunkFileNames: '[name]-[hash].mjs',
       sourcemap: true,
       minify: true,
+      exports: 'named',
+      // 防止生成不必要的chunk
+      manualChunks: undefined,
     },
   },
   // CJS build
@@ -61,35 +65,13 @@ export default defineConfig([
       dir: 'dist/cjs',
       format: 'cjs',
       entryFileNames: '[name].cjs',
-      chunkFileNames: '[name].cjs',
+      chunkFileNames: '[name]-[hash].cjs',
       sourcemap: true,
       minify: true,
+      exports: 'named',
+      // 防止生成不必要的chunk
+      manualChunks: undefined,
     },
-  },
-  // Types generation (skip Vue files)
-  {
-    input: {
-      index: './src/hooks-only.ts', // 临时创建一个只包含 hooks 的入口文件
-    },
-    external: [
-      'vue',
-      'monaco-editor-core',
-      '@shikijs/monaco',
-      'shiki',
-      /\.ttf$/,
-      /\.woff$/,
-      /\.woff2$/,
-      /\.eot$/,
-    ],
-    output: {
-      dir: 'types',
-      format: 'esm',
-    },
-    plugins: [
-      dts({
-        emitDtsOnly: true,
-      }),
-    ],
   },
   // UMD build
   {
@@ -113,6 +95,13 @@ export default defineConfig([
       name: 'VueElementPlusXShikiMonaco',
       sourcemap: true,
       minify: true,
+      exports: 'named',
+      globals: {
+        'vue': 'Vue',
+        'monaco-editor-core': 'monaco',
+        '@shikijs/monaco': 'ShikiMonaco',
+        'shiki': 'Shiki',
+      },
     },
   },
 ]);

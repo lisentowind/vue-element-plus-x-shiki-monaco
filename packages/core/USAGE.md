@@ -18,8 +18,8 @@ npm run build            # 构建前会自动运行导出生成
 ### 自动生成的文件
 
 - `src/index.ts` - 主入口文件
-- `src/components-only.ts` - 仅组件导出
-- `src/hooks-only.ts` - 仅hooks导出  
+- `src/components.ts` - 仅组件导出
+- `src/hooks.ts` - 仅hooks导出  
 - `src/types.ts` - 类型定义文件
 - `src/resolver.ts` - 自动导入解析器
 - `types/` 目录下的所有类型声明文件
@@ -44,7 +44,7 @@ import { Monaco } from '@vue-element-plus-x-shiki-monaco/core';
 import { MonacoWithInstall } from '@vue-element-plus-x-shiki-monaco/core';
 
 // 仅导入组件（不包含插件）
-import { Monaco } from '@vue-element-plus-x-shiki-monaco/core/components-only';
+import { Monaco } from '@vue-element-plus-x-shiki-monaco/core/components';
 ```
 
 ### 按需导入 Hooks
@@ -55,7 +55,7 @@ import { useMonacoEdit } from '@vue-element-plus-x-shiki-monaco/core';
 import type { UseMonacoEditReturn } from '@vue-element-plus-x-shiki-monaco/core';
 
 // 仅导入 hooks
-import { useMonacoEdit } from '@vue-element-plus-x-shiki-monaco/core/hooks-only';
+import { useMonacoEdit } from '@vue-element-plus-x-shiki-monaco/core/hooks';
 ```
 
 ### 导入类型
@@ -130,9 +130,7 @@ export default defineConfig({
 
 - `/` - 主入口，包含所有功能
 - `/components` - 所有组件
-- `/components-only` - 仅组件，无插件
 - `/hooks` - 所有 hooks
-- `/hooks-only` - 仅 hooks
 - `/Monaco` - Monaco 组件
 - `/types` - 类型定义
 - `/resolver` - 自动导入解析器
