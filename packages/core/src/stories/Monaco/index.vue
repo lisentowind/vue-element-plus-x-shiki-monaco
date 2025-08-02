@@ -33,10 +33,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <Monaco v-bind="$attrs" :value="content">
-<template #toolbar>
-  11
-</template>
-
-  </Monaco>
+  <Monaco v-bind="$attrs" :value="content"> </Monaco>
 </template>

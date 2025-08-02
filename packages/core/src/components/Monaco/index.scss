@@ -1,12 +1,14 @@
 .monaco-editor-wrapper {
   border-radius: var(--editor-border-radius);
-  overflow: hidden;
+  overflow: visible;
   background: var(--editor-bg);
   box-shadow: var(--editor-shadow);
   transition: box-shadow 0.2s ease;
+  position: relative;
 
   .monaco-editor {
     min-height: 300px;
     background: var(--editor-bg);
+    overflow: hidden;
   }
 }
