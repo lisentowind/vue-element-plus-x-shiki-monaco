@@ -1,0 +1,29 @@
+body {
+  --editor-border-radius: 8px;
+  --editor-border-color: #e5e7eb;
+  --editor-bg: #ffffff;
+  --editor-toolbar-bg: #f8fafc;
+  --editor-toolbar-border: #e2e8f0;
+  --editor-toolbar-border-bottom: #d1d5db;
+  --editor-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --editor-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --editor-text-primary: #374151;
+  --editor-text-secondary: #6b7280;
+  --editor-text-muted: #9ca3af;
+  --editor-toolbar-shadow: inset 0 -1px 0 #e2e8f0, 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+body.dark {
+  --editor-border-radius: 8px;
+  --editor-border-color: #e5e7eb;
+  --editor-bg: #ffffff;
+  --editor-toolbar-bg: #f8fafc;
+  --editor-toolbar-border: #e2e8f0;
+  --editor-toolbar-border-bottom: #d1d5db;
+  --editor-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --editor-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --editor-text-primary: #374151;
+  --editor-text-secondary: #6b7280;
+  --editor-text-muted: #9ca3af;
+  --editor-toolbar-shadow: inset 0 -1px 0 #e2e8f0, 0 1px 2px rgba(0, 0, 0, 0.05);
+}
