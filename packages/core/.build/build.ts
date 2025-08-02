@@ -54,25 +54,20 @@ const buildConfig: BuildEnvironmentOptions = {
         vue: 'Vue',
       },
       exports: 'named', // 确保有命名导出
-      assetFileNames: ((info: any) => {
-        const srcName = info.originalFileNames[0];
-        if (srcName) {
-          if (srcName.includes('src/components/')) {
-            const fileName = srcName
-              .replace('src/components/', '')
-              .replace('index.vue', 'index.css');
-            return `es/${fileName}`;
-          }
+      // 将CSS提取到单独的文件中
+      assetFileNames: (assetInfo) => {
+        if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+          return 'es/[name][extname]';
         }
-        return info.name;
-      }) as unknown as string,
+        return 'es/[name]-[hash][extname]';
+      },
     },
   },
   sourcemap: true,
   // 减少文件大小
   minify: 'terser',
-  // CSS 处理
-  cssCodeSplit: true,
+  // CSS 处理 - 禁用 CSS 代码分割，将所有CSS合并到一个文件
+  cssCodeSplit: false,
   // 确保只生成一个CSS文件
   emptyOutDir: false,
 };

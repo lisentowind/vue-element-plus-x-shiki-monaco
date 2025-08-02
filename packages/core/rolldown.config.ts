@@ -1,5 +1,6 @@
 import { defineConfig } from 'rolldown';
 import { dts } from 'rolldown-plugin-dts';
+import postcss from 'rollup-plugin-postcss';
 import vue from 'rollup-plugin-vue';
 
 const entries = {
@@ -10,7 +11,13 @@ export default defineConfig([
   // ESM build
   {
     input: entries,
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      postcss({
+        extract: true,
+        minimize: true,
+      }),
+    ],
     external: [
       'vue',
       'monaco-editor-core',
@@ -20,7 +27,6 @@ export default defineConfig([
       /\.woff$/,
       /\.woff2$/,
       /\.eot$/,
-      /\.css$/,
     ],
     output: {
       dir: 'dist/es',
@@ -34,7 +40,13 @@ export default defineConfig([
   // CJS build
   {
     input: entries,
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      postcss({
+        extract: true,
+        minimize: true,
+      }),
+    ],
     external: [
       'vue',
       'monaco-editor-core',
@@ -44,7 +56,6 @@ export default defineConfig([
       /\.woff$/,
       /\.woff2$/,
       /\.eot$/,
-      /\.css$/,
     ],
     output: {
       dir: 'dist/cjs',
@@ -69,7 +80,6 @@ export default defineConfig([
       /\.woff$/,
       /\.woff2$/,
       /\.eot$/,
-      /\.css$/,
     ],
     output: {
       dir: 'types',
@@ -84,7 +94,13 @@ export default defineConfig([
   // UMD build
   {
     input: './src/index.ts',
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      postcss({
+        extract: true,
+        minimize: true,
+      }),
+    ],
     external: [
       'vue',
       'monaco-editor-core',

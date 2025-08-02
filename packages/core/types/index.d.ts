@@ -1,7 +1,7 @@
-import { BundledLanguage, BundledTheme } from "shiki";
-import * as monaco from "monaco-editor-core";
+import type * as monaco from 'monaco-editor-core';
+import type { BundledLanguage, BundledTheme } from 'shiki';
 
-//#region src/hooks/useMonacoEdit/index.d.ts
+// #region src/hooks/useMonacoEdit/index.d.ts
 interface MonacoOptions {
   target: HTMLElement;
   languages: BundledLanguage[];
@@ -18,5 +18,5 @@ interface UseMonacoEditReturn {
   editInstance: EditInstance | null;
 }
 declare function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn;
-//#endregion
-export { type EditInstance, type MonacoOptions, type UseMonacoEditReturn, useMonacoEdit };
+// #endregion
+export { type EditInstance, type MonacoOptions, useMonacoEdit, type UseMonacoEditReturn };
