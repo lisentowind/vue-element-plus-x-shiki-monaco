@@ -20,7 +20,7 @@ title: 使用示例
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 const code = ref(`console.log('Hello Monaco!')`)
 
@@ -55,7 +55,7 @@ const handleChange = (newValue) => {
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 const currentLanguage = ref('javascript')
 
@@ -149,7 +149,7 @@ const changeLanguage = (event) => {
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 const isDark = ref(false)
 const code = ref(`// 主题切换示例
@@ -261,7 +261,7 @@ const toggleTheme = () => {
 
 <script setup>
 import { ref, watch } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 const fileName = ref('example.js')
 const isModified = ref(false)
@@ -437,7 +437,7 @@ const runCode = () => {
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 const editorHeight = ref('400px')
 const code = ref(`// 响应式编辑器示例
@@ -560,7 +560,7 @@ onUnmounted(() => {
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 const monacoRef = ref()
 const users = ref([
@@ -766,7 +766,7 @@ onMounted(() => {
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useMonacoEdit } from '@vue-shiki-monaco/core'
+import { useMonacoEdit } from 'vue-shiki-monaco'
 
 const editorContainer = ref()
 const editorInitialized = ref(false)

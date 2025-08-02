@@ -11,13 +11,13 @@ title: 快速开始
 
 ```bash
 # npm
-npm install @vue-shiki-monaco/core
+npm install vue-shiki-monaco
 
 # yarn
-yarn add @vue-shiki-monaco/core
+yarn add vue-shiki-monaco
 
 # pnpm
-pnpm add @vue-shiki-monaco/core
+pnpm add vue-shiki-monaco
 ```
 
 ## 基础使用
@@ -26,7 +26,7 @@ pnpm add @vue-shiki-monaco/core
 
 ```vue
 <script setup>
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 </script>
 ```
 
@@ -44,7 +44,7 @@ import Monaco from '@vue-shiki-monaco/core'
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 const code = ref(`// 你的代码
 function hello(name) {
@@ -100,7 +100,7 @@ const handleChange = (newValue) => {
 
 <script setup>
 import { ref, reactive } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 const monacoRef = ref()
 const selectedLanguage = ref('javascript')
@@ -373,7 +373,7 @@ A: 组件会自动加载所需的语言和主题。Monaco 编辑器通过 Shiki 
 ```vue
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 // 组件会自动处理多语言和主题的加载
 const languages = ['javascript', 'typescript', 'python']

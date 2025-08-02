@@ -160,7 +160,7 @@ title: API 参考
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 const monacoRef = ref()
 const code = ref(`function hello(name: string) {
@@ -196,7 +196,7 @@ const resetCode = () => {
 ### 基本用法
 
 ```typescript
-import { useMonacoEdit } from '@vue-shiki-monaco/core'
+import { useMonacoEdit } from 'vue-shiki-monaco'
 
 const { initMonacoEdit, destroy, registerLanguage } = useMonacoEdit({
   target: editorElement,
@@ -269,7 +269,7 @@ interface UseMonacoEditReturn {
 
 ```typescript
 import type { BundledLanguage, BundledTheme } from 'shiki'
-import type { EditInstance } from '@vue-shiki-monaco/core'
+import type { EditInstance } from 'vue-shiki-monaco'
 
 // 组件 Props
 interface MonacoProps {

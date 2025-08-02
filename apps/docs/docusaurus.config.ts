@@ -5,7 +5,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Shiki Monaco Editor Vue 组件',
+  title: 'Vue Shiki Monaco Editor  组件',
   tagline: '基于 Monaco Editor + Shiki 的现代化 Vue 3 代码编辑器组件',
   favicon: 'img/favicon.ico',
 
@@ -70,9 +70,9 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Shiki Monaco Editor Vue',
+      title: 'Vue Shiki Monaco Editor ',
       logo: {
-        alt: 'Shiki Monaco Editor Vue Logo',
+        alt: 'Vue Shiki Monaco Editor  Logo',
         src: 'img/logo.svg',
       },
       items: [
@@ -135,12 +135,12 @@ const config: Config = {
             },
             {
               label: 'NPM',
-              href: 'https://www.npmjs.com/package/@vue-shiki-monaco/core',
+              href: 'https://www.npmjs.com/package/vue-shiki-monaco',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Shiki Monaco Editor Vue 组件. by lisentowind`,
+      copyright: `Copyright © ${new Date().getFullYear()} Vue Shiki Monaco Editor  组件. by lisentowind`,
     },
     prism: {
       theme: prismThemes.github,

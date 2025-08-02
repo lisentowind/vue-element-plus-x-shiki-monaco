@@ -3,7 +3,7 @@
 ## 安装
 
 ```bash
-npm install @vue-shiki-monaco/core
+npm install vue-shiki-monaco
 ```
 
 ## 自动化导出生成
@@ -29,8 +29,8 @@ npm run build            # 构建前会自动运行导出生成
 ### 全量导入
 
 ```typescript
-import type { MonacoProps } from '@vue-shiki-monaco/core';
-import VueVueShikiMonaco from '@vue-shiki-monaco/core';
+import type { MonacoProps } from 'vue-shiki-monaco';
+import VueVueShikiMonaco from 'vue-shiki-monaco';
 
 app.use(VueVueShikiMonaco);
 ```
@@ -39,23 +39,23 @@ app.use(VueVueShikiMonaco);
 
 ```typescript
 // 导入单个组件
-import { Monaco } from '@vue-shiki-monaco/core';
+import { Monaco } from 'vue-shiki-monaco';
 // 或使用 MonacoWithInstall 获得安装能力
-import { MonacoWithInstall } from '@vue-shiki-monaco/core';
+import { MonacoWithInstall } from 'vue-shiki-monaco';
 
 // 仅导入组件（不包含插件）
-import { Monaco } from '@vue-shiki-monaco/core/components';
+import { Monaco } from 'vue-shiki-monaco/components';
 ```
 
 ### 按需导入 Hooks
 
 ```typescript
-import type { UseMonacoEditReturn } from '@vue-shiki-monaco/core';
+import type { UseMonacoEditReturn } from 'vue-shiki-monaco';
 // 导入 hooks
-import { useMonacoEdit } from '@vue-shiki-monaco/core';
+import { useMonacoEdit } from 'vue-shiki-monaco';
 
 // 仅导入 hooks
-import { useMonacoEdit } from '@vue-shiki-monaco/core/hooks';
+import { useMonacoEdit } from 'vue-shiki-monaco/hooks';
 ```
 
 ### 导入类型
@@ -67,7 +67,7 @@ import type {
   MonacoOptions,
   MonacoProps,
   UseMonacoEditReturn
-} from '@vue-shiki-monaco/core';
+} from 'vue-shiki-monaco';
 ```
 
 ## 自动导入配置
@@ -75,7 +75,7 @@ import type {
 ### 使用 unplugin-vue-components
 
 ```typescript
-import { resolverHelper } from '@vue-shiki-monaco/core/resolver';
+import { resolverHelper } from 'vue-shiki-monaco/resolver';
 import Components from 'unplugin-vue-components/vite';
 import { defineConfig } from 'vite';
 
@@ -99,7 +99,7 @@ export default defineConfig({
     AutoImport({
       imports: [
         {
-          '@vue-shiki-monaco/core': ['useMonacoEdit'],
+          'vue-shiki-monaco': ['useMonacoEdit'],
         },
       ],
     }),

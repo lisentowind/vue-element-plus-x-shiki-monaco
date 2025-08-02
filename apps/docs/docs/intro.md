@@ -4,7 +4,7 @@ title: 介绍
 slug: /
 ---
 
-# Shiki Monaco Editor Vue 组件
+# Vue Shiki Monaco Editor  组件
 
 一个基于 Monaco Editor + Shiki 构建的现代化 Vue 3 代码编辑器组件，提供专业的语法高亮和代码编辑体验。
 
@@ -33,7 +33,7 @@ slug: /
 ### 安装
 
 ```bash
-npm install @vue-shiki-monaco/core
+npm install vue-shiki-monaco
 ```
 
 ### 基础使用
@@ -51,7 +51,7 @@ npm install @vue-shiki-monaco/core
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from '@vue-shiki-monaco/core'
+import Monaco from 'vue-shiki-monaco'
 
 const code = ref(`// Hello Monaco Editor with Shiki!
 function greet(name) {

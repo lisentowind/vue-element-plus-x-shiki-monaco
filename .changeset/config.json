@@ -4,7 +4,7 @@
   "baseBranch": "main",
   "commit": false,
   "fixed": [],
-  "linked": [["@vue-shiki-monaco/core", "@vue-shiki-monaco/docs"]],
+  "linked": [["vue-shiki-monaco", "@vue-shiki-monaco/docs"]],
   "access": "public",
   "updateInternalDependencies": "patch",
   "ignore": ["@vue-shiki-monaco/docs"],

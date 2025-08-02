@@ -37,10 +37,10 @@
   },
   "link.item.label.NPM": {
     "message": "NPM",
-    "description": "The label of footer link with label=NPM linking to https://www.npmjs.com/package/@vue-shiki-monaco/core"
+    "description": "The label of footer link with label=NPM linking to https://www.npmjs.com/package/vue-shiki-monaco"
   },
   "copyright": {
-    "message": "Copyright © 2025 Shiki Monaco Editor Vue 组件. by lisentowind",
+    "message": "Copyright © 2025 Vue Shiki Monaco Editor  组件. by lisentowind",
     "description": "The footer copyright"
   }
 }
