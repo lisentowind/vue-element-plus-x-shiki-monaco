@@ -1,3 +1,4 @@
 {
-  "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx}": "npx oxlint --fix"
+  "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx}": ["prettier --write", "npx oxlint --fix"],
+  "**/*.{json,md,yml,yaml}": "prettier --write"
 }

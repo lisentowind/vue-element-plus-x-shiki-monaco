@@ -6,10 +6,10 @@ export * from './components';
 // 组件导出
 export { default as Monaco } from './components/Monaco/index.vue';
 
-export { default as MonacoWithInstall } from './components/Monaco/install';
-
 // Hooks 导出
 export * from './hooks';
+export { default as MonacoWithInstall } from './components/Monaco/install';
+
 
 // 全局插件
 const VueElementPlusXShikiMonaco: Plugin = {
