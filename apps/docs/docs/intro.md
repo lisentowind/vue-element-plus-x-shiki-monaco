@@ -140,10 +140,10 @@ const handleChange = (newValue) => {
 
 加入我们的社区，获取帮助和分享经验：
 
-- 🐛 [报告问题](https://github.com/your-org/monaco-editor/issues)
-- 💬 [参与讨论](https://github.com/your-org/monaco-editor/discussions)
-- 📝 [贡献代码](https://github.com/your-org/monaco-editor/pulls)
-- ⭐ [GitHub 仓库](https://github.com/your-org/monaco-editor)
+- 🐛 [报告问题](https://github.com/lisentowind/vue-shiki-monaco/issues)
+- 💬 [参与讨论](https://github.com/lisentowind/vue-shiki-monaco/discussions)
+- 📝 [贡献代码](https://github.com/lisentowind/vue-shiki-monaco/pulls)
+- ⭐ [GitHub 仓库](https://github.com/lisentowind/vue-shiki-monaco)
 
 ---
 
