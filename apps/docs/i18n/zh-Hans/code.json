@@ -349,5 +349,9 @@
   "homepage.features.powerful-flexible.description": {
     "message": "结合了 Monaco Editor 的强力编辑功能和 Shiki 的精准高亮，支持自定义工具栏和丰富的配置选项。",
     "description": "The description of the powerful and flexible feature"
+  },
+  "homepage.tagline": {
+    "message": "基于 Monaco Editor + Shiki 的现代化 Vue 3 代码编辑器组件",
+    "description": "The tagline of the website"
   }
 }

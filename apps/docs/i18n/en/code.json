@@ -349,5 +349,9 @@
   "homepage.features.powerful-flexible.description": {
     "message": "Combines Monaco Editor's powerful editing capabilities with Shiki's precise highlighting, supporting customizable toolbar and rich configuration options.",
     "description": "The description of the powerful and flexible feature"
+  },
+  "homepage.tagline": {
+    "message": "Modern Code Editor Component Based On Monaco Editor + Shiki",
+    "description": "The tagline of the website"
   }
 }

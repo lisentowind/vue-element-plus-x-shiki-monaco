@@ -16,7 +16,14 @@ function HomepageHeader() {
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className="hero__subtitle">
+          <Translate
+            id="homepage.tagline"
+            description="The tagline of the website"
+          >
+            基于 Monaco Editor + Shiki 的现代化 Vue 3 代码编辑器组件
+          </Translate>
+        </p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"

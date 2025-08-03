@@ -5,7 +5,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Vue Shiki Monaco Editor  组件',
+  title: 'Vue Shiki Monaco Editor',
   tagline: '基于 Monaco Editor + Shiki 的现代化 Vue 3 代码编辑器组件',
   favicon: 'img/favicon.ico',
 
