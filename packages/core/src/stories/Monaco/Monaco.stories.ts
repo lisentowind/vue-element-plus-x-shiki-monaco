@@ -1,62 +1,62 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
+import type { Meta, StoryObj } from "@storybook/vue3";
 
-import type MonacoSource from '../../components/Monaco/index.vue';
-import FullDemo from './examples/custom-edit.vue';
-import Monaco from './index.vue';
+import type MonacoSource from "../../components/Monaco/index.vue";
+import FullDemo from "./examples/custom-edit.vue";
+import Monaco from "./index.vue";
 
 const meta: Meta<typeof MonacoSource> = {
-  title: 'Example/Monaco Editor',
+  title: "Example/Monaco Editor",
   component: Monaco,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     currentLanguage: {
-      control: { type: 'select' },
+      control: { type: "select" },
       options: [
-        'javascript',
-        'typescript',
-        'python',
-        'html',
-        'css',
-        'json',
-        'vue',
-        'go',
-        'rust',
+        "javascript",
+        "typescript",
+        "python",
+        "html",
+        "css",
+        "json",
+        "vue",
+        "go",
+        "rust",
       ],
-      description: '当前编程语言',
+      description: "当前编程语言",
     },
     currentTheme: {
-      control: { type: 'select' },
+      control: { type: "select" },
       options: [
-        'vitesse-light',
-        'vitesse-dark',
-        'github-light',
-        'github-dark',
-        'ayu-dark',
-        'nord',
-        'one-dark-pro',
-        'dracula',
+        "vitesse-light",
+        "vitesse-dark",
+        "github-light",
+        "github-dark",
+        "ayu-dark",
+        "nord",
+        "one-dark-pro",
+        "dracula",
       ],
-      description: '当前Monaco编辑器主题',
+      description: "当前Monaco编辑器主题",
     },
     languages: {
-      control: { type: 'object' },
-      description: '所有可用的编程语言列表',
+      control: { type: "object" },
+      description: "所有可用的编程语言列表",
     },
     themes: {
-      control: { type: 'object' },
-      description: '所有可用的主题列表',
+      control: { type: "object" },
+      description: "所有可用的主题列表",
     },
     height: {
-      control: { type: 'text' },
-      description: '编辑器高度',
+      control: { type: "text" },
+      description: "编辑器高度",
     },
     showToolbar: {
-      control: { type: 'boolean' },
-      description: '是否显示工具栏',
+      control: { type: "boolean" },
+      description: "是否显示工具栏",
     },
     value: {
-      control: { type: 'text' },
-      description: '编辑器内容',
+      control: { type: "text" },
+      description: "编辑器内容",
     },
   },
   parameters: {
@@ -92,70 +92,36 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    currentLanguage: 'javascript',
-    currentTheme: 'vitesse-light',
-    languages: ['javascript', 'typescript', 'python', 'html', 'css', 'json'],
-    themes: ['vitesse-light', 'vitesse-dark', 'github-light', 'github-dark'],
-    height: '700px',
-    showToolbar: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '默认配置的Monaco编辑器，包含工具栏和JavaScript代码示例',
-      },
-    },
-  },
-};
-
-export const DarkTheme: Story = {
-  args: {
-    currentLanguage: 'typescript',
-    currentTheme: 'github-dark',
-    languages: ['javascript', 'typescript', 'vue', 'python'],
-    themes: ['github-light', 'github-dark', 'vitesse-light', 'vitesse-dark'],
-    height: '500px',
-    showToolbar: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '深色主题的TypeScript编辑器示例',
-      },
-    },
-  },
-};
-
-export const MultipleLanguages: Story = {
-  args: {
-    currentLanguage: 'python',
-    currentTheme: 'vitesse-light',
+    currentLanguage: "javascript",
+    currentTheme: "vitesse-light",
     languages: [
-      'javascript',
-      'typescript',
-      'python',
-      'go',
-      'rust',
-      'vue',
-      'html',
-      'css',
-      'json',
+      "javascript",
+      "typescript",
+      "python",
+      "html",
+      "css",
+      "json",
+      "vue",
+      "go",
+      "rust",
     ],
     themes: [
-      'vitesse-light',
-      'vitesse-dark',
-      'github-light',
-      'github-dark',
-      'ayu-dark',
-      'nord',
+      "vitesse-light",
+      "vitesse-dark",
+      "github-light",
+      "github-dark",
+      "ayu-dark",
+      "nord",
+      "one-dark-pro",
+      "dracula",
     ],
-    height: '600px',
+    height: "700px",
     showToolbar: true,
   },
   parameters: {
     docs: {
       description: {
-        story: '支持多种编程语言和主题的编辑器配置示例',
+        story: "默认配置的Monaco编辑器，包含工具栏和JavaScript代码示例",
       },
     },
   },
@@ -163,7 +129,7 @@ export const MultipleLanguages: Story = {
 
 export const CustomFullDemo: Story = {
   args: {},
-  render: args => ({
+  render: (args) => ({
     components: {
       FullDemo,
     },
