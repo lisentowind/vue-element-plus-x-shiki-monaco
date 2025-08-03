@@ -815,7 +815,7 @@ const handleReady = (editor) => {
 A: 组件设计为即插即用，可以轻松集成到任何 Vue 3 项目中：
 
 1. **安装依赖**：`npm install vue-shiki-monaco`
-2. **导入组件**：`import Monaco from 'vue-shiki-monaco'`
+2. **导入组件**：`import { Monaco } from 'vue-shiki-monaco'`
 3. **使用组件**：在模板中使用 `<Monaco />` 标签
 4. **配置选项**：根据需要设置 props 和事件监听器
 

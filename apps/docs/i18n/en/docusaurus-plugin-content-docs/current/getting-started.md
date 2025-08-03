@@ -812,7 +812,7 @@ const handleReady = (editor) => {
 A: The component is designed to be plug-and-play and can be easily integrated into any Vue 3 project:
 
 1. **Install dependencies**: `npm install vue-shiki-monaco`
-2. **Import component**: `import Monaco from 'vue-shiki-monaco'`
+2. **Import component**: `import { Monaco } from 'vue-shiki-monaco'`
 3. **Use component**: Use `<Monaco />` tag in template
 4. **Configure options**: Set props and event listeners as needed
 

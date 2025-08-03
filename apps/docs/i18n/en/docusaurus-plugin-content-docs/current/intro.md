@@ -50,7 +50,7 @@ npm install vue-shiki-monaco
 
 <script setup>
 import { ref } from 'vue'
-import Monaco from 'vue-shiki-monaco'
+import { Monaco } from 'vue-shiki-monaco'
 
 const code = ref(`// Hello Monaco Editor with Shiki!
 function greet(name) {
