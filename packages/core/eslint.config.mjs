@@ -10,4 +10,7 @@ export default antfu({
     trailingComma: "all",
     semi: true,
   },
+  ignores: [
+    "**/*.md",
+  ],
 });

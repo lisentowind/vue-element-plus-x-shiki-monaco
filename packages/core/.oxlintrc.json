@@ -49,6 +49,7 @@
     "**/.yarn",
     "**/vite.config.*.timestamp-*",
     "**/CHANGELOG*.md",
+    "**/*.md",
     "**/*.min.*",
     "**/LICENSE*",
     "**/__snapshots__",
