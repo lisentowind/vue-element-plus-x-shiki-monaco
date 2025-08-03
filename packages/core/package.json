@@ -1,6 +1,6 @@
 {
   "name": "vue-shiki-monaco",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "一个封shiki和monaco-editor的Vue组件",
   "homepage": "https://lisentowind.github.io/vue-shiki-monaco/",
   "repository": {
