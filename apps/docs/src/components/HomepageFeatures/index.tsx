@@ -1,99 +1,51 @@
-import type {ReactNode} from 'react';
-import clsx from 'clsx';
-import Heading from '@theme/Heading';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import styles from './styles.module.css';
+import clsx from "clsx";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+import styles from "./styles.module.css";
 
 type FeatureItem = {
-  title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
-  description: ReactNode;
+  titleId: string;
+  descriptionId: string;
+  Svg: React.ComponentType<React.ComponentProps<"svg">>;
 };
 
-const FeatureListZh: FeatureItem[] = [
+const FeatureList: FeatureItem[] = [
   {
-    title: '🎨 精美的语法高亮',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
-    description: (
-      <>
-        基于 Shiki 提供 VSCode 级别的语法高亮效果，支持多种主题风格，
-        让代码展示更加美观和专业。
-      </>
-    ),
+    titleId: "homepage.features.beautiful-syntax.title",
+    descriptionId: "homepage.features.beautiful-syntax.description",
+    Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
   },
   {
-    title: '🚀 现代化开发体验',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
-    description: (
-      <>
-        基于 Vue 3 组合式 API 和 TypeScript 构建，提供完整的类型支持
-        和现代化的开发体验，让集成更加简单。
-      </>
-    ),
+    titleId: "homepage.features.modern-dev.title",
+    descriptionId: "homepage.features.modern-dev.description",
+    Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
   },
   {
-    title: '⚡ 强大且灵活',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
-    description: (
-      <>
-        结合了 Monaco Editor 的强力编辑功能和 Shiki 的精准高亮，
-        支持自定义工具栏和丰富的配置选项。
-      </>
-    ),
+    titleId: "homepage.features.powerful-flexible.title",
+    descriptionId: "homepage.features.powerful-flexible.description",
+    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
   },
 ];
 
-const FeatureListEn: FeatureItem[] = [
-  {
-    title: '🎨 Beautiful Syntax Highlighting',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
-    description: (
-      <>
-        Powered by Shiki for VSCode-level syntax highlighting effects, supports multiple 
-        theme styles, making code display more beautiful and professional.
-      </>
-    ),
-  },
-  {
-    title: '🚀 Modern Development Experience',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
-    description: (
-      <>
-        Built with Vue 3 Composition API and TypeScript, providing complete type support
-        and modern development experience for easier integration.
-      </>
-    ),
-  },
-  {
-    title: '⚡ Powerful and Flexible',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
-    description: (
-      <>
-        Combines Monaco Editor's powerful editing capabilities with Shiki's precise highlighting,
-        supports custom toolbars and rich configuration options.
-      </>
-    ),
-  },
-];
-
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({ titleId, descriptionId, Svg }: FeatureItem) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx("col col--4")}>
       <div className="text--center">
         <Svg className={styles.featureSvg} role="img" />
       </div>
       <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description as string}</p>
+        <Heading as="h3">
+          <Translate id={titleId}>Default Title</Translate>
+        </Heading>
+        <p>
+          <Translate id={descriptionId}>Default Description</Translate>
+        </p>
       </div>
     </div>
   );
 }
 
 export default function HomepageFeatures(): JSX.Element {
-  const {i18n} = useDocusaurusContext();
-  const FeatureList = i18n.currentLocale === 'zh-Hans' ? FeatureListZh : FeatureListEn;
-  
   return (
     <section className={styles.features}>
       <div className="container">

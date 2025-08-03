@@ -34,6 +34,18 @@ const config: Config = {
   i18n: {
     defaultLocale: 'zh-Hans',
     locales: ['zh-Hans', 'en'],
+    localeConfigs: {
+      'zh-Hans': {
+        label: '简体中文',
+        direction: 'ltr',
+        htmlLang: 'zh-CN',
+      },
+      'en': {
+        label: 'English',
+        direction: 'ltr',
+        htmlLang: 'en-US',
+      },
+    },
   },
 
   presets: [
@@ -43,6 +55,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl: 'https://github.com/lisentowind/vue-shiki-monaco/edit/main/apps/docs/',
+          routeBasePath: 'docs',
         },
         blog: {
           showReadingTime: true,

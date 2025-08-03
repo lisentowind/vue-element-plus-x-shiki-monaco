@@ -1,14 +1,14 @@
 {
   "title": {
-    "message": "Vue Shiki Monaco Editor ",
+    "message": "Vue Shiki Monaco Editor",
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "Vue Shiki Monaco Editor  Logo",
+    "message": "Vue Shiki Monaco Editor Logo",
     "description": "The alt text of navbar logo"
   },
   "item.label.文档": {
-    "message": "文档",
+    "message": "Docs",
     "description": "Navbar item with label 文档"
   },
   "item.label.GitHub": {

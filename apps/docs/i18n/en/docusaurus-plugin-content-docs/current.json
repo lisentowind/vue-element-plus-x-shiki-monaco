@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.intro": {
+    "message": "Introduction",
+    "description": "The label for the intro doc"
+  },
+  "sidebar.tutorialSidebar.category.getting-started": {
+    "message": "Getting Started",
+    "description": "The label for the getting-started doc"
+  },
+  "sidebar.tutorialSidebar.category.api": {
+    "message": "API Reference",
+    "description": "The label for the api doc"
+  },
+  "sidebar.tutorialSidebar.category.examples": {
+    "message": "Usage Examples",
+    "description": "The label for the examples doc"
+  }
+}
