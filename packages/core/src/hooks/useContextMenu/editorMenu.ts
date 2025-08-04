@@ -1,7 +1,19 @@
 import type { ContextMenuItem } from "../useContextMenu";
 import type { EditInstance } from "../useMonacoEdit";
+import * as monaco from "monaco-editor-core";
+
+// 全局字体大小配置
+export const DEFAULT_FONT_SIZE = 16;
+export const MIN_FONT_SIZE = 8;
+export const MAX_FONT_SIZE = 40;
 
 export interface EditorContextMenuOptions {
+  editor: EditInstance;
+  enabledItems?: string[];
+  customItems?: ContextMenuItem[];
+}
+
+export interface MinimapContextMenuOptions {
   editor: EditInstance;
   enabledItems?: string[];
   customItems?: ContextMenuItem[];
@@ -113,6 +125,62 @@ export function createEditorContextMenu(
     { type: "separator" },
     {
       type: "item",
+      id: "toggleMinimap",
+      label: "切换缩略图",
+      action: () => {
+        const currentOptions = editor.getOptions();
+        const minimapEnabled = currentOptions.get(
+          monaco.editor.EditorOption.minimap
+        )?.enabled;
+        editor.updateOptions({
+          minimap: { enabled: !minimapEnabled },
+        });
+      },
+    },
+    {
+      type: "item",
+      id: "increaseFontSize",
+      label: "放大字体",
+      shortcut: "Ctrl+=",
+      action: () => {
+        const currentOptions = editor.getOptions();
+        const currentFontSize =
+          currentOptions.get(monaco.editor.EditorOption.fontSize) || DEFAULT_FONT_SIZE;
+        const newFontSize = Math.min(currentFontSize + 1, MAX_FONT_SIZE);
+        editor.updateOptions({
+          fontSize: newFontSize,
+        });
+      },
+    },
+    {
+      type: "item",
+      id: "decreaseFontSize",
+      label: "缩小字体",
+      shortcut: "Ctrl+-",
+      action: () => {
+        const currentOptions = editor.getOptions();
+        const currentFontSize =
+          currentOptions.get(monaco.editor.EditorOption.fontSize) || DEFAULT_FONT_SIZE;
+        const newFontSize = Math.max(currentFontSize - 1, MIN_FONT_SIZE);
+        editor.updateOptions({
+          fontSize: newFontSize,
+        });
+      },
+    },
+    {
+      type: "item",
+      id: "resetFontSize",
+      label: "重置字体大小",
+      shortcut: "Ctrl+0",
+      action: () => {
+        editor.updateOptions({
+          fontSize: DEFAULT_FONT_SIZE
+        });
+      },
+    },
+    { type: "separator" },
+    {
+      type: "item",
       id: "format",
       label: "格式化代码(需自行实现)",
       shortcut: "Shift+Alt+F",
@@ -145,6 +213,84 @@ export function createEditorContextMenu(
   let filteredItems = defaultItems;
   if (enabledItems && enabledItems.length > 0) {
     filteredItems = defaultItems.filter(
+      (item) => item.type === "separator" || enabledItems.includes(item.id)
+    );
+  }
+
+  // 添加自定义菜单项
+  if (customItems.length > 0) {
+    if (filteredItems.length > 0) {
+      filteredItems.push({ type: "separator" });
+    }
+    filteredItems.push(...customItems);
+  }
+
+  return cleanupSeparators(filteredItems);
+}
+
+export function createMinimapContextMenu(
+  options: MinimapContextMenuOptions
+): ContextMenuItem[] {
+  const { editor, enabledItems, customItems = [] } = options;
+
+  const minimapItems: ContextMenuItem[] = [
+    {
+      type: "item",
+      id: "toggleMinimap",
+      label: "隐藏缩略图",
+      action: () => {
+        const currentOptions = editor.getOptions();
+        const minimapEnabled = currentOptions.get(
+          monaco.editor.EditorOption.minimap
+        )?.enabled;
+        editor.updateOptions({
+          minimap: { enabled: !minimapEnabled },
+        });
+      },
+    },
+    { type: "separator" },
+    {
+      type: "item",
+      id: "minimapSide",
+      label: "切换缩略图位置",
+      action: () => {
+        const currentOptions = editor.getOptions();
+        const currentSide =
+          currentOptions.get(monaco.editor.EditorOption.minimap)?.side ||
+          "right";
+        const newSide = currentSide === "right" ? "left" : "right";
+        editor.updateOptions({
+          minimap: {
+            enabled: true,
+            side: newSide,
+          },
+        });
+      },
+    },
+    {
+      type: "item",
+      id: "minimapShowSlider",
+      label: "滑块显示",
+      action: () => {
+        const currentOptions = editor.getOptions();
+        const showSlider = currentOptions.get(
+          monaco.editor.EditorOption.minimap
+        )?.showSlider;
+        const newShowSlider = showSlider === "always" ? "mouseover" : "always";
+        editor.updateOptions({
+          minimap: {
+            enabled: true,
+            showSlider: newShowSlider,
+          },
+        });
+      },
+    },
+  ];
+
+  // 如果指定了启用的菜单项，则过滤
+  let filteredItems = minimapItems;
+  if (enabledItems && enabledItems.length > 0) {
+    filteredItems = minimapItems.filter(
       (item) => item.type === "separator" || enabledItems.includes(item.id)
     );
   }
@@ -194,7 +340,7 @@ function cleanupSeparators(items: ContextMenuItem[]): ContextMenuItem[] {
 // 预定义的菜单项组合
 export const MENU_PRESETS = {
   minimal: ["copy", "paste", "selectAll"],
-  basic: ["copy", "cut", "paste", "selectAll", "undo", "redo"],
+  basic: ["copy", "cut", "paste", "selectAll", "undo", "redo", "toggleMinimap"],
   full: [
     "copy",
     "cut",
@@ -202,8 +348,19 @@ export const MENU_PRESETS = {
     "selectAll",
     "undo",
     "redo",
+    "toggleMinimap",
+    "increaseFontSize",
+    "decreaseFontSize",
+    "resetFontSize",
     "format",
     "find",
     "replace",
   ],
+} as const;
+
+// Minimap菜单预设
+export const MINIMAP_MENU_PRESETS = {
+  minimal: ["toggleMinimap"],
+  basic: ["toggleMinimap", "minimapSide", "minimapShowSlider"],
+  full: ["toggleMinimap", "minimapSide", "minimapShowSlider"],
 } as const;

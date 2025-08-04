@@ -33,6 +33,8 @@ export interface UseMonacoEditReturn {
   editInstance: EditInstance | null;
   onContextMenu: (callback: (event: MouseEvent) => void) => void;
   offContextMenu: () => void;
+  onMinimapContextMenu: (callback: (event: MouseEvent) => void) => void;
+  offMinimapContextMenu: () => void;
 }
 
 export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
@@ -50,6 +52,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
 
   // 右键菜单相关
   let contextMenuCallback: ((event: MouseEvent) => void) | null = null;
+  let minimapContextMenuCallback: ((event: MouseEvent) => void) | null = null;
 
   async function initMonacoEdit(): Promise<EditInstance> {
     const {
@@ -82,6 +85,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
         contextmenu: !options.contextMenu, // 禁用默认右键菜单
         automaticLayout: true, // 启用自动布局
         minimap: { enabled: true },
+        fontSize: 16,
         ...options,
       });
 
@@ -199,6 +203,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
 
     // 清理右键菜单回调
     contextMenuCallback = null;
+    minimapContextMenuCallback = null;
   }
 
   function layout(): void {
@@ -250,7 +255,21 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
     event.preventDefault();
     event.stopPropagation();
 
-    if (contextMenuCallback) {
+    // 检查是否点击在minimap区域
+    const target = event.target as HTMLElement;
+    const isMinimapClick =
+      target &&
+      (target.closest(".minimap") ||
+        target.closest(".minimap-slider") ||
+        target.closest(".minimap-decorations-layer") ||
+        target.closest(".minimap-shadow-visible") ||
+        target.classList.contains("minimap"));
+
+    if (isMinimapClick && minimapContextMenuCallback) {
+      // 右键点击在minimap区域，调用minimap专用菜单
+      minimapContextMenuCallback(event);
+    } else if (contextMenuCallback) {
+      // 右键点击在编辑器区域，调用普通菜单
       contextMenuCallback(event);
     }
   }
@@ -260,9 +279,19 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
     contextMenuCallback = callback;
   }
 
+  // 注册minimap右键菜单回调
+  function onMinimapContextMenu(callback: (event: MouseEvent) => void): void {
+    minimapContextMenuCallback = callback;
+  }
+
   // 取消右键菜单回调
   function offContextMenu(): void {
     contextMenuCallback = null;
+  }
+
+  // 取消minimap右键菜单回调
+  function offMinimapContextMenu(): void {
+    minimapContextMenuCallback = null;
   }
 
   return {
@@ -277,5 +306,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
     editInstance,
     onContextMenu,
     offContextMenu,
+    onMinimapContextMenu,
+    offMinimapContextMenu,
   };
 }

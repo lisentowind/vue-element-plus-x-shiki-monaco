@@ -9,7 +9,9 @@ import type { ContextMenuItem, MenuItem } from "../../hooks/useContextMenu";
 import { useContextMenu } from "../../hooks/useContextMenu";
 import {
   createEditorContextMenu,
+  createMinimapContextMenu,
   MENU_PRESETS,
+  MINIMAP_MENU_PRESETS,
 } from "../../hooks/useContextMenu/editorMenu";
 import "../../assets/style/global.scss";
 
@@ -25,6 +27,11 @@ interface Props {
   monacoEditClass?: string;
   fileName?: string;
   contextMenu?: {
+    enabled?: boolean;
+    items?: string[] | "minimal" | "basic" | "full";
+    customItems?: ContextMenuItem[];
+  };
+  minimapContextMenu?: {
     enabled?: boolean;
     items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
@@ -56,6 +63,10 @@ const props = withDefaults(defineProps<Props>(), {
     enabled: true,
     items: "full",
   }),
+  minimapContextMenu: () => ({
+    enabled: true,
+    items: "basic",
+  }),
 });
 
 const emit = defineEmits<{
@@ -71,6 +82,12 @@ let monacoEditHook: ReturnType<typeof useMonacoEdit> | null = null;
 const contextMenuItems = ref<ContextMenuItem[]>([]);
 const contextMenu = useContextMenu({
   items: contextMenuItems.value,
+});
+
+// Minimap右键菜单相关
+const minimapContextMenuItems = ref<ContextMenuItem[]>([]);
+const minimapContextMenu = useContextMenu({
+  items: minimapContextMenuItems.value,
 });
 
 watch(
@@ -249,34 +266,70 @@ const handlePaste = async () => {
 const setupContextMenu = () => {
   if (!editorInstance || !monacoEditHook) return;
 
-  // 获取菜单项配置
-  let enabledItems: string[] = [];
-  if (typeof props.contextMenu?.items === "string") {
-    enabledItems = MENU_PRESETS[props.contextMenu.items] as any;
-  } else if (Array.isArray(props.contextMenu?.items)) {
-    enabledItems = props.contextMenu.items;
-  }
-
-  // 创建菜单项
-  contextMenuItems.value = createEditorContextMenu({
-    editor: editorInstance,
-    enabledItems,
-    customItems: props.contextMenu?.customItems ?? [],
-  });
-
-  // 绑定右键菜单事件
-  monacoEditHook.onContextMenu(async (event) => {
-    // 尝试预先请求剪贴板权限（可选）
-    try {
-      if ("permissions" in navigator) {
-        await (navigator as any).permissions.query({ name: "clipboard-read" });
-      }
-    } catch (error) {
-      // 忽略权限检查错误
+  // 设置编辑器右键菜单
+  if (props.contextMenu?.enabled !== false) {
+    // 获取菜单项配置
+    let enabledItems: string[] = [];
+    if (typeof props.contextMenu?.items === "string") {
+      enabledItems = MENU_PRESETS[props.contextMenu.items] as any;
+    } else if (Array.isArray(props.contextMenu?.items)) {
+      enabledItems = props.contextMenu.items;
     }
 
-    contextMenu.show(event);
-  });
+    // 创建菜单项
+    contextMenuItems.value = createEditorContextMenu({
+      editor: editorInstance,
+      enabledItems,
+      customItems: props.contextMenu?.customItems ?? [],
+    });
+
+    // 绑定右键菜单事件
+    monacoEditHook.onContextMenu(async (event) => {
+      // 隐藏minimap菜单（如果正在显示）
+      if (minimapContextMenu.isVisible.value) {
+        minimapContextMenu.hide();
+      }
+
+      // 尝试预先请求剪贴板权限（可选）
+      try {
+        if ("permissions" in navigator) {
+          await (navigator as any).permissions.query({ name: "clipboard-read" });
+        }
+      } catch (error) {
+        // 忽略权限检查错误
+      }
+
+      contextMenu.show(event);
+    });
+  }
+
+  // 设置Minimap右键菜单
+  if (props.minimapContextMenu?.enabled !== false) {
+    // 获取minimap菜单项配置
+    let minimapEnabledItems: string[] = [];
+    if (typeof props.minimapContextMenu?.items === "string") {
+      minimapEnabledItems = MINIMAP_MENU_PRESETS[props.minimapContextMenu.items] as any;
+    } else if (Array.isArray(props.minimapContextMenu?.items)) {
+      minimapEnabledItems = props.minimapContextMenu.items;
+    }
+
+    // 创建minimap菜单项
+    minimapContextMenuItems.value = createMinimapContextMenu({
+      editor: editorInstance,
+      enabledItems: minimapEnabledItems,
+      customItems: props.minimapContextMenu?.customItems ?? [],
+    });
+
+    // 绑定minimap右键菜单事件
+    monacoEditHook.onMinimapContextMenu(async (event) => {
+      // 隐藏编辑器菜单（如果正在显示）
+      if (contextMenu.isVisible.value) {
+        contextMenu.hide();
+      }
+
+      minimapContextMenu.show(event);
+    });
+  }
 };
 
 // 处理菜单项点击
@@ -285,6 +338,15 @@ const handleContextMenuItemClick = (item: ContextMenuItem) => {
     // 直接调用菜单项的action
     (item as MenuItem).action();
     contextMenu.hide();
+  }
+};
+
+// 处理minimap菜单项点击
+const handleMinimapContextMenuItemClick = (item: ContextMenuItem) => {
+  if (item.type === "item") {
+    // 直接调用菜单项的action
+    (item as MenuItem).action();
+    minimapContextMenu.hide();
   }
 };
 
@@ -333,6 +395,15 @@ defineExpose({
       :items="contextMenuItems"
       @item-click="handleContextMenuItemClick"
       @hide="contextMenu.hide"
+    />
+
+    <!-- Minimap专用右键菜单 -->
+    <ContextMenu
+      :visible="minimapContextMenu.isVisible.value"
+      :position="minimapContextMenu.position"
+      :items="minimapContextMenuItems"
+      @item-click="handleMinimapContextMenuItemClick"
+      @hide="minimapContextMenu.hide"
     />
   </div>
 </template>
