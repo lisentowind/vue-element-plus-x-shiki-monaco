@@ -1,21 +1,35 @@
 <script lang="ts" setup>
-import type { BundledLanguage } from "shiki";
+import type { BundledLanguage, BundledTheme } from "shiki";
+import { computed } from "vue";
 
 interface Props {
   currentLanguage?: BundledLanguage;
   fileName?: string;
   showToolbar?: boolean;
+  theme?: BundledTheme; // 添加主题属性
 }
 
 const props = withDefaults(defineProps<Props>(), {
   currentLanguage: "javascript",
   showToolbar: true,
+  theme: "vitesse-light",
 });
 
 const emit = defineEmits<{
   copy: [];
   format: [];
 }>();
+
+// 判断是否为暗色主题
+const isDarkTheme = computed(() => {
+  return props.theme && props.theme.toLowerCase().includes('dark');
+});
+
+// 计算主题类名
+const themeClasses = computed(() => ({
+  'theme-light': !isDarkTheme.value,
+  'theme-dark': isDarkTheme.value,
+}));
 
 // 默认工具栏功能
 const getFileName = () => {
@@ -50,7 +64,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="editor-toolbar">
+  <div class="editor-toolbar" :class="themeClasses">
     <slot name="toolbar">
       <div class="default-toolbar">
         <div class="toolbar-left">

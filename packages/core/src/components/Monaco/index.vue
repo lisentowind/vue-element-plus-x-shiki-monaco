@@ -30,11 +30,13 @@ interface Props {
     enabled?: boolean;
     items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
+    variant?: 'classic' | 'glass';
   };
   minimapContextMenu?: {
     enabled?: boolean;
     items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
+    variant?: 'classic' | 'glass';
   };
 }
 
@@ -62,10 +64,12 @@ const props = withDefaults(defineProps<Props>(), {
   contextMenu: () => ({
     enabled: true,
     items: "full",
+    variant: "glass",
   }),
   minimapContextMenu: () => ({
     enabled: true,
     items: "basic",
+    variant: "glass",
   }),
 });
 
@@ -374,6 +378,7 @@ defineExpose({
       v-if="props.showToolbar"
       :current-language="props.currentLanguage"
       :file-name="props.fileName ?? 'Untitled'"
+      :theme="props.currentTheme"
       @copy="handleCopy"
       @format="handleFormat"
     >
@@ -393,6 +398,8 @@ defineExpose({
       :visible="contextMenu.isVisible.value"
       :position="contextMenu.position"
       :items="contextMenuItems"
+      :variant="props.contextMenu?.variant || 'glass'"
+      :theme="props.currentTheme"
       @item-click="handleContextMenuItemClick"
       @hide="contextMenu.hide"
     />
@@ -402,6 +409,8 @@ defineExpose({
       :visible="minimapContextMenu.isVisible.value"
       :position="minimapContextMenu.position"
       :items="minimapContextMenuItems"
+      :variant="props.minimapContextMenu?.variant || 'glass'"
+      :theme="props.currentTheme"
       @item-click="handleMinimapContextMenuItemClick"
       @hide="minimapContextMenu.hide"
     />

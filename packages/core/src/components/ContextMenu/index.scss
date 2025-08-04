@@ -1,3 +1,4 @@
+// 基础样式（共用）
 .context-menu {
   position: fixed;
   z-index: 10000;
@@ -6,39 +7,36 @@
   pointer-events: auto;
 
   .context-menu-content {
-    background: rgba(255, 255, 255, 0.95);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    border-radius: 8px;
-    box-shadow:
-      0 4px 12px rgba(0, 0, 0, 0.15),
-      0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 4px;
-    min-width: 180px;
-    max-width: 250px;
-    animation: contextMenuShow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 4px; // 进一步减小容器内边距
+    // min-width: 180px;
+    // max-width: 250px;
+    // max-height: 80vh; // 限制最大高度
+    overflow-y: auto; // 添加滚动
+
+    // 隐藏滚动条
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .context-menu-item {
     display: flex;
     align-items: center;
-    padding: 8px 12px;
-    border-radius: 4px;
     cursor: pointer;
     transition: all 0.1s ease;
     font-size: 13px;
-    color: var(--text-primary, #1e293b);
-
-    &:hover:not(.disabled) {
-      background: rgba(59, 130, 246, 0.08);
-      color: var(--accent-color, #3b82f6);
-    }
+    position: relative;
 
     &.disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      color: var(--text-muted, #94a3b8);
     }
 
     .menu-item-content {
@@ -64,7 +62,6 @@
 
     .menu-item-shortcut {
       font-size: 11px;
-      color: var(--text-muted, #94a3b8);
       font-weight: 400;
       margin-left: auto;
     }
@@ -72,12 +69,256 @@
 
   .context-menu-separator {
     height: 1px;
-    background: rgba(226, 232, 240, 0.6);
-    margin: 4px 8px;
+    margin: 2px 4px; // 进一步减小分隔符边距
   }
 }
 
-// 显示动画
+// 经典样式
+.context-menu--classic {
+  .context-menu-content {
+    background: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 8px;
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.15),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 4px; // 进一步减小容器内边距
+    // 移除固定动画，使用方向感知动画
+  }
+
+  .context-menu-item {
+    padding: 5px 8px; // 进一步减小菜单项内边距
+    border-radius: 4px;
+    color: #1e293b;
+
+    &:hover:not(.disabled) {
+      background: rgba(59, 130, 246, 0.08);
+      color: #3b82f6;
+    }
+
+    &.disabled {
+      color: #94a3b8;
+    }
+
+    .menu-item-content {
+      gap: 8px;
+    }
+
+    .menu-item-shortcut {
+      color: #94a3b8;
+    }
+  }
+
+  .context-menu-separator {
+    background: rgba(226, 232, 240, 0.6);
+  }
+}
+
+// 玻璃样式 - 苹果风格高斯模糊
+.context-menu--glass {
+
+  // 亮色主题玻璃效果
+  &.theme-light {
+    .context-menu-content {
+      // 苹果风格的毛玻璃背景
+      background: rgba(255, 255, 255, 1);
+      -webkit-backdrop-filter: blur(30px) saturate(200%) brightness(1.1);
+      backdrop-filter: blur(30px) saturate(200%) brightness(1.1);
+
+      // 微妙的渐变叠加
+      background-image: linear-gradient(135deg,
+          rgba(255, 255, 255, 0.25) 0%,
+          rgba(255, 255, 255, 0.1) 50%,
+          rgba(255, 255, 255, 0.05) 100%);
+
+      // 精致的边框
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 14px;
+
+      // 苹果风格阴影
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        0 4px 16px rgba(0, 0, 0, 0.04),
+        0 2px 8px rgba(0, 0, 0, 0.02),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+
+      padding: 4px; // 进一步减小容器内边距
+      // 移除固定动画，使用方向感知动画
+
+      // 顶部高光条
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+        border-radius: 14px 14px 0 0;
+      }
+
+      // 底部微妙阴影
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 10%;
+        right: 10%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), transparent);
+        filter: blur(1px);
+      }
+    }
+
+    .context-menu-item {
+      padding: 6px 10px; // 玻璃样式稍微紧凑一些
+      border-radius: 6px;
+      color: rgba(0, 0, 0, 0.85);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      &:hover:not(.disabled) {
+        background: rgba(0, 120, 255, 0.12);
+        color: #007aff;
+        -webkit-backdrop-filter: blur(25px);
+        backdrop-filter: blur(25px);
+        transform: scale(1.02);
+
+        // 苹果风格的选中效果
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.3),
+          0 2px 8px rgba(0, 120, 255, 0.1);
+      }
+
+      &.disabled {
+        opacity: 0.4;
+        color: rgba(0, 0, 0, 0.4);
+      }
+
+      .menu-item-content {
+        gap: 6px; // 进一步减小内容间距
+      }
+
+      .menu-item-shortcut {
+        color: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.06);
+        padding: 2px 6px; // 减小快捷键标签内边距
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        font-size: 10px;
+        font-weight: 500;
+      }
+    }
+
+    .context-menu-separator {
+      background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+      margin: 3px 8px; // 减小分隔符边距
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+      }
+    }
+  }
+
+  // 暗色主题玻璃效果
+  &.theme-dark {
+    .context-menu-content {
+      // 暗色主题的毛玻璃背景
+      background: rgba(28, 28, 30, 1);
+      -webkit-backdrop-filter: blur(30px) saturate(180%) brightness(1.2);
+      backdrop-filter: blur(30px) saturate(180%) brightness(1.2);
+
+      // 暗色渐变叠加
+      background-image: linear-gradient(135deg,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0.05) 50%,
+          rgba(255, 255, 255, 0.02) 100%);
+
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 4px 16px rgba(0, 0, 0, 0.2),
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+
+      padding: 4px; // 进一步减小容器内边距
+      // 移除固定动画，使用方向感知动画
+
+      &::before {
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      }
+
+      &::after {
+        background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.2), transparent);
+      }
+    }
+
+    .context-menu-item {
+      padding: 6px 10px; // 暗色主题也紧凑一些
+      border-radius: 6px;
+      color: rgba(255, 255, 255, 0.9);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      &:hover:not(.disabled) {
+        background: rgba(10, 132, 255, 0.2);
+        color: #0a84ff;
+        -webkit-backdrop-filter: blur(25px);
+        backdrop-filter: blur(25px);
+        transform: scale(1.02);
+
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.15),
+          0 2px 8px rgba(10, 132, 255, 0.2);
+      }
+
+      &.disabled {
+        opacity: 0.4;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      .menu-item-content {
+        gap: 6px; // 暗色主题也进一步减小内容间距
+      }
+
+      .menu-item-shortcut {
+        color: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.08);
+        padding: 2px 6px; // 减小快捷键标签内边距
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 10px;
+        font-weight: 500;
+      }
+    }
+
+    .context-menu-separator {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      margin: 3px 8px; // 暗色主题也减小分隔符边距
+
+      &::after {
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      }
+    }
+  }
+}
+
+// 经典样式动画
 @keyframes contextMenuShow {
   from {
     opacity: 0;
@@ -87,5 +328,126 @@
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
+  }
+}
+
+// 经典样式向上动画
+@keyframes contextMenuShowUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// 玻璃样式动画 - 苹果风格弹性动画（向下）
+@keyframes contextMenuShowGlass {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(-12px);
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+  }
+
+  60% {
+    opacity: 0.8;
+    transform: scale(1.02) translateY(-2px);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+  }
+
+  80% {
+    transform: scale(0.99) translateY(1px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px);
+  }
+}
+
+// 玻璃样式动画 - 苹果风格弹性动画（向上）
+@keyframes contextMenuShowGlassUp {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(12px);
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+  }
+
+  60% {
+    opacity: 0.8;
+    transform: scale(1.02) translateY(2px);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+  }
+
+  80% {
+    transform: scale(0.99) translateY(-1px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px);
+  }
+}
+
+// 方向感知动画
+.context-menu--classic {
+  &.context-menu--direction-up .context-menu-content {
+    animation: contextMenuShowUp 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.context-menu--direction-down .context-menu-content {
+    animation: contextMenuShow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+.context-menu--glass {
+  &.context-menu--direction-up .context-menu-content {
+    animation: contextMenuShowGlassUp 0.25s cubic-bezier(0.2, 0, 0.13, 1.5);
+  }
+
+  &.context-menu--direction-down .context-menu-content {
+    animation: contextMenuShowGlass 0.25s cubic-bezier(0.2, 0, 0.13, 1.5);
+  }
+}
+
+// 经典样式深色主题适配
+@media (prefers-color-scheme: dark) {
+  .context-menu--classic {
+    .context-menu-content {
+      background: rgba(30, 41, 59, 0.95);
+      border: 1px solid rgba(71, 85, 105, 0.8);
+    }
+
+    .context-menu-item {
+      color: #f8fafc;
+
+      &:hover:not(.disabled) {
+        background: rgba(59, 130, 246, 0.12);
+        color: #60a5fa;
+      }
+
+      &.disabled {
+        color: #64748b;
+      }
+
+      .menu-item-shortcut {
+        color: #64748b;
+      }
+    }
+
+    .context-menu-separator {
+      background: rgba(71, 85, 105, 0.6);
+    }
   }
 }

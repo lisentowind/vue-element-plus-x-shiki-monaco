@@ -10,12 +10,16 @@ interface Props {
   visible?: boolean;
   position?: ContextMenuPosition;
   items?: ContextMenuItem[];
+  variant?: 'classic' | 'glass';
+  theme?: string; // 添加主题属性用于判断亮暗色
 }
 
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   position: () => ({ x: 0, y: 0 }),
   items: () => [],
+  variant: 'glass',
+  theme: 'light',
 });
 
 const emit = defineEmits<{
@@ -27,6 +31,23 @@ const menuStyle = computed(() => ({
   left: `${props.position.x}px`,
   top: `${props.position.y}px`,
   display: props.visible ? "block" : "none",
+}));
+
+const menuClasses = computed(() => ({
+  'context-menu': true,
+  'context-menu--classic': props.variant === 'classic',
+  'context-menu--glass': props.variant === 'glass',
+  'context-menu--direction-up': props.position?.direction === 'up',
+  'context-menu--direction-down': props.position?.direction === 'down',
+}));
+
+const isDarkTheme = computed(() => {
+  return props.theme && props.theme.toLowerCase().includes('dark');
+});
+
+const themeClasses = computed(() => ({
+  'theme-light': !isDarkTheme.value,
+  'theme-dark': isDarkTheme.value,
 }));
 
 const handleItemClick = (item: ContextMenuItem) => {
@@ -44,7 +65,7 @@ const handleMenuClick = (event: Event) => {
   <Teleport to="body">
     <div
       v-if="visible"
-      class="context-menu"
+      :class="{ ...menuClasses, ...themeClasses }"
       :style="menuStyle"
       @click="handleMenuClick"
     >

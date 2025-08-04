@@ -20,6 +20,7 @@ export type ContextMenuItem = MenuItem | MenuItemSeparator;
 export interface ContextMenuPosition {
   x: number;
   y: number;
+  direction?: 'down' | 'up'; // 添加方向信息
 }
 
 export interface UseContextMenuOptions {
@@ -41,7 +42,7 @@ export function useContextMenu(
   options: UseContextMenuOptions
 ): UseContextMenuReturn {
   const isVisible = ref(false);
-  const position = reactive({ x: 0, y: 0 });
+  const position = reactive({ x: 0, y: 0, direction: 'down' as 'down' | 'up' });
   const items = ref(options.items);
 
   // 显示菜单
@@ -49,29 +50,66 @@ export function useContextMenu(
     event.preventDefault();
     event.stopPropagation();
 
-    // 计算菜单位置，避免超出屏幕边界
-    const menuWidth = 200; // 预估菜单宽度
-    const menuHeight = items.value.length * 32; // 预估菜单高度
+    // 计算菜单尺寸（更精确的估算）
+    const menuWidth = 200;
+    const menuItemHeight = 28; // 进一步减小菜单项高度
+    const separatorHeight = 6; // 进一步减小分隔符高度
+    
+    // 计算实际菜单高度
+    let menuHeight = 8; // 容器padding (4px * 2)
+    items.value.forEach(item => {
+      if (item.type === 'separator') {
+        menuHeight += separatorHeight;
+      } else {
+        menuHeight += menuItemHeight;
+      }
+    });
 
+    // 获取窗口尺寸
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    
+    // 设置最大菜单高度为窗口高度的80%
+    const maxMenuHeight = Math.min(menuHeight, windowHeight * 0.8);
+    
+    // 初始位置
     let x = event.clientX;
     let y = event.clientY;
+    let direction: 'down' | 'up' = 'down';
 
-    // 检查右边界
-    if (x + menuWidth > window.innerWidth) {
-      x = window.innerWidth - menuWidth - 10;
+    // 检查右边界 - 如果菜单会超出右边，向左偏移
+    if (x + menuWidth > windowWidth) {
+      x = windowWidth - menuWidth - 10;
     }
 
-    // 检查下边界
-    if (y + menuHeight > window.innerHeight) {
-      y = window.innerHeight - menuHeight - 10;
+    // 检查下边界 - 如果菜单会超出下边，向上显示
+    if (y + maxMenuHeight > windowHeight) {
+      // 优先尝试向上显示
+      const upwardY = y - maxMenuHeight;
+      if (upwardY >= 10) {
+        // 向上有足够空间
+        y = upwardY;
+        direction = 'up';
+      } else {
+        // 上下都不够，显示在能容纳的最大位置
+        y = Math.max(10, windowHeight - maxMenuHeight - 10);
+        direction = 'down';
+      }
     }
 
-    // 确保不超出左上边界
-    x = Math.max(10, x);
-    y = Math.max(10, y);
+    // 检查左边界
+    if (x < 10) {
+      x = 10;
+    }
+
+    // 检查上边界
+    if (y < 10) {
+      y = 10;
+    }
 
     position.x = x;
     position.y = y;
+    position.direction = direction;
     isVisible.value = true;
 
     options.onShow?.();

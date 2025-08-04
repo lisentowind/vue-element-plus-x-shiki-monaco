@@ -1,29 +1,15 @@
+// 基础样式
 .editor-toolbar {
-  background: var(--toolbar-bg);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  border: 1px solid var(--toolbar-border);
   padding: 8px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 32px;
   position: relative;
-  box-shadow: var(--shadow-md);
   border-radius: var(--editor-border-radius) var(--editor-border-radius) 0 0;
-
-  // 增强边框可见性
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 8px 8px 0 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(0, 0, 0, 0.02) 100%);
-    pointer-events: none;
-  }
+  transition: all 0.2s ease;
 
   .default-toolbar {
     display: flex;
@@ -45,21 +31,17 @@
         .file-name {
           font-size: 13px;
           font-weight: 500;
-          color: var(--text-primary);
           font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
         }
 
         .file-language {
           font-size: 10px;
           font-weight: 600;
-          color: #059669;
-          background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
           padding: 2px 6px;
           border-radius: 6px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
-          border: 1px solid rgba(5, 150, 105, 0.3);
-          box-shadow: 0 1px 2px rgba(5, 150, 105, 0.1);
+          border: 1px solid;
         }
       }
     }
@@ -78,27 +60,12 @@
         background: transparent;
         border: none;
         border-radius: 6px;
-        color: var(--text-secondary);
         cursor: pointer;
         transition: all 0.15s ease;
         position: relative;
 
-        &:hover {
-          background: var(--btn-hover);
-          color: var(--accent-color);
-          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
-          border: 1px solid rgba(59, 130, 246, 0.2);
-          transform: scale(1.05);
-        }
-
-        &:active {
-          background: var(--btn-active);
-          transform: scale(0.98);
-          box-shadow: 0 1px 4px rgba(59, 130, 246, 0.2);
-        }
-
         &:focus-visible {
-          outline: 2px solid var(--accent-color);
+          outline: 2px solid;
           outline-offset: 2px;
         }
 
@@ -108,6 +75,126 @@
           stroke-width: 2;
         }
       }
+    }
+  }
+}
+
+// 亮色主题
+.editor-toolbar.theme-light {
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.04),
+    0 2px 8px rgba(0, 0, 0, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+
+  // 顶部高光条
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .file-name {
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  .file-language {
+    color: #059669;
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    border-color: rgba(5, 150, 105, 0.3);
+    box-shadow: 0 1px 2px rgba(5, 150, 105, 0.1);
+  }
+
+  .toolbar-btn {
+    color: rgba(0, 0, 0, 0.6);
+
+    &:hover {
+      background: rgba(0, 120, 255, 0.08);
+      color: #007aff;
+      box-shadow: 0 2px 8px rgba(0, 120, 255, 0.1);
+      border: 1px solid rgba(0, 120, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    &:active {
+      background: rgba(0, 120, 255, 0.12);
+      transform: scale(0.98);
+    }
+
+    &:focus-visible {
+      outline-color: #007aff;
+    }
+  }
+}
+
+// 暗色主题
+.editor-toolbar.theme-dark {
+  // 暗色主题的毛玻璃背景 - 与右键菜单保持一致
+  background: rgba(28, 28, 30, 1);
+  -webkit-backdrop-filter: blur(30px) saturate(180%) brightness(1.2);
+  backdrop-filter: blur(30px) saturate(180%) brightness(1.2);
+
+  // 暗色渐变叠加
+  background-image: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.02) 100%);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+
+  &::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  }
+
+  .file-name {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .file-language {
+    color: #10b981;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 1px 2px rgba(16, 185, 129, 0.1);
+  }
+
+  .toolbar-btn {
+    color: rgba(255, 255, 255, 0.7);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    &:hover {
+      background: rgba(10, 132, 255, 0.2);
+      color: #0a84ff;
+      -webkit-backdrop-filter: blur(25px);
+      backdrop-filter: blur(25px);
+      transform: scale(1.02);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 2px 8px rgba(10, 132, 255, 0.2);
+    }
+
+    &:active {
+      background: rgba(10, 132, 255, 0.25);
+      transform: scale(0.98);
+    }
+
+    &:focus-visible {
+      outline-color: #0a84ff;
     }
   }
 }
