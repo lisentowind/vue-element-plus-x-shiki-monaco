@@ -1,8 +1,8 @@
-import type { BundledLanguage, BundledTheme, HighlighterGeneric } from 'shiki';
-import type { ContextMenuItem } from '../useContextMenu';
-import { shikiToMonaco } from '@shikijs/monaco';
-import * as monaco from 'monaco-editor-core';
-import { createHighlighter } from 'shiki';
+import type { BundledLanguage, BundledTheme, HighlighterGeneric } from "shiki";
+import type { ContextMenuItem } from "../useContextMenu";
+import { shikiToMonaco } from "@shikijs/monaco";
+import * as monaco from "monaco-editor-core";
+import { createHighlighter } from "shiki";
 
 export interface MonacoOptions {
   target: HTMLElement;
@@ -13,7 +13,7 @@ export interface MonacoOptions {
   defaultLanguage: BundledLanguage;
   contextMenu?: {
     enabled?: boolean;
-    items?: string[] | 'minimal' | 'basic' | 'full';
+    items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
   };
 }
@@ -36,7 +36,8 @@ export interface UseMonacoEditReturn {
 
 export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
   let editInstance: EditInstance | null = null;
-  let highlighter: HighlighterGeneric<BundledLanguage, BundledTheme> | null = null;
+  let highlighter: HighlighterGeneric<BundledLanguage, BundledTheme> | null =
+    null;
 
   // 缓存已加载的主题和语言，避免重复创建 highlighter
   const loadedThemes = new Set<BundledTheme>();
@@ -50,7 +51,13 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
   let contextMenuCallback: ((event: MouseEvent) => void) | null = null;
 
   async function initMonacoEdit(): Promise<EditInstance> {
-    const { target, languages, themes, defaultTheme = 'vitesse-light', defaultLanguage = 'javascript' } = options;
+    const {
+      target,
+      languages,
+      themes,
+      defaultTheme = "vitesse-light",
+      defaultLanguage = "javascript",
+    } = options;
 
     try {
       // 先注册语言
@@ -63,7 +70,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
       highlighter = await createShikiHighlighter(themes, languages);
 
       // 缓存已加载的主题
-      themes.forEach(theme => loadedThemes.add(theme));
+      themes.forEach((theme) => loadedThemes.add(theme));
 
       shikiToMonaco(highlighter, monaco);
 
@@ -80,14 +87,16 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
       }
 
       return editInstance;
-    }
-    catch (error) {
-      console.error('Failed to initialize Monaco Editor:', error);
+    } catch (error) {
+      console.error("Failed to initialize Monaco Editor:", error);
       throw error;
     }
   }
 
-  async function createShikiHighlighter(themes: BundledTheme[], langs: BundledLanguage[]): Promise<HighlighterGeneric<BundledLanguage, BundledTheme>> {
+  async function createShikiHighlighter(
+    themes: BundledTheme[],
+    langs: BundledLanguage[]
+  ): Promise<HighlighterGeneric<BundledLanguage, BundledTheme>> {
     // 创建一个可复用的语法高亮器
     return await createHighlighter({
       themes,
@@ -101,7 +110,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
 
   async function setLanguage(language: BundledLanguage): Promise<void> {
     if (!editInstance) {
-      throw new Error('Editor instance not initialized');
+      throw new Error("Editor instance not initialized");
     }
 
     try {
@@ -116,7 +125,10 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
         options.languages = newLanguages;
 
         if (highlighter) {
-          highlighter = await createShikiHighlighter(Array.from(loadedThemes), newLanguages);
+          highlighter = await createShikiHighlighter(
+            Array.from(loadedThemes),
+            newLanguages
+          );
           shikiToMonaco(highlighter, monaco);
         }
       }
@@ -126,8 +138,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
       if (model) {
         monaco.editor.setModelLanguage(model, language);
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error(`Failed to set language to ${language}:`, error);
       throw error;
     }
@@ -135,7 +146,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
 
   async function setTheme(theme: BundledTheme): Promise<void> {
     if (!editInstance) {
-      throw new Error('Editor instance not initialized');
+      throw new Error("Editor instance not initialized");
     }
 
     try {
@@ -149,15 +160,17 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
         options.themes = newThemes;
 
         if (highlighter) {
-          highlighter = await createShikiHighlighter(newThemes, Array.from(loadedLanguages));
+          highlighter = await createShikiHighlighter(
+            newThemes,
+            Array.from(loadedLanguages)
+          );
           shikiToMonaco(highlighter, monaco);
         }
       }
 
       // 切换 Monaco 编辑器主题
       monaco.editor.setTheme(theme);
-    }
-    catch (error) {
+    } catch (error) {
       console.error(`Failed to set theme to ${theme}:`, error);
       throw error;
     }
@@ -168,7 +181,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
       // 清理右键菜单事件监听器
       const domNode = editInstance.getDomNode();
       if (domNode) {
-        domNode.removeEventListener('contextmenu', handleContextMenu);
+        domNode.removeEventListener("contextmenu", handleContextMenu);
       }
 
       editInstance.dispose();
@@ -191,8 +204,7 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
   }
 
   function enableAutoResize(): void {
-    if (!editInstance || autoResizeEnabled)
-      return;
+    if (!editInstance || autoResizeEnabled) return;
 
     try {
       resizeObserver = new ResizeObserver(() => {
@@ -206,9 +218,8 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
 
       resizeObserver.observe(options.target);
       autoResizeEnabled = true;
-    }
-    catch (error) {
-      console.error('Failed to enable auto resize:', error);
+    } catch (error) {
+      console.error("Failed to enable auto resize:", error);
     }
   }
 
@@ -222,12 +233,11 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
 
   // 设置自定义右键菜单
   function setupCustomContextMenu(): void {
-    if (!editInstance)
-      return;
+    if (!editInstance) return;
 
     const domNode = editInstance.getDomNode();
     if (domNode) {
-      domNode.addEventListener('contextmenu', handleContextMenu);
+      domNode.addEventListener("contextmenu", handleContextMenu);
     }
   }
 

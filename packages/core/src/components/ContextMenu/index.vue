@@ -1,6 +1,10 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
-import type { ContextMenuItem, MenuItem, ContextMenuPosition } from '../../hooks/useContextMenu';
+import { computed } from "vue";
+import type {
+  ContextMenuItem,
+  MenuItem,
+  ContextMenuPosition,
+} from "../../hooks/useContextMenu";
 
 interface Props {
   visible?: boolean;
@@ -22,12 +26,12 @@ const emit = defineEmits<{
 const menuStyle = computed(() => ({
   left: `${props.position.x}px`,
   top: `${props.position.y}px`,
-  display: props.visible ? 'block' : 'none',
+  display: props.visible ? "block" : "none",
 }));
 
 const handleItemClick = (item: ContextMenuItem) => {
-  if (item.type === 'item' && !item.disabled) {
-    emit('itemClick', item);
+  if (item.type === "item" && !item.disabled) {
+    emit("itemClick", item);
   }
 };
 

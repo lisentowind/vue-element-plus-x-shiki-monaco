@@ -1,8 +1,8 @@
 {
   // Disable the default formatter, use eslint instead
-  "prettier.enable": false,
+  "prettier.enable": true,
   "eslint.enable": true,
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   // Auto fix
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
@@ -94,6 +94,7 @@
     "Customisations",
     "esno",
     "lisentowind",
+    "nord",
     "oxlint",
     "rolldown",
     "unplugin"

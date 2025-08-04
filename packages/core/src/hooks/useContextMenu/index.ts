@@ -1,12 +1,12 @@
-import type { Ref } from 'vue';
-import { onMounted, onUnmounted, reactive, ref } from 'vue';
+import type { Ref } from "vue";
+import { onMounted, onUnmounted, reactive, ref } from "vue";
 
 export interface MenuItemSeparator {
-  type: 'separator';
+  type: "separator";
 }
 
 export interface MenuItem {
-  type: 'item';
+  type: "item";
   id: string;
   label: string;
   icon?: string;
@@ -38,7 +38,7 @@ export interface UseContextMenuReturn {
 }
 
 export function useContextMenu(
-  options: UseContextMenuOptions,
+  options: UseContextMenuOptions
 ): UseContextMenuReturn {
   const isVisible = ref(false);
   const position = reactive({ x: 0, y: 0 });
@@ -100,21 +100,21 @@ export function useContextMenu(
 
   // 监听ESC键隐藏菜单
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Escape' && isVisible.value) {
+    if (event.key === "Escape" && isVisible.value) {
       hide();
     }
   };
 
   onMounted(() => {
-    document.addEventListener('click', handleClickOutside);
-    document.addEventListener('contextmenu', handleClickOutside);
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("contextmenu", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
   });
 
   onUnmounted(() => {
-    document.removeEventListener('click', handleClickOutside);
-    document.removeEventListener('contextmenu', handleClickOutside);
-    document.removeEventListener('keydown', handleKeyDown);
+    document.removeEventListener("click", handleClickOutside);
+    document.removeEventListener("contextmenu", handleClickOutside);
+    document.removeEventListener("keydown", handleKeyDown);
   });
 
   return {

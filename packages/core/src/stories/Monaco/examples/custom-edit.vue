@@ -274,11 +274,11 @@ const demo = new AdvancedDemo();
 
 console.log('高级功能演示准备就绪！');`);
 
-const handleCodeChange = (newValue:any) => {
+const handleCodeChange = (newValue: any) => {
   updateStats(newValue);
 };
 
-const handleEditorReady = (editor:any) => {
+const handleEditorReady = (editor: any) => {
   console.log("编辑器准备就绪");
   updateStats(demoCode.value);
 
@@ -292,7 +292,7 @@ const handleEditorReady = (editor:any) => {
   });
 
   // 监听选择变化
-  editor.onDidChangeCursorSelection((e:any) => {
+  editor.onDidChangeCursorSelection((e: any) => {
     const model = editor.getModel();
     if (model) {
       const selection = model.getValueInRange(e.selection);
@@ -301,7 +301,7 @@ const handleEditorReady = (editor:any) => {
   });
 };
 
-const updateStats = (code:any) => {
+const updateStats = (code: any) => {
   stats.lines = code.split("\\n").length;
   stats.characters = code.length;
 };
@@ -318,14 +318,14 @@ const changeTheme = () => {
   }
 };
 
-const formatThemeName = (theme:any) => {
+const formatThemeName = (theme: any) => {
   return theme
     .split("-")
-    .map((word:any) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word: any) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
 
-const toggleFeature = (feature:any) => {
+const toggleFeature = (feature: any) => {
   const editor = monacoRef.value?.getEditor();
   if (!editor) return;
 

@@ -34,10 +34,6 @@ const getFileName = () => {
   );
 };
 
-
-
-
-
 const handleCopy = () => {
   emit("copy");
 };
@@ -51,7 +47,6 @@ defineExpose({
   handleCopy,
   handleFormat,
 });
-
 </script>
 
 <template>

@@ -164,7 +164,9 @@ const handleCopy = async () => {
   if (editorInstance) {
     try {
       // 优先使用Monaco的内置复制命令
-      const copyAction = editorInstance.getAction('editor.action.clipboardCopyAction');
+      const copyAction = editorInstance.getAction(
+        "editor.action.clipboardCopyAction"
+      );
       if (copyAction) {
         copyAction.run();
         return;
@@ -172,10 +174,14 @@ const handleCopy = async () => {
 
       // 备选方案1: 使用trigger触发内置命令
       try {
-        editorInstance.trigger('keyboard', 'editor.action.clipboardCopyAction', null);
+        editorInstance.trigger(
+          "keyboard",
+          "editor.action.clipboardCopyAction",
+          null
+        );
         return;
       } catch (triggerError) {
-        console.warn('Monaco内置复制命令触发失败:', triggerError);
+        console.warn("Monaco内置复制命令触发失败:", triggerError);
       }
 
       // 备选方案2: 自定义复制实现 (复制全部内容)
@@ -198,7 +204,9 @@ const handlePaste = async () => {
   if (editorInstance) {
     try {
       // 优先使用Monaco的内置粘贴命令
-      const pasteAction = editorInstance.getAction('editor.action.clipboardPasteAction');
+      const pasteAction = editorInstance.getAction(
+        "editor.action.clipboardPasteAction"
+      );
       if (pasteAction) {
         pasteAction.run();
         return;
@@ -206,10 +214,14 @@ const handlePaste = async () => {
 
       // 备选方案1: 使用trigger触发内置命令
       try {
-        editorInstance.trigger('keyboard', 'editor.action.clipboardPasteAction', null);
+        editorInstance.trigger(
+          "keyboard",
+          "editor.action.clipboardPasteAction",
+          null
+        );
         return;
       } catch (triggerError) {
-        console.warn('Monaco内置粘贴命令触发失败:', triggerError);
+        console.warn("Monaco内置粘贴命令触发失败:", triggerError);
       }
 
       // 备选方案2: 自定义粘贴实现
@@ -217,11 +229,13 @@ const handlePaste = async () => {
       if (text) {
         const selection = editorInstance.getSelection();
         if (selection) {
-          editorInstance.executeEdits('paste', [{
-            range: selection,
-            text: text,
-            forceMoveMarkers: true,
-          }]);
+          editorInstance.executeEdits("paste", [
+            {
+              range: selection,
+              text: text,
+              forceMoveMarkers: true,
+            },
+          ]);
           editorInstance.focus();
         }
       }
@@ -254,8 +268,8 @@ const setupContextMenu = () => {
   monacoEditHook.onContextMenu(async (event) => {
     // 尝试预先请求剪贴板权限（可选）
     try {
-      if ('permissions' in navigator) {
-        await (navigator as any).permissions.query({ name: 'clipboard-read' });
+      if ("permissions" in navigator) {
+        await (navigator as any).permissions.query({ name: "clipboard-read" });
       }
     } catch (error) {
       // 忽略权限检查错误
