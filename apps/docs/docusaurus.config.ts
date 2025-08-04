@@ -87,7 +87,7 @@ const config: Config = {
       title: "Vue Shiki Monaco Editor ",
       logo: {
         alt: "Vue Shiki Monaco Editor  Logo",
-        src: "img/logo.png",
+        src: "img/logo-best-mini.png",
       },
       items: [
         {
