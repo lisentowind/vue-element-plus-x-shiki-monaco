@@ -10,12 +10,14 @@ A modern Vue 3 code editor component built on Monaco Editor + Shiki, providing p
 ## ✨ Key Features
 
 ### 🎨 **Beautiful Syntax Highlighting**
+
 - Precise syntax highlighting based on Shiki
 - Support for multiple built-in themes (Vitesse, GitHub, etc.)
 - Clean editor styling design
 - Fully responsive layout
 
 ### 🛠️ **Powerful Editing Features**
+
 - **Multi-language Support** - JavaScript, TypeScript, Python, HTML, CSS, etc.
 - **Smart Code Completion** - Powerful features based on Monaco Editor
 - **Toolbar Customization** - Flexible slot system, supports custom toolbar
@@ -24,6 +26,7 @@ A modern Vue 3 code editor component built on Monaco Editor + Shiki, providing p
 - **Multiple Style Themes** - Glass effect and classic style context menus
 
 ### 🚀 **Development Experience**
+
 - **Native TypeScript Support** - Complete type definitions
 - **Vue 3 Composition API** - Modern development approach
 - **Lightweight Integration** - Simple installation and configuration
@@ -53,19 +56,19 @@ npm install vue-shiki-monaco
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { Monaco } from 'vue-shiki-monaco'
+import { ref } from "vue";
+import { Monaco } from "vue-shiki-monaco";
 
 const code = ref(`// Hello Monaco Editor with Shiki!
 function greet(name) {
   return \`Hello, \${name}!\`;
 }
 
-console.log(greet('World'));`)
+console.log(greet('World'));`);
 
 const handleChange = (newValue) => {
-  console.log('Code updated:', newValue)
-}
+  console.log("Code updated:", newValue);
+};
 </script>
 ```
 
@@ -74,38 +77,46 @@ That's it! 🎉
 ## 🎯 Use Cases
 
 ### 📝 **Code Editor**
+
 Add professional code editing functionality to your application with syntax highlighting, auto-completion, error detection, etc.
 
 ### 💻 **Online IDE**
+
 Build browser-based development environments with complete code editing and debugging experience.
 
 ### 📚 **Documentation Display**
+
 Display code examples in documentation websites with interactive features like copy and format.
 
 ### 🎓 **Educational Platform**
+
 Provide interactive code editing and demonstration features for programming education platforms.
 
 ## 🌟 Why Choose This Component?
 
 ### 🔥 **Modern Tech Stack**
+
 - Based on Vue 3 Composition API
 - Developed with TypeScript
 - Dual advantages of Monaco Editor + Shiki
 - Zero dependency conflicts
 
 ### 🎨 **Exquisite Highlighting Effects**
+
 - VSCode-level syntax highlighting provided by Shiki
 - Support for multiple theme styles
 - Precise code coloring
 - Excellent visual experience
 
 ### 🛡️ **Stable and Reliable**
+
 - Based on mature Monaco Editor core
 - Complete error handling mechanism
 - Detailed documentation and examples
 - Continuous maintenance and updates
 
 ### 🚀 **Excellent Performance**
+
 - On-demand loading of languages and themes
 - Virtual scrolling supports large files
 - Memory usage optimization
@@ -113,18 +124,18 @@ Provide interactive code editing and demonstration features for programming educ
 
 ## 📊 Comparative Advantages
 
-| Feature | This Component | Other Solutions |
-|---------|----------------|----------------|
-| Vue 3 Support | ✅ Native Support | ❌ Needs Adaptation |
-| TypeScript | ✅ Complete Types | ⚠️ Partial Support |
-| Syntax Highlighting | ✅ Shiki (VSCode Level) | ⚠️ Basic Highlighting |
-| Toolbar Customization | ✅ Slot System | ❌ Complex Configuration |
-| Theme System | ✅ Multiple Built-in Themes | ⚠️ Style Overrides |
-| Documentation Quality | ✅ Detailed and Complete | ⚠️ Missing Documentation |
+| Feature               | This Component              | Other Solutions          |
+| --------------------- | --------------------------- | ------------------------ |
+| Vue 3 Support         | ✅ Native Support           | ❌ Needs Adaptation      |
+| TypeScript            | ✅ Complete Types           | ⚠️ Partial Support       |
+| Syntax Highlighting   | ✅ Shiki (VSCode Level)     | ⚠️ Basic Highlighting    |
+| Toolbar Customization | ✅ Slot System              | ❌ Complex Configuration |
+| Theme System          | ✅ Multiple Built-in Themes | ⚠️ Style Overrides       |
+| Documentation Quality | ✅ Detailed and Complete    | ⚠️ Missing Documentation |
 
 ## 🎪 Online Demo
 
-Want to experience it yourself? Check out our [Storybook Demo](http://localhost:6006) to explore all features!
+Want to experience it yourself? Check out our [Storybook Demo](https://lisentowind.github.io/vue-shiki-monaco-playground/?path=/story/example-monaco-editor--default) to explore all features!
 
 - 🔗 **Basic Editor** - Clean code editing experience
 - 🎨 **Theme Switching** - Multiple beautiful theme options

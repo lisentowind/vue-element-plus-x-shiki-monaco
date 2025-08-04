@@ -5,12 +5,14 @@ import { create } from "@storybook/theming";
 const theme = create({
   base: "light",
   brandTitle: "vue-shiki-monaco",
-  brandImage: "/logo.png",
+  brandImage: "/logo-best-mini.png",
+  brandUrl: "https://lisentowind.github.io/vue-shiki-monaco/",
 });
 
 const darkTheme = create({
   base: "dark",
   brandTitle: "vue-shiki-monaco",
+  brandUrl: "https://lisentowind.github.io/vue-shiki-monaco/",
 });
 
 addons.setConfig({
