@@ -11,6 +11,10 @@
     "message": "Docs",
     "description": "Navbar item with label 文档"
   },
+  "item.label.在线预览": {
+    "message": "Online Preview",
+    "description": "Navbar item with label 在线预览"
+  },
   "item.label.GitHub": {
     "message": "GitHub",
     "description": "Navbar item with label GitHub"
