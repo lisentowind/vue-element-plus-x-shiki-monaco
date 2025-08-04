@@ -12,7 +12,11 @@
     background: var(--editor-bg);
     overflow: hidden;
     box-sizing: border-box;
-    padding: 2px;
+    outline: none !important;
+    border-radius: 0 0 var(--editor-border-radius) var(--editor-border-radius);
+  }
+
+  .noHeader {
     border-radius: var(--editor-border-radius);
   }
 }

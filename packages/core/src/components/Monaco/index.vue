@@ -322,6 +322,7 @@ defineExpose({
     <div
       ref="editorRef"
       class="monaco-editor"
+      :class="{ noHeader: !props.showToolbar }"
       :style="{ height: props.height }"
     ></div>
 

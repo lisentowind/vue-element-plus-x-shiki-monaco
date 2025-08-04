@@ -4,7 +4,8 @@ import { shikiToMonaco } from "@shikijs/monaco";
 import * as monaco from "monaco-editor-core";
 import { createHighlighter } from "shiki";
 
-export interface MonacoOptions {
+export interface MonacoOptions
+  extends monaco.editor.IStandaloneEditorConstructionOptions {
   target: HTMLElement;
   languages: BundledLanguage[];
   codeValue: string;
@@ -79,6 +80,9 @@ export function useMonacoEdit(options: MonacoOptions): UseMonacoEditReturn {
         language: defaultLanguage,
         theme: defaultTheme,
         contextmenu: !options.contextMenu, // 禁用默认右键菜单
+        automaticLayout: true, // 启用自动布局
+        minimap: { enabled: true },
+        ...options,
       });
 
       // 如果启用了自定义右键菜单，添加事件监听
