@@ -1,6 +1,5 @@
-import type { ContextMenuItem } from "../useContextMenu";
-import type { EditInstance } from "../useMonacoEdit";
-
+import { ContextMenuItem } from "../useContextMenu";
+import { EditInstance } from "../useMonacoEdit";
 export declare const DEFAULT_FONT_SIZE = 16;
 export declare const MIN_FONT_SIZE = 8;
 export declare const MAX_FONT_SIZE = 40;

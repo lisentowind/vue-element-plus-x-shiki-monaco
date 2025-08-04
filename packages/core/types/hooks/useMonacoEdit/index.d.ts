@@ -1,7 +1,6 @@
-import type * as monaco from "monaco-editor-core";
-import type { BundledLanguage, BundledTheme } from "shiki";
-import type { ContextMenuItem } from "../useContextMenu";
-
+import { BundledLanguage, BundledTheme } from "shiki";
+import { ContextMenuItem } from "../useContextMenu";
+import * as monaco from "monaco-editor-core";
 export interface MonacoOptions
   extends monaco.editor.IStandaloneEditorConstructionOptions {
   target: HTMLElement;

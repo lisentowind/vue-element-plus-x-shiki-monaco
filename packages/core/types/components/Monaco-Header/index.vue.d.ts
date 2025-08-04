@@ -1,5 +1,4 @@
-import type { BundledLanguage, BundledTheme } from "shiki";
-
+import { BundledLanguage, BundledTheme } from "shiki";
 interface Props {
   currentLanguage?: BundledLanguage;
   fileName?: string;
@@ -9,7 +8,7 @@ interface Props {
 declare function __VLS_template(): {
   attrs: Partial<{}>;
   slots: {
-    toolbar?: (_: {}) => any;
+    toolbar?(_: {}): any;
   };
   refs: {};
   rootEl: HTMLDivElement;

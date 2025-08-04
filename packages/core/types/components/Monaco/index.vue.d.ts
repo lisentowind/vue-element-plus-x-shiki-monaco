@@ -1,6 +1,5 @@
-import type { BundledLanguage, BundledTheme } from "shiki";
-import type { ContextMenuItem } from "../../hooks/useContextMenu";
-
+import { BundledLanguage, BundledTheme } from "shiki";
+import { ContextMenuItem } from "../../hooks/useContextMenu";
 interface Props {
   currentLanguage?: BundledLanguage;
   currentTheme?: BundledTheme;
@@ -28,7 +27,7 @@ interface Props {
 declare function __VLS_template(): {
   attrs: Partial<{}>;
   slots: {
-    toolbar?: (_: {}) => any;
+    toolbar?(_: {}): any;
   };
   refs: {
     editorRef: HTMLDivElement;

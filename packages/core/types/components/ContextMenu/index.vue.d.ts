@@ -1,9 +1,8 @@
-import type {
+import {
   ContextMenuItem,
-  ContextMenuPosition,
   MenuItem,
+  ContextMenuPosition,
 } from "../../hooks/useContextMenu";
-
 interface Props {
   visible?: boolean;
   position?: ContextMenuPosition;

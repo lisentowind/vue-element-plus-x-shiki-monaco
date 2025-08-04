@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, watch, onBeforeUnmount } from "vue";
 import type { EditInstance } from "../../hooks/useMonacoEdit";
 import { useMonacoEdit } from "../../hooks/useMonacoEdit";
 import type { BundledLanguage, BundledTheme } from "shiki";
@@ -30,13 +30,13 @@ interface Props {
     enabled?: boolean;
     items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
-    variant?: 'classic' | 'glass';
+    variant?: "classic" | "glass";
   };
   minimapContextMenu?: {
     enabled?: boolean;
     items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
-    variant?: 'classic' | 'glass';
+    variant?: "classic" | "glass";
   };
 }
 
@@ -297,7 +297,9 @@ const setupContextMenu = () => {
       // 尝试预先请求剪贴板权限（可选）
       try {
         if ("permissions" in navigator) {
-          await (navigator as any).permissions.query({ name: "clipboard-read" });
+          await (navigator as any).permissions.query({
+            name: "clipboard-read",
+          });
         }
       } catch (error) {
         // 忽略权限检查错误
@@ -312,7 +314,9 @@ const setupContextMenu = () => {
     // 获取minimap菜单项配置
     let minimapEnabledItems: string[] = [];
     if (typeof props.minimapContextMenu?.items === "string") {
-      minimapEnabledItems = MINIMAP_MENU_PRESETS[props.minimapContextMenu.items] as any;
+      minimapEnabledItems = MINIMAP_MENU_PRESETS[
+        props.minimapContextMenu.items
+      ] as any;
     } else if (Array.isArray(props.minimapContextMenu?.items)) {
       minimapEnabledItems = props.minimapContextMenu.items;
     }
@@ -353,6 +357,10 @@ const handleMinimapContextMenuItemClick = (item: ContextMenuItem) => {
     minimapContextMenu.hide();
   }
 };
+
+onBeforeUnmount(() => {
+  monacoEditHook?.destroy();
+});
 
 // 暴露方法给父组件
 defineExpose({

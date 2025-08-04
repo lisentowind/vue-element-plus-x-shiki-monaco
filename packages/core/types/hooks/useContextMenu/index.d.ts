@@ -1,5 +1,4 @@
-import type { Ref } from "vue";
-
+import { Ref } from "vue";
 export interface MenuItemSeparator {
   type: "separator";
 }
