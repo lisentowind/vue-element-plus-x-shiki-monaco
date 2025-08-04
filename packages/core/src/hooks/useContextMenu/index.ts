@@ -69,43 +69,56 @@ export function useContextMenu(
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     
-    // 设置最大菜单高度为窗口高度的80%
-    const maxMenuHeight = Math.min(menuHeight, windowHeight * 0.8);
+    // 设置最大菜单高度为窗口高度的50%，与CSS保持一致
+    const maxMenuHeight = Math.min(menuHeight, windowHeight * 0.5);
     
     // 初始位置
     let x = event.clientX;
     let y = event.clientY;
     let direction: 'down' | 'up' = 'down';
 
+    // 边界阈值设置
+    const horizontalMargin = 10; // 水平边距
+    const verticalMargin = 20; // 垂直边距，增加更多空间避免遮挡
+    
     // 检查右边界 - 如果菜单会超出右边，向左偏移
-    if (x + menuWidth > windowWidth) {
-      x = windowWidth - menuWidth - 10;
+    if (x + menuWidth > windowWidth - horizontalMargin) {
+      x = Math.max(horizontalMargin, windowWidth - menuWidth - horizontalMargin);
     }
 
-    // 检查下边界 - 如果菜单会超出下边，向上显示
-    if (y + maxMenuHeight > windowHeight) {
-      // 优先尝试向上显示
-      const upwardY = y - maxMenuHeight;
-      if (upwardY >= 10) {
-        // 向上有足够空间
-        y = upwardY;
+    // 更智能的垂直位置判断
+    const spaceBelow = windowHeight - y - verticalMargin;
+    const spaceAbove = y - verticalMargin;
+    
+    // 如果下方空间不足以完全显示菜单
+    if (spaceBelow < maxMenuHeight) {
+      // 检查上方是否有更多空间
+      if (spaceAbove > spaceBelow && spaceAbove >= maxMenuHeight * 0.6) {
+        // 向上显示，但确保不会超出顶部
+        y = Math.max(verticalMargin, y - maxMenuHeight);
         direction = 'up';
       } else {
-        // 上下都不够，显示在能容纳的最大位置
-        y = Math.max(10, windowHeight - maxMenuHeight - 10);
-        direction = 'down';
+        // 上方空间也不够，或者下方空间更多，则在最佳位置显示
+        if (spaceBelow >= maxMenuHeight * 0.4) {
+          // 下方至少有40%的空间，继续向下显示
+          y = Math.min(y, windowHeight - maxMenuHeight - verticalMargin);
+          direction = 'down';
+        } else {
+          // 上下都空间不足，选择空间更大的一侧
+          if (spaceAbove > spaceBelow) {
+            y = Math.max(verticalMargin, y - maxMenuHeight);
+            direction = 'up';
+          } else {
+            y = Math.max(verticalMargin, windowHeight - maxMenuHeight - verticalMargin);
+            direction = 'down';
+          }
+        }
       }
     }
 
-    // 检查左边界
-    if (x < 10) {
-      x = 10;
-    }
-
-    // 检查上边界
-    if (y < 10) {
-      y = 10;
-    }
+    // 最终边界检查
+    x = Math.max(horizontalMargin, Math.min(x, windowWidth - menuWidth - horizontalMargin));
+    y = Math.max(verticalMargin, Math.min(y, windowHeight - maxMenuHeight - verticalMargin));
 
     position.x = x;
     position.y = y;
