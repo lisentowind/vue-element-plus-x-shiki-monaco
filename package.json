@@ -31,11 +31,19 @@
     "husky": "^9.1.7",
     "oxlint": "^1.8.0",
     "prettier": "^3.2.5",
+    "lint-staged": "^13.2.2",
     "turbo": "^2.5.5"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {
     "node": ">=18"
+  },
+  "lint-staged": {
+    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,d.ts}": [
+      "prettier --write",
+      "npx oxlint --fix"
+    ],
+    "**/*.{json,md,yml,yaml}": "prettier --write"
   },
   "name": "vue-shiki-monaco",
   "config": {

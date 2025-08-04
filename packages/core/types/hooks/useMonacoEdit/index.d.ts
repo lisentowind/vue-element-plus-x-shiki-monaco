@@ -2,7 +2,8 @@ import type * as monaco from "monaco-editor-core";
 import type { BundledLanguage, BundledTheme } from "shiki";
 import type { ContextMenuItem } from "../useContextMenu";
 
-export interface MonacoOptions {
+export interface MonacoOptions
+  extends monaco.editor.IStandaloneEditorConstructionOptions {
   target: HTMLElement;
   languages: BundledLanguage[];
   codeValue: string;
@@ -28,7 +29,9 @@ export interface UseMonacoEditReturn {
   editInstance: EditInstance | null;
   onContextMenu: (callback: (event: MouseEvent) => void) => void;
   offContextMenu: () => void;
+  onMinimapContextMenu: (callback: (event: MouseEvent) => void) => void;
+  offMinimapContextMenu: () => void;
 }
 export declare function useMonacoEdit(
-  options: MonacoOptions
+  options: MonacoOptions,
 ): UseMonacoEditReturn;
