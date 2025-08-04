@@ -105,6 +105,11 @@ const config: Config = {
           label: "GitHub",
           position: "right",
         },
+        {
+          href: "https://lisentowind.github.io/vue-shiki-monaco-playground/?path=/story/example-monaco-editor--default",
+          label: "在线预览",
+          position: "right",
+        },
       ],
     },
     footer: {
