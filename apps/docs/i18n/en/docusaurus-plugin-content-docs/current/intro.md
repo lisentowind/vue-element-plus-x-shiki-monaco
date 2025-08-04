@@ -20,6 +20,8 @@ A modern Vue 3 code editor component built on Monaco Editor + Shiki, providing p
 - **Smart Code Completion** - Powerful features based on Monaco Editor
 - **Toolbar Customization** - Flexible slot system, supports custom toolbar
 - **Quick Actions** - Built-in copy, format, and other practical functions
+- **Smart Context Menu** - Independent context menus for editor and Minimap areas
+- **Multiple Style Themes** - Glass effect and classic style context menus
 
 ### 🚀 **Development Experience**
 - **Native TypeScript Support** - Complete type definitions
@@ -44,6 +46,8 @@ npm install vue-shiki-monaco
     theme="vitesse-light"
     height="400px"
     :value="code"
+    :context-menu="{ enabled: true, items: 'full', variant: 'glass' }"
+    :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }"
     @change="handleChange"
   />
 </template>

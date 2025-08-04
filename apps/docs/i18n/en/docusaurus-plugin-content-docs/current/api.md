@@ -20,7 +20,8 @@ title: API Reference
     height="400px"
     :show-toolbar="true"
     :auto-resize="true"
-    :context-menu="{ enabled: true, items: 'full' }"
+    :context-menu="{ enabled: true, items: 'full', variant: 'glass' }"
+    :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }"
     @change="handleChange"
     @ready="handleReady"
   />
@@ -136,8 +137,8 @@ Supported themes include: `vitesse-light`, `vitesse-dark`, `github-light`, `gith
 ### contextMenu
 
 - **Type**: `ContextMenuConfig`
-- **Default**: `{ enabled: true, items: 'full' }`
-- **Description**: Custom context menu configuration
+- **Default**: `{ enabled: true, items: 'full', variant: 'glass' }`
+- **Description**: Editor area custom context menu configuration
 
 #### ContextMenuConfig Interface
 
@@ -146,6 +147,7 @@ interface ContextMenuConfig {
   enabled?: boolean; // Whether to enable context menu
   items?: string[] | 'minimal' | 'basic' | 'full'; // Menu item configuration
   customItems?: ContextMenuItem[]; // Custom menu items
+  variant?: 'classic' | 'glass'; // Menu style variant
 }
 ```
 
@@ -153,18 +155,22 @@ interface ContextMenuConfig {
 
 ```vue
 <!-- Minimal menu: copy, paste, select all -->
-<Monaco :context-menu="{ enabled: true, items: 'minimal' }" />
+<Monaco :context-menu="{ enabled: true, items: 'minimal', variant: 'glass' }" />
 
 <!-- Basic menu: copy, cut, paste, select all, undo, redo -->
-<Monaco :context-menu="{ enabled: true, items: 'basic' }" />
+<Monaco :context-menu="{ enabled: true, items: 'basic', variant: 'glass' }" />
 
 <!-- Full menu: all features -->
-<Monaco :context-menu="{ enabled: true, items: 'full' }" />
+<Monaco :context-menu="{ enabled: true, items: 'full', variant: 'glass' }" />
+
+<!-- Classic style menu -->
+<Monaco :context-menu="{ enabled: true, items: 'full', variant: 'classic' }" />
 
 <!-- Custom menu items -->
 <Monaco :context-menu="{
   enabled: true,
   items: ['copy', 'paste', 'selectAll'],
+  variant: 'glass',
   customItems: [
     {
       type: 'separator'
@@ -178,6 +184,36 @@ interface ContextMenuConfig {
     }
   ]
 }" />
+```
+
+### minimapContextMenu
+
+- **Type**: `MinimapContextMenuConfig`
+- **Default**: `{ enabled: true, items: 'basic', variant: 'glass' }`
+- **Description**: Minimap area specific context menu configuration
+
+#### MinimapContextMenuConfig Interface
+
+```typescript
+interface MinimapContextMenuConfig {
+  enabled?: boolean; // Whether to enable Minimap context menu
+  items?: string[] | 'minimal' | 'basic' | 'full'; // Menu item configuration
+  customItems?: ContextMenuItem[]; // Custom menu items
+  variant?: 'classic' | 'glass'; // Menu style variant
+}
+```
+
+#### Minimap Menu Examples
+
+```vue
+<!-- Minimap basic menu -->
+<Monaco :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }" />
+
+<!-- Minimap full menu -->
+<Monaco :minimap-context-menu="{ enabled: true, items: 'full', variant: 'glass' }" />
+
+<!-- Disable Minimap menu -->
+<Monaco :minimap-context-menu="{ enabled: false }" />
 ```
 
 ## Events
@@ -427,7 +463,7 @@ const { initMonacoEdit, destroy, setTheme, setLanguage } = useMonacoEdit({
 #### MonacoOptions
 
 ```typescript
-interface MonacoOptions {
+interface MonacoOptions extends monaco.editor.IStandaloneEditorConstructionOptions {
   target: HTMLElement; // Target element to mount the editor
   languages: BundledLanguage[]; // List of supported languages
   codeValue: string; // Initial code content
@@ -457,8 +493,10 @@ interface UseMonacoEditReturn {
   enableAutoResize: () => void; // Enable auto resize
   disableAutoResize: () => void; // Disable auto resize
   editInstance: EditInstance | null; // Editor instance
-  onContextMenu: (callback: (event: MouseEvent) => void) => void; // Context menu callback
-  offContextMenu: () => void; // Remove context menu callback
+  onContextMenu: (callback: (event: MouseEvent) => void) => void; // Editor context menu callback
+  offContextMenu: () => void; // Remove editor context menu callback
+  onMinimapContextMenu: (callback: (event: MouseEvent) => void) => void; // Minimap context menu callback
+  offMinimapContextMenu: () => void; // Remove Minimap context menu callback
 }
 ```
 
@@ -506,6 +544,7 @@ type EditInstance = monaco.editor.IStandaloneCodeEditor;
 interface ContextMenuPosition {
   x: number;
   y: number;
+  direction?: 'down' | 'up'; // Menu display direction
 }
 
 // Menu item

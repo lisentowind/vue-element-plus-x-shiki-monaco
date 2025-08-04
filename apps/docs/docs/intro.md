@@ -21,6 +21,8 @@ slug: /
 - **智能代码补全** - 基于 Monaco Editor 的强大功能
 - **工具栏定制** - 灵活的插槽系统，支持自定义工具栏
 - **快捷操作** - 内置复制、格式化等实用功能
+- **智能右键菜单** - 支持编辑器和Minimap区域的独立右键菜单
+- **多样式主题** - 支持玻璃效果和经典样式的右键菜单
 
 ### 🚀 **开发体验**
 - **TypeScript 原生支持** - 完整的类型定义
@@ -45,6 +47,8 @@ npm install vue-shiki-monaco
     theme="vitesse-light"
     height="400px"
     :value="code"
+    :context-menu="{ enabled: true, items: 'full', variant: 'glass' }"
+    :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }"
     @change="handleChange"
   />
 </template>

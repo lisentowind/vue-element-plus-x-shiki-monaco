@@ -20,7 +20,8 @@ title: API 参考
     height="400px"
     :show-toolbar="true"
     :auto-resize="true"
-    :context-menu="{ enabled: true, items: 'full' }"
+    :context-menu="{ enabled: true, items: 'full', variant: 'glass' }"
+    :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }"
     @change="handleChange"
     @ready="handleReady"
   />
@@ -136,8 +137,8 @@ title: API 参考
 ### contextMenu
 
 - **类型**: `ContextMenuConfig`
-- **默认值**: `{ enabled: true, items: 'full' }`
-- **描述**: 自定义右键菜单配置
+- **默认值**: `{ enabled: true, items: 'full', variant: 'glass' }`
+- **描述**: 编辑器区域自定义右键菜单配置
 
 #### ContextMenuConfig 接口
 
@@ -146,6 +147,7 @@ interface ContextMenuConfig {
   enabled?: boolean; // 是否启用右键菜单
   items?: string[] | 'minimal' | 'basic' | 'full'; // 菜单项配置
   customItems?: ContextMenuItem[]; // 自定义菜单项
+  variant?: 'classic' | 'glass'; // 菜单样式变体
 }
 ```
 
@@ -153,18 +155,22 @@ interface ContextMenuConfig {
 
 ```vue
 <!-- 最小菜单：复制、粘贴、全选 -->
-<Monaco :context-menu="{ enabled: true, items: 'minimal' }" />
+<Monaco :context-menu="{ enabled: true, items: 'minimal', variant: 'glass' }" />
 
 <!-- 基础菜单：复制、剪切、粘贴、全选、撤销、重做 -->
-<Monaco :context-menu="{ enabled: true, items: 'basic' }" />
+<Monaco :context-menu="{ enabled: true, items: 'basic', variant: 'glass' }" />
 
 <!-- 完整菜单：所有功能 -->
-<Monaco :context-menu="{ enabled: true, items: 'full' }" />
+<Monaco :context-menu="{ enabled: true, items: 'full', variant: 'glass' }" />
+
+<!-- 经典样式菜单 -->
+<Monaco :context-menu="{ enabled: true, items: 'full', variant: 'classic' }" />
 
 <!-- 自定义菜单项 -->
 <Monaco :context-menu="{
   enabled: true,
   items: ['copy', 'paste', 'selectAll'],
+  variant: 'glass',
   customItems: [
     {
       type: 'separator'
@@ -178,6 +184,36 @@ interface ContextMenuConfig {
     }
   ]
 }" />
+```
+
+### minimapContextMenu
+
+- **类型**: `MinimapContextMenuConfig`
+- **默认值**: `{ enabled: true, items: 'basic', variant: 'glass' }`
+- **描述**: Minimap区域专用右键菜单配置
+
+#### MinimapContextMenuConfig 接口
+
+```typescript
+interface MinimapContextMenuConfig {
+  enabled?: boolean; // 是否启用Minimap右键菜单
+  items?: string[] | 'minimal' | 'basic' | 'full'; // 菜单项配置
+  customItems?: ContextMenuItem[]; // 自定义菜单项
+  variant?: 'classic' | 'glass'; // 菜单样式变体
+}
+```
+
+#### Minimap菜单示例
+
+```vue
+<!-- Minimap基础菜单 -->
+<Monaco :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }" />
+
+<!-- Minimap完整菜单 -->
+<Monaco :minimap-context-menu="{ enabled: true, items: 'full', variant: 'glass' }" />
+
+<!-- 禁用Minimap菜单 -->
+<Monaco :minimap-context-menu="{ enabled: false }" />
 ```
 
 ## Events
@@ -427,7 +463,7 @@ const { initMonacoEdit, destroy, setTheme, setLanguage } = useMonacoEdit({
 #### MonacoOptions
 
 ```typescript
-interface MonacoOptions {
+interface MonacoOptions extends monaco.editor.IStandaloneEditorConstructionOptions {
   target: HTMLElement; // 编辑器挂载的目标元素
   languages: BundledLanguage[]; // 支持的语言列表
   codeValue: string; // 初始代码内容
@@ -457,8 +493,10 @@ interface UseMonacoEditReturn {
   enableAutoResize: () => void; // 启用自动调整
   disableAutoResize: () => void; // 禁用自动调整
   editInstance: EditInstance | null; // 编辑器实例
-  onContextMenu: (callback: (event: MouseEvent) => void) => void; // 右键菜单回调
-  offContextMenu: () => void; // 移除右键菜单回调
+  onContextMenu: (callback: (event: MouseEvent) => void) => void; // 编辑器右键菜单回调
+  offContextMenu: () => void; // 移除编辑器右键菜单回调
+  onMinimapContextMenu: (callback: (event: MouseEvent) => void) => void; // Minimap右键菜单回调
+  offMinimapContextMenu: () => void; // 移除Minimap右键菜单回调
 }
 ```
 
@@ -512,15 +550,28 @@ interface UseMonacoEditReturn {
 
 #### onContextMenu(callback) / offContextMenu()
 
-- **描述**: 注册或移除右键菜单事件回调
+- **描述**: 注册或移除编辑器区域右键菜单事件回调
 - **用法**:
 
   ```typescript
   onContextMenu((event) => {
-    console.log('右键菜单事件:', event);
+    console.log('编辑器右键菜单事件:', event);
   });
 
   offContextMenu() // 移除回调
+  ```
+
+#### onMinimapContextMenu(callback) / offMinimapContextMenu()
+
+- **描述**: 注册或移除Minimap区域右键菜单事件回调
+- **用法**:
+
+  ```typescript
+  onMinimapContextMenu((event) => {
+    console.log('Minimap右键菜单事件:', event);
+  });
+
+  offMinimapContextMenu() // 移除回调
   ```
 
 ---
@@ -648,7 +699,7 @@ import type * as monaco from 'monaco-editor-core';
 import type { BundledLanguage, BundledTheme } from 'shiki';
 
 // Hook 选项
-interface MonacoOptions {
+interface MonacoOptions extends monaco.editor.IStandaloneEditorConstructionOptions {
   target: HTMLElement;
   languages: BundledLanguage[];
   codeValue: string;
@@ -688,6 +739,7 @@ type EditInstance = monaco.editor.IStandaloneCodeEditor;
 interface ContextMenuPosition {
   x: number;
   y: number;
+  direction?: 'down' | 'up'; // 菜单显示方向
 }
 
 // 菜单项
