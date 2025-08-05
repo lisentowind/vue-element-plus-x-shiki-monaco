@@ -10,10 +10,9 @@
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "import": "./dist/es/index.js",
-      "require": "./dist/umd/index.js"
+      "import": "./dist/es/index.js"
     },
-    "./es/*": "./dist/es/*",
+    "./*": "./dist/es/*",
     "./styles/*": "./dist/styles/*",
     "./types/*": "./types/components/*/types.d.ts"
   },
@@ -40,6 +39,7 @@
     "types",
     "!dist/**/*.map",
     "!types/**/*.map",
+    "!types/stories/**/*",
     "README.md",
     "LICENSE",
     "README.en.md"
@@ -52,7 +52,7 @@
     "build:umd": "vue-tsc -b && vite build --config vite.config.umd.ts",
     "build": "rimraf dist && rimraf types && pnpm run aeac && pnpm run build:es && pnpm run build:umd",
     "build:storybook": "storybook build",
-    "aeac": "rimraf src/index.ts && rimraf src/install.ts && esno .build/scripts/auto-export-all-components.js",
+    "aeac": "rimraf src/index.ts && rimraf src/install.ts && esno .build/scripts/auto-export-all-components.ts",
     "oxlint": "oxlint",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -99,6 +99,7 @@
     "@vue-shiki-monaco/tsconfig": "workspace:^",
     "@vue/runtime-core": "^3.5.18",
     "@vue/tsconfig": "^0.7.0",
+    "esno": "^4.8.0",
     "fast-glob": "^3.3.3",
     "fs-extra": "^11.2.0",
     "happy-dom": "^14.0.0",

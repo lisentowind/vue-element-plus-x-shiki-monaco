@@ -13,34 +13,10 @@ import {
   MENU_PRESETS,
   MINIMAP_MENU_PRESETS,
 } from "../../hooks/useContextMenu/editorMenu";
-import "../../assets/style/global.scss";
+// import "../../assets/style/global.scss";
+import type { MonacoProps } from "./types";
 
-interface Props {
-  currentLanguage?: BundledLanguage;
-  currentTheme?: BundledTheme;
-  languages?: BundledLanguage[];
-  themes?: BundledTheme[];
-  value?: string;
-  height?: string;
-  showToolbar?: boolean;
-  autoResize?: boolean;
-  monacoEditClass?: string;
-  fileName?: string;
-  contextMenu?: {
-    enabled?: boolean;
-    items?: string[] | "minimal" | "basic" | "full";
-    customItems?: ContextMenuItem[];
-    variant?: "classic" | "glass";
-  };
-  minimapContextMenu?: {
-    enabled?: boolean;
-    items?: string[] | "minimal" | "basic" | "full";
-    customItems?: ContextMenuItem[];
-    variant?: "classic" | "glass";
-  };
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MonacoProps>(), {
   currentLanguage: "javascript",
   currentTheme: "vitesse-light",
   languages: () => [
@@ -382,46 +358,25 @@ defineExpose({
 
 <template>
   <div class="monaco-editor-wrapper" :class="props.monacoEditClass">
-    <MonacoHeader
-      v-if="props.showToolbar"
-      :current-language="props.currentLanguage"
-      :file-name="props.fileName ?? 'Untitled'"
-      :theme="props.currentTheme"
-      @copy="handleCopy"
-      @format="handleFormat"
-    >
+    <MonacoHeader v-if="props.showToolbar" :current-language="props.currentLanguage"
+      :file-name="props.fileName ?? 'Untitled'" :theme="props.currentTheme" @copy="handleCopy" @format="handleFormat">
       <template #toolbar>
         <slot name="toolbar"></slot>
       </template>
     </MonacoHeader>
-    <div
-      ref="editorRef"
-      class="monaco-editor"
-      :class="{ noHeader: !props.showToolbar }"
-      :style="{ height: props.height }"
-    ></div>
+    <div ref="editorRef" class="monaco-editor" :class="{ noHeader: !props.showToolbar }"
+      :style="{ height: props.height }">
+    </div>
 
     <!-- 自定义右键菜单 -->
-    <ContextMenu
-      :visible="contextMenu.isVisible.value"
-      :position="contextMenu.position"
-      :items="contextMenuItems"
-      :variant="props.contextMenu?.variant || 'glass'"
-      :theme="props.currentTheme"
-      @item-click="handleContextMenuItemClick"
-      @hide="contextMenu.hide"
-    />
+    <ContextMenu :visible="contextMenu.isVisible.value" :position="contextMenu.position" :items="contextMenuItems"
+      :variant="props.contextMenu?.variant || 'glass'" :theme="props.currentTheme"
+      @item-click="handleContextMenuItemClick" @hide="contextMenu.hide" />
 
     <!-- Minimap专用右键菜单 -->
-    <ContextMenu
-      :visible="minimapContextMenu.isVisible.value"
-      :position="minimapContextMenu.position"
-      :items="minimapContextMenuItems"
-      :variant="props.minimapContextMenu?.variant || 'glass'"
-      :theme="props.currentTheme"
-      @item-click="handleMinimapContextMenuItemClick"
-      @hide="minimapContextMenu.hide"
-    />
+    <ContextMenu :visible="minimapContextMenu.isVisible.value" :position="minimapContextMenu.position"
+      :items="minimapContextMenuItems" :variant="props.minimapContextMenu?.variant || 'glass'"
+      :theme="props.currentTheme" @item-click="handleMinimapContextMenuItemClick" @hide="minimapContextMenu.hide" />
   </div>
 </template>
 

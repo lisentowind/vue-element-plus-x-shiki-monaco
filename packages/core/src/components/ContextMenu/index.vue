@@ -3,18 +3,10 @@ import { computed } from "vue";
 import type {
   ContextMenuItem,
   MenuItem,
-  ContextMenuPosition,
 } from "../../hooks/useContextMenu";
+import type { ContextMenuProps } from "./types";
 
-interface Props {
-  visible?: boolean;
-  position?: ContextMenuPosition;
-  items?: ContextMenuItem[];
-  variant?: 'classic' | 'glass';
-  theme?: string; // 添加主题属性用于判断亮暗色
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ContextMenuProps>(), {
   visible: false,
   position: () => ({ x: 0, y: 0 }),
   items: () => [],
@@ -63,24 +55,11 @@ const handleMenuClick = (event: Event) => {
 
 <template>
   <Teleport to="body">
-    <div
-      v-if="visible"
-      :class="{ ...menuClasses, ...themeClasses }"
-      :style="menuStyle"
-      @click="handleMenuClick"
-    >
+    <div v-if="visible" :class="{ ...menuClasses, ...themeClasses }" :style="menuStyle" @click="handleMenuClick">
       <div class="context-menu-content">
         <template v-for="(item, index) in items" :key="index">
-          <div
-            v-if="item.type === 'separator'"
-            class="context-menu-separator"
-          ></div>
-          <div
-            v-else
-            class="context-menu-item"
-            :class="{ disabled: item.disabled }"
-            @click="handleItemClick(item)"
-          >
+          <div v-if="item.type === 'separator'" class="context-menu-separator"></div>
+          <div v-else class="context-menu-item" :class="{ disabled: item.disabled }" @click="handleItemClick(item)">
             <div class="menu-item-content">
               <div class="menu-item-icon" v-if="item.icon">
                 <i :class="item.icon"></i>

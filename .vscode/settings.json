@@ -97,6 +97,9 @@
     "nord",
     "oxlint",
     "rolldown",
-    "unplugin"
+    "shiki",
+    "shikijs",
+    "unplugin",
+    "vitesse"
   ]
 }

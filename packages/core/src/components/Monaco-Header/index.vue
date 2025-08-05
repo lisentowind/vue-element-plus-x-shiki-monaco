@@ -1,15 +1,8 @@
 <script lang="ts" setup>
-import type { BundledLanguage, BundledTheme } from "shiki";
 import { computed } from "vue";
+import type { MonacoHeaderProps } from "./type";
 
-interface Props {
-  currentLanguage?: BundledLanguage;
-  fileName?: string;
-  showToolbar?: boolean;
-  theme?: BundledTheme; // 添加主题属性
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MonacoHeaderProps>(), {
   currentLanguage: "javascript",
   showToolbar: true,
   theme: "vitesse-light",
@@ -77,18 +70,9 @@ defineExpose({
         </div>
         <div class="toolbar-right">
           <button class="toolbar-btn" @click="handleCopy" title="复制代码">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path
-                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
-              ></path>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
             </svg>
           </button>
         </div>
