@@ -145,9 +145,10 @@ title: API 参考
 ```typescript
 interface ContextMenuConfig {
   enabled?: boolean; // 是否启用右键菜单
-  items?: string[] | 'minimal' | 'basic' | 'full'; // 菜单项配置
+  items?: string[] | "minimal" | "basic" | "full"; // 菜单项配置
   customItems?: ContextMenuItem[]; // 自定义菜单项
-  variant?: 'classic' | 'glass'; // 菜单样式变体
+  variant?: "classic" | "glass"; // 菜单样式变体
+  teleportTarget?: string | HTMLElement; // 菜单的挂载目标
 }
 ```
 
@@ -167,23 +168,50 @@ interface ContextMenuConfig {
 <Monaco :context-menu="{ enabled: true, items: 'full', variant: 'classic' }" />
 
 <!-- 自定义菜单项 -->
-<Monaco :context-menu="{
-  enabled: true,
-  items: ['copy', 'paste', 'selectAll'],
-  variant: 'glass',
-  customItems: [
-    {
-      type: 'separator'
-    },
-    {
-      type: 'item',
-      id: 'custom-action',
-      label: '自定义操作',
-      shortcut: 'Ctrl+Shift+X',
-      action: () => console.log('自定义操作')
-    }
-  ]
-}" />
+<Monaco
+  :context-menu="{
+    enabled: true,
+    items: ['copy', 'paste', 'selectAll'],
+    variant: 'glass',
+    teleportTarget: '.my-menu-container',
+    customItems: [
+      {
+        type: 'separator',
+      },
+      {
+        type: 'item',
+        id: 'custom-action',
+        label: '自定义操作',
+        shortcut: 'Ctrl+Shift+X',
+        action: () => console.log('自定义操作'),
+      },
+    ],
+  }"
+/>
+
+<!-- 指定菜单挂载到特定DOM元素 -->
+<Monaco
+  :context-menu="{
+    enabled: true,
+    items: 'full',
+    variant: 'glass',
+    teleportTarget: document.getElementById('menu-container'),
+  }"
+/>
+```
+
+### teleportTarget
+
+- **类型**: `string | HTMLElement`
+- **默认值**: `'.monaco-editor'`
+- **描述**: 指定右键菜单的挂载目标，用于控制菜单渲染的位置
+
+```vue
+<!-- 挂载到特定选择器 -->
+<Monaco teleport-target=".my-container" />
+
+<!-- 挂载到DOM元素 -->
+<Monaco :teleport-target="myElement" />
 ```
 
 ### minimapContextMenu
@@ -197,9 +225,10 @@ interface ContextMenuConfig {
 ```typescript
 interface MinimapContextMenuConfig {
   enabled?: boolean; // 是否启用Minimap右键菜单
-  items?: string[] | 'minimal' | 'basic' | 'full'; // 菜单项配置
+  items?: string[] | "minimal" | "basic" | "full"; // 菜单项配置
   customItems?: ContextMenuItem[]; // 自定义菜单项
-  variant?: 'classic' | 'glass'; // 菜单样式变体
+  variant?: "classic" | "glass"; // 菜单样式变体
+  teleportTarget?: string | HTMLElement; // 菜单的挂载目标
 }
 ```
 
@@ -207,10 +236,14 @@ interface MinimapContextMenuConfig {
 
 ```vue
 <!-- Minimap基础菜单 -->
-<Monaco :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }" />
+<Monaco
+  :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }"
+/>
 
 <!-- Minimap完整菜单 -->
-<Monaco :minimap-context-menu="{ enabled: true, items: 'full', variant: 'glass' }" />
+<Monaco
+  :minimap-context-menu="{ enabled: true, items: 'full', variant: 'glass' }"
+/>
 
 <!-- 禁用Minimap菜单 -->
 <Monaco :minimap-context-menu="{ enabled: false }" />
@@ -265,14 +298,14 @@ interface MinimapContextMenuConfig {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const getEditorInstance = () => {
-  const editor = monacoRef.value?.getEditor()
+  const editor = monacoRef.value?.getEditor();
   if (editor) {
-    console.log('编辑器实例:', editor)
+    console.log("编辑器实例:", editor);
   }
-}
+};
 </script>
 ```
 
@@ -283,11 +316,11 @@ const getEditorInstance = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const updateCode = () => {
-  monacoRef.value?.setValue('console.log("新代码")')
-}
+  monacoRef.value?.setValue('console.log("新代码")');
+};
 </script>
 ```
 
@@ -298,12 +331,12 @@ const updateCode = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const getCurrentCode = () => {
-  const code = monacoRef.value?.getValue()
-  console.log('当前代码:', code)
-}
+  const code = monacoRef.value?.getValue();
+  console.log("当前代码:", code);
+};
 </script>
 ```
 
@@ -313,11 +346,11 @@ const getCurrentCode = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const focusEditor = () => {
-  monacoRef.value?.focus()
-}
+  monacoRef.value?.focus();
+};
 </script>
 ```
 
@@ -328,11 +361,11 @@ const focusEditor = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const switchTheme = () => {
-  monacoRef.value?.setTheme('vitesse-dark')
-}
+  monacoRef.value?.setTheme("vitesse-dark");
+};
 </script>
 ```
 
@@ -343,11 +376,11 @@ const switchTheme = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const switchLanguage = () => {
-  monacoRef.value?.setLanguage('typescript')
-}
+  monacoRef.value?.setLanguage("typescript");
+};
 </script>
 ```
 
@@ -357,11 +390,11 @@ const switchLanguage = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const refreshLayout = () => {
-  monacoRef.value?.layout()
-}
+  monacoRef.value?.layout();
+};
 </script>
 ```
 
@@ -371,11 +404,11 @@ const refreshLayout = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const enableResize = () => {
-  monacoRef.value?.enableAutoResize()
-}
+  monacoRef.value?.enableAutoResize();
+};
 </script>
 ```
 
@@ -385,11 +418,11 @@ const enableResize = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const disableResize = () => {
-  monacoRef.value?.disableAutoResize()
-}
+  monacoRef.value?.disableAutoResize();
+};
 </script>
 ```
 
@@ -399,11 +432,11 @@ const disableResize = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const copyCurrentCode = () => {
-  monacoRef.value?.copyCode()
-}
+  monacoRef.value?.copyCode();
+};
 </script>
 ```
 
@@ -413,11 +446,11 @@ const copyCurrentCode = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const pasteFromClipboard = () => {
-  monacoRef.value?.pasteCode()
-}
+  monacoRef.value?.pasteCode();
+};
 </script>
 ```
 
@@ -427,11 +460,11 @@ const pasteFromClipboard = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const formatCurrentCode = () => {
-  monacoRef.value?.formatCode()
-}
+  monacoRef.value?.formatCode();
+};
 </script>
 ```
 
@@ -442,19 +475,19 @@ const formatCurrentCode = () => {
 ### 基本用法
 
 ```typescript
-import { useMonacoEdit } from 'vue-shiki-monaco';
+import { useMonacoEdit } from "vue-shiki-monaco";
 
 const { initMonacoEdit, destroy, setTheme, setLanguage } = useMonacoEdit({
   target: editorElement,
-  languages: ['javascript', 'typescript'],
-  themes: ['vitesse-light', 'vitesse-dark'],
+  languages: ["javascript", "typescript"],
+  themes: ["vitesse-light", "vitesse-dark"],
   codeValue: 'console.log("Hello World")',
-  defaultTheme: 'vitesse-light',
-  defaultLanguage: 'javascript',
+  defaultTheme: "vitesse-light",
+  defaultLanguage: "javascript",
   contextMenu: {
     enabled: true,
-    items: 'full'
-  }
+    items: "full",
+  },
 });
 ```
 
@@ -463,16 +496,18 @@ const { initMonacoEdit, destroy, setTheme, setLanguage } = useMonacoEdit({
 #### MonacoOptions
 
 ```typescript
-interface MonacoOptions extends monaco.editor.IStandaloneEditorConstructionOptions {
+interface MonacoOptions
+  extends monaco.editor.IStandaloneEditorConstructionOptions {
   target: HTMLElement; // 编辑器挂载的目标元素
   languages: BundledLanguage[]; // 支持的语言列表
   codeValue: string; // 初始代码内容
   themes: BundledTheme[]; // 支持的主题列表
   defaultTheme: BundledTheme; // 默认主题
   defaultLanguage: BundledLanguage; // 默认语言
-  contextMenu?: { // 右键菜单配置
+  contextMenu?: {
+    // 右键菜单配置
     enabled?: boolean;
-    items?: string[] | 'minimal' | 'basic' | 'full';
+    items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
   };
 }
@@ -526,7 +561,7 @@ interface UseMonacoEditReturn {
 - **描述**: 动态切换编辑器主题
 - **用法**:
   ```typescript
-  await setTheme('vitesse-dark');
+  await setTheme("vitesse-dark");
   ```
 
 #### setLanguage(language)
@@ -536,7 +571,7 @@ interface UseMonacoEditReturn {
 - **描述**: 动态切换编辑器语言
 - **用法**:
   ```typescript
-  await setLanguage('typescript');
+  await setLanguage("typescript");
   ```
 
 #### enableAutoResize() / disableAutoResize()
@@ -555,10 +590,10 @@ interface UseMonacoEditReturn {
 
   ```typescript
   onContextMenu((event) => {
-    console.log('编辑器右键菜单事件:', event);
+    console.log("编辑器右键菜单事件:", event);
   });
 
-  offContextMenu() // 移除回调
+  offContextMenu(); // 移除回调
   ```
 
 #### onMinimapContextMenu(callback) / offMinimapContextMenu()
@@ -568,10 +603,10 @@ interface UseMonacoEditReturn {
 
   ```typescript
   onMinimapContextMenu((event) => {
-    console.log('Minimap右键菜单事件:', event);
+    console.log("Minimap右键菜单事件:", event);
   });
 
-  offMinimapContextMenu() // 移除回调
+  offMinimapContextMenu(); // 移除回调
   ```
 
 ---
@@ -583,26 +618,27 @@ interface UseMonacoEditReturn {
 ### 基本用法
 
 ```typescript
-import { useContextMenu } from 'vue-shiki-monaco';
+import { useContextMenu } from "vue-shiki-monaco";
 
 const contextMenu = useContextMenu({
   items: [
     {
-      type: 'item',
-      id: 'copy',
-      label: '复制',
-      shortcut: 'Ctrl+C',
-      action: () => console.log('复制')
+      type: "item",
+      id: "copy",
+      label: "复制",
+      shortcut: "Ctrl+C",
+      action: () => console.log("复制"),
     },
-    { type: 'separator' },
+    { type: "separator" },
     {
-      type: 'item',
-      id: 'paste',
-      label: '粘贴',
-      shortcut: 'Ctrl+V',
-      action: () => console.log('粘贴')
-    }
-  ]
+      type: "item",
+      id: "paste",
+      label: "粘贴",
+      shortcut: "Ctrl+V",
+      action: () => console.log("粘贴"),
+    },
+  ],
+  target: ".monaco-editor", // 指定菜单的目标容器
 });
 ```
 
@@ -613,6 +649,7 @@ const contextMenu = useContextMenu({
 ```typescript
 interface UseContextMenuOptions {
   items: ContextMenuItem[]; // 菜单项列表
+  target?: string | HTMLDivElement; // 菜单的目标容器
   onShow?: () => void; // 显示时回调
   onHide?: () => void; // 隐藏时回调
 }
@@ -636,7 +673,7 @@ interface UseContextMenuReturn {
 ```typescript
 // 菜单项
 interface MenuItem {
-  type: 'item';
+  type: "item";
   id: string; // 唯一标识
   label: string; // 显示文本
   icon?: string; // 图标类名
@@ -647,7 +684,7 @@ interface MenuItem {
 
 // 分隔符
 interface MenuItemSeparator {
-  type: 'separator';
+  type: "separator";
 }
 
 type ContextMenuItem = MenuItem | MenuItemSeparator;
@@ -660,8 +697,8 @@ type ContextMenuItem = MenuItem | MenuItemSeparator;
 ### Monaco 组件类型
 
 ```typescript
-import type { BundledLanguage, BundledTheme } from 'shiki';
-import type { EditInstance } from 'vue-shiki-monaco';
+import type { BundledLanguage, BundledTheme } from "shiki";
+import type { EditInstance } from "vue-shiki-monaco";
 
 // 组件 Props
 interface MonacoProps {
@@ -675,10 +712,19 @@ interface MonacoProps {
   autoResize?: boolean;
   monacoEditClass?: string;
   fileName?: string;
+  teleportTarget?: string | HTMLElement; // 菜单的挂载目标
   contextMenu?: {
     enabled?: boolean;
-    items?: string[] | 'minimal' | 'basic' | 'full';
+    items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
+    teleportTarget?: string | HTMLElement; // 菜单的挂载目标
+  };
+  minimapContextMenu?: {
+    enabled?: boolean;
+    items?: string[] | "minimal" | "basic" | "full";
+    customItems?: ContextMenuItem[];
+    variant?: "classic" | "glass";
+    teleportTarget?: string | HTMLElement; // 菜单的挂载目标
   };
 }
 
@@ -695,11 +741,12 @@ type EditInstance = monaco.editor.IStandaloneCodeEditor;
 ### Hook 类型
 
 ```typescript
-import type * as monaco from 'monaco-editor-core';
-import type { BundledLanguage, BundledTheme } from 'shiki';
+import type * as monaco from "monaco-editor-core";
+import type { BundledLanguage, BundledTheme } from "shiki";
 
 // Hook 选项
-interface MonacoOptions extends monaco.editor.IStandaloneEditorConstructionOptions {
+interface MonacoOptions
+  extends monaco.editor.IStandaloneEditorConstructionOptions {
   target: HTMLElement;
   languages: BundledLanguage[];
   codeValue: string;
@@ -708,7 +755,7 @@ interface MonacoOptions extends monaco.editor.IStandaloneEditorConstructionOptio
   defaultLanguage: BundledLanguage;
   contextMenu?: {
     enabled?: boolean;
-    items?: string[] | 'minimal' | 'basic' | 'full';
+    items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
   };
 }
@@ -739,12 +786,12 @@ type EditInstance = monaco.editor.IStandaloneCodeEditor;
 interface ContextMenuPosition {
   x: number;
   y: number;
-  direction?: 'down' | 'up'; // 菜单显示方向
+  direction?: "down" | "up"; // 菜单显示方向
 }
 
 // 菜单项
 interface MenuItem {
-  type: 'item';
+  type: "item";
   id: string;
   label: string;
   icon?: string;
@@ -755,12 +802,12 @@ interface MenuItem {
 
 // 分隔符
 interface MenuItemSeparator {
-  type: 'separator';
+  type: "separator";
 }
 
 // 联合类型
 type ContextMenuItem = MenuItem | MenuItemSeparator;
 
 // 菜单预设
-type MenuPreset = 'minimal' | 'basic' | 'full';
+type MenuPreset = "minimal" | "basic" | "full";
 ```

@@ -145,9 +145,10 @@ Supported themes include: `vitesse-light`, `vitesse-dark`, `github-light`, `gith
 ```typescript
 interface ContextMenuConfig {
   enabled?: boolean; // Whether to enable context menu
-  items?: string[] | 'minimal' | 'basic' | 'full'; // Menu item configuration
+  items?: string[] | "minimal" | "basic" | "full"; // Menu item configuration
   customItems?: ContextMenuItem[]; // Custom menu items
-  variant?: 'classic' | 'glass'; // Menu style variant
+  variant?: "classic" | "glass"; // Menu style variant
+  teleportTarget?: string | HTMLElement; // Menu mount target
 }
 ```
 
@@ -167,23 +168,50 @@ interface ContextMenuConfig {
 <Monaco :context-menu="{ enabled: true, items: 'full', variant: 'classic' }" />
 
 <!-- Custom menu items -->
-<Monaco :context-menu="{
-  enabled: true,
-  items: ['copy', 'paste', 'selectAll'],
-  variant: 'glass',
-  customItems: [
-    {
-      type: 'separator'
-    },
-    {
-      type: 'item',
-      id: 'custom-action',
-      label: 'Custom Action',
-      shortcut: 'Ctrl+Shift+X',
-      action: () => console.log('Custom action')
-    }
-  ]
-}" />
+<Monaco
+  :context-menu="{
+    enabled: true,
+    items: ['copy', 'paste', 'selectAll'],
+    variant: 'glass',
+    teleportTarget: '.my-menu-container',
+    customItems: [
+      {
+        type: 'separator',
+      },
+      {
+        type: 'item',
+        id: 'custom-action',
+        label: 'Custom Action',
+        shortcut: 'Ctrl+Shift+X',
+        action: () => console.log('Custom action'),
+      },
+    ],
+  }"
+/>
+
+<!-- Specify menu mount to specific DOM element -->
+<Monaco
+  :context-menu="{
+    enabled: true,
+    items: 'full',
+    variant: 'glass',
+    teleportTarget: document.getElementById('menu-container'),
+  }"
+/>
+```
+
+### teleportTarget
+
+- **Type**: `string | HTMLElement`
+- **Default**: `'.monaco-editor'`
+- **Description**: Specify the mount target for the context menu to control where the menu is rendered
+
+```vue
+<!-- Mount to specific selector -->
+<Monaco teleport-target=".my-container" />
+
+<!-- Mount to DOM element -->
+<Monaco :teleport-target="myElement" />
 ```
 
 ### minimapContextMenu
@@ -197,9 +225,10 @@ interface ContextMenuConfig {
 ```typescript
 interface MinimapContextMenuConfig {
   enabled?: boolean; // Whether to enable Minimap context menu
-  items?: string[] | 'minimal' | 'basic' | 'full'; // Menu item configuration
+  items?: string[] | "minimal" | "basic" | "full"; // Menu item configuration
   customItems?: ContextMenuItem[]; // Custom menu items
-  variant?: 'classic' | 'glass'; // Menu style variant
+  variant?: "classic" | "glass"; // Menu style variant
+  teleportTarget?: string | HTMLElement; // Menu mount target
 }
 ```
 
@@ -207,10 +236,14 @@ interface MinimapContextMenuConfig {
 
 ```vue
 <!-- Minimap basic menu -->
-<Monaco :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }" />
+<Monaco
+  :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }"
+/>
 
 <!-- Minimap full menu -->
-<Monaco :minimap-context-menu="{ enabled: true, items: 'full', variant: 'glass' }" />
+<Monaco
+  :minimap-context-menu="{ enabled: true, items: 'full', variant: 'glass' }"
+/>
 
 <!-- Disable Minimap menu -->
 <Monaco :minimap-context-menu="{ enabled: false }" />
@@ -265,14 +298,14 @@ The following methods can be accessed through `ref`:
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const getEditorInstance = () => {
-  const editor = monacoRef.value?.getEditor()
+  const editor = monacoRef.value?.getEditor();
   if (editor) {
-    console.log('Editor instance:', editor)
+    console.log("Editor instance:", editor);
   }
-}
+};
 </script>
 ```
 
@@ -283,11 +316,11 @@ const getEditorInstance = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const updateCode = () => {
-  monacoRef.value?.setValue('console.log("New code")')
-}
+  monacoRef.value?.setValue('console.log("New code")');
+};
 </script>
 ```
 
@@ -298,12 +331,12 @@ const updateCode = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const getCurrentCode = () => {
-  const code = monacoRef.value?.getValue()
-  console.log('Current code:', code)
-}
+  const code = monacoRef.value?.getValue();
+  console.log("Current code:", code);
+};
 </script>
 ```
 
@@ -313,11 +346,11 @@ const getCurrentCode = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const focusEditor = () => {
-  monacoRef.value?.focus()
-}
+  monacoRef.value?.focus();
+};
 </script>
 ```
 
@@ -328,11 +361,11 @@ const focusEditor = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const switchTheme = () => {
-  monacoRef.value?.setTheme('vitesse-dark')
-}
+  monacoRef.value?.setTheme("vitesse-dark");
+};
 </script>
 ```
 
@@ -343,11 +376,11 @@ const switchTheme = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const switchLanguage = () => {
-  monacoRef.value?.setLanguage('typescript')
-}
+  monacoRef.value?.setLanguage("typescript");
+};
 </script>
 ```
 
@@ -357,11 +390,11 @@ const switchLanguage = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const refreshLayout = () => {
-  monacoRef.value?.layout()
-}
+  monacoRef.value?.layout();
+};
 </script>
 ```
 
@@ -371,11 +404,11 @@ const refreshLayout = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const enableResize = () => {
-  monacoRef.value?.enableAutoResize()
-}
+  monacoRef.value?.enableAutoResize();
+};
 </script>
 ```
 
@@ -385,11 +418,11 @@ const enableResize = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const disableResize = () => {
-  monacoRef.value?.disableAutoResize()
-}
+  monacoRef.value?.disableAutoResize();
+};
 </script>
 ```
 
@@ -399,11 +432,11 @@ const disableResize = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const copyCurrentCode = () => {
-  monacoRef.value?.copyCode()
-}
+  monacoRef.value?.copyCode();
+};
 </script>
 ```
 
@@ -413,11 +446,11 @@ const copyCurrentCode = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const pasteFromClipboard = () => {
-  monacoRef.value?.pasteCode()
-}
+  monacoRef.value?.pasteCode();
+};
 </script>
 ```
 
@@ -427,11 +460,11 @@ const pasteFromClipboard = () => {
 
 ```vue
 <script setup>
-const monacoRef = ref()
+const monacoRef = ref();
 
 const formatCurrentCode = () => {
-  monacoRef.value?.formatCode()
-}
+  monacoRef.value?.formatCode();
+};
 </script>
 ```
 
@@ -442,19 +475,19 @@ const formatCurrentCode = () => {
 ### Basic Usage
 
 ```typescript
-import { useMonacoEdit } from 'vue-shiki-monaco';
+import { useMonacoEdit } from "vue-shiki-monaco";
 
 const { initMonacoEdit, destroy, setTheme, setLanguage } = useMonacoEdit({
   target: editorElement,
-  languages: ['javascript', 'typescript'],
-  themes: ['vitesse-light', 'vitesse-dark'],
+  languages: ["javascript", "typescript"],
+  themes: ["vitesse-light", "vitesse-dark"],
   codeValue: 'console.log("Hello World")',
-  defaultTheme: 'vitesse-light',
-  defaultLanguage: 'javascript',
+  defaultTheme: "vitesse-light",
+  defaultLanguage: "javascript",
   contextMenu: {
     enabled: true,
-    items: 'full'
-  }
+    items: "full",
+  },
 });
 ```
 
@@ -463,16 +496,18 @@ const { initMonacoEdit, destroy, setTheme, setLanguage } = useMonacoEdit({
 #### MonacoOptions
 
 ```typescript
-interface MonacoOptions extends monaco.editor.IStandaloneEditorConstructionOptions {
+interface MonacoOptions
+  extends monaco.editor.IStandaloneEditorConstructionOptions {
   target: HTMLElement; // Target element to mount the editor
   languages: BundledLanguage[]; // List of supported languages
   codeValue: string; // Initial code content
   themes: BundledTheme[]; // List of supported themes
   defaultTheme: BundledTheme; // Default theme
   defaultLanguage: BundledLanguage; // Default language
-  contextMenu?: { // Context menu configuration
+  contextMenu?: {
+    // Context menu configuration
     enabled?: boolean;
-    items?: string[] | 'minimal' | 'basic' | 'full';
+    items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
   };
 }
@@ -505,8 +540,8 @@ interface UseMonacoEditReturn {
 ### Monaco Component Types
 
 ```typescript
-import type { BundledLanguage, BundledTheme } from 'shiki';
-import type { EditInstance } from 'vue-shiki-monaco';
+import type { BundledLanguage, BundledTheme } from "shiki";
+import type { EditInstance } from "vue-shiki-monaco";
 
 // Component Props
 interface MonacoProps {
@@ -520,10 +555,19 @@ interface MonacoProps {
   autoResize?: boolean;
   monacoEditClass?: string;
   fileName?: string;
+  teleportTarget?: string | HTMLElement; // Menu mount target
   contextMenu?: {
     enabled?: boolean;
-    items?: string[] | 'minimal' | 'basic' | 'full';
+    items?: string[] | "minimal" | "basic" | "full";
     customItems?: ContextMenuItem[];
+    teleportTarget?: string | HTMLElement; // Menu mount target
+  };
+  minimapContextMenu?: {
+    enabled?: boolean;
+    items?: string[] | "minimal" | "basic" | "full";
+    customItems?: ContextMenuItem[];
+    variant?: "classic" | "glass";
+    teleportTarget?: string | HTMLElement; // Menu mount target
   };
 }
 
@@ -544,12 +588,12 @@ type EditInstance = monaco.editor.IStandaloneCodeEditor;
 interface ContextMenuPosition {
   x: number;
   y: number;
-  direction?: 'down' | 'up'; // Menu display direction
+  direction?: "down" | "up"; // Menu display direction
 }
 
 // Menu item
 interface MenuItem {
-  type: 'item';
+  type: "item";
   id: string;
   label: string;
   icon?: string;
@@ -560,12 +604,12 @@ interface MenuItem {
 
 // Separator
 interface MenuItemSeparator {
-  type: 'separator';
+  type: "separator";
 }
 
 // Union type
 type ContextMenuItem = MenuItem | MenuItemSeparator;
 
 // Menu preset
-type MenuPreset = 'minimal' | 'basic' | 'full';
+type MenuPreset = "minimal" | "basic" | "full";
 ```
