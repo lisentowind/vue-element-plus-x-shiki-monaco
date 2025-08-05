@@ -1,21 +1,21 @@
 // 基础样式
 .editor-toolbar {
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  padding: 8px 12px;
+  -webkit-backdrop-filter: var(--editor-blur-sm);
+  backdrop-filter: var(--editor-blur-sm);
+  padding: var(--editor-spacing-lg) var(--editor-spacing-2xl);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 32px;
+  min-height: var(--editor-size-3xl);
   position: relative;
-  border-radius: var(--editor-border-radius) var(--editor-border-radius) 0 0;
+  border-radius: var(--editor-radius-md) var(--editor-radius-md) 0 0;
 
   .default-toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    gap: 16px;
+    gap: var(--editor-spacing-3xl);
 
     .toolbar-left {
       display: flex;
@@ -25,19 +25,19 @@
       .file-info {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--editor-spacing-lg);
 
         .file-name {
-          font-size: 13px;
+          font-size: var(--editor-font-size-md);
           font-weight: 500;
-          font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+          font-family: var(--editor-font-mono);
         }
 
         .file-language {
-          font-size: 10px;
+          font-size: var(--editor-font-size-xs);
           font-weight: 600;
-          padding: 2px 6px;
-          border-radius: 6px;
+          padding: var(--editor-spacing-xs) var(--editor-spacing-md);
+          border-radius: var(--editor-radius-md);
           text-transform: uppercase;
           letter-spacing: 0.5px;
           border: 1px solid;
@@ -48,19 +48,19 @@
     .toolbar-right {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: var(--editor-spacing-sm);
 
       .toolbar-btn {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 28px;
-        height: 28px;
+        width: var(--editor-size-2xl);
+        height: var(--editor-size-2xl);
         background: transparent;
         border: none;
-        border-radius: 6px;
+        border-radius: var(--editor-radius-md);
         cursor: pointer;
-        transition: all 0.15s ease;
+        transition: all var(--editor-duration-normal) var(--editor-ease-smooth);
         position: relative;
 
         &:focus-visible {
@@ -69,9 +69,9 @@
         }
 
         svg {
-          width: 14px;
-          height: 14px;
-          stroke-width: 2;
+          width: var(--editor-size-2xl);
+          height: var(--editor-size-2xl);
+          stroke-width: 3;
         }
       }
     }
@@ -80,13 +80,9 @@
 
 // 亮色主题
 .editor-toolbar.theme-light {
-  background: rgba(255, 255, 255, 1);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.04),
-    0 2px 8px rgba(0, 0, 0, 0.02),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  background: var(--editor-color-bg-light);
+  border: 1px solid var(--editor-color-white-alpha-40);
+  box-shadow: var(--editor-shadow-toolbar-light);
 
   // 顶部高光条
   &::before {
@@ -96,104 +92,109 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
-    border-radius: 8px 8px 0 0;
+    background: linear-gradient(90deg, transparent, var(--editor-color-white-alpha-70), transparent);
+    border-radius: var(--editor-radius-md) var(--editor-radius-md) 0 0;
   }
 
   .file-name {
-    color: rgba(0, 0, 0, 0.85);
+    color: var(--editor-color-black-alpha-85);
   }
 
   .file-language {
-    color: #059669;
+    color: var(--editor-color-green-light);
     background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
     border-color: rgba(5, 150, 105, 0.3);
     box-shadow: 0 1px 2px rgba(5, 150, 105, 0.1);
   }
 
   .toolbar-btn {
-    color: rgba(0, 0, 0, 0.6);
+    color: var(--editor-text-primary);
+    background: var(--editor-color-white-alpha-5);
+    border: 1px solid var(--editor-color-black-alpha-10);
 
     &:hover {
-      background: rgba(0, 120, 255, 0.08);
-      color: #007aff;
+      background: var(--editor-color-blue-alpha-8);
+      color: var(--editor-color-blue-light);
       box-shadow: 0 2px 8px rgba(0, 120, 255, 0.1);
-      border: 1px solid rgba(0, 120, 255, 0.2);
+      border: 1px solid var(--editor-color-blue-alpha-15);
       transform: scale(1.05);
     }
 
     &:active {
-      background: rgba(0, 120, 255, 0.12);
+      background: var(--editor-color-blue-alpha-12);
       transform: scale(0.98);
     }
 
     &:focus-visible {
-      outline-color: #007aff;
+      outline-color: var(--editor-color-blue-light);
     }
   }
 }
 
 // 暗色主题
 .editor-toolbar.theme-dark {
+  // 重新定义暗色主题下的文字颜色变量
+  --editor-text-primary: #f8fafc;
+  --editor-text-secondary: #e2e8f0;
+  --editor-text-tertiary: #cbd5e1;
+  --editor-text-muted: #94a3b8;
+  --editor-text-disabled: #64748b;
+
   // 暗色主题的毛玻璃背景 - 与右键菜单保持一致
-  background: rgba(28, 28, 30, 1);
-  -webkit-backdrop-filter: blur(30px) saturate(180%) brightness(1.2);
-  backdrop-filter: blur(30px) saturate(180%) brightness(1.2);
+  background: var(--editor-color-bg-dark);
+  -webkit-backdrop-filter: var(--editor-blur-2xl) saturate(180%) brightness(1.2);
+  backdrop-filter: var(--editor-blur-2xl) saturate(180%) brightness(1.2);
 
   // 暗色渐变叠加
   background-image: linear-gradient(135deg,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 255, 255, 0.05) 50%,
+      var(--editor-color-white-alpha-10) 0%,
+      var(--editor-color-white-alpha-5) 50%,
       rgba(255, 255, 255, 0.02) 100%);
 
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 4px 16px rgba(0, 0, 0, 0.2),
-    0 2px 8px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--editor-color-white-alpha-15);
+  box-shadow: var(--editor-shadow-toolbar-dark);
 
   &::before {
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, var(--editor-color-white-alpha-20), transparent);
   }
 
   .file-name {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--editor-color-white-alpha-90);
   }
 
   .file-language {
-    color: #10b981;
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--editor-color-green-dark);
+    background: var(--editor-color-white-alpha-8);
+    border-color: var(--editor-color-white-alpha-10);
     box-shadow: 0 1px 2px rgba(16, 185, 129, 0.1);
   }
 
   .toolbar-btn {
-    color: rgba(255, 255, 255, 0.7);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    color: var(--editor-text-primary);
+    background: var(--editor-color-white-alpha-8);
+    border: 1px solid var(--editor-color-white-alpha-15);
+    -webkit-backdrop-filter: var(--editor-blur-lg);
+    backdrop-filter: var(--editor-blur-lg);
+    transition: all var(--editor-duration-slow) var(--editor-ease-spring);
 
     &:hover {
-      background: rgba(10, 132, 255, 0.2);
-      color: #0a84ff;
-      -webkit-backdrop-filter: blur(25px);
-      backdrop-filter: blur(25px);
+      background: var(--editor-color-blue-alpha-25);
+      color: var(--editor-color-blue-dark);
+      border: 1px solid var(--editor-color-blue-alpha-30);
+      -webkit-backdrop-filter: var(--editor-blur-xl);
+      backdrop-filter: var(--editor-blur-xl);
       transform: scale(1.02);
 
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        0 2px 8px rgba(10, 132, 255, 0.2);
+      box-shadow: var(--editor-shadow-hover-dark);
     }
 
     &:active {
-      background: rgba(10, 132, 255, 0.25);
+      background: var(--editor-color-blue-alpha-25);
       transform: scale(0.98);
     }
 
     &:focus-visible {
-      outline-color: #0a84ff;
+      outline-color: var(--editor-color-blue-dark);
     }
   }
 }

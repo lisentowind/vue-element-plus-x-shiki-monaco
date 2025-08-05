@@ -7,7 +7,7 @@
   pointer-events: auto;
 
   .context-menu-content {
-    padding: 4px; // 进一步减小容器内边距
+    padding: var(--editor-spacing-sm); // 进一步减小容器内边距
     min-width: 180px;
     max-width: 250px;
     max-height: 45vh; // 限制最大高度为视口高度的45%
@@ -47,7 +47,7 @@
     align-items: center;
     cursor: pointer;
     transition: all 0.1s ease;
-    font-size: 13px;
+    font-size: var(--editor-font-size-md);
     position: relative;
 
     &.disabled {
@@ -59,16 +59,16 @@
       display: flex;
       align-items: center;
       width: 100%;
-      gap: 8px;
+      gap: var(--editor-spacing-lg);
     }
 
     .menu-item-icon {
-      width: 16px;
-      height: 16px;
+      width: var(--editor-size-md);
+      height: var(--editor-size-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: var(--editor-size-sm);
     }
 
     .menu-item-label {
@@ -100,7 +100,7 @@
     box-shadow:
       0 4px 12px rgba(0, 0, 0, 0.15),
       0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 4px; // 进一步减小容器内边距
+    padding: var(--editor-spacing-sm); // 进一步减小容器内边距
     // 移除固定动画，使用方向感知动画
   }
 
@@ -119,7 +119,7 @@
     }
 
     .menu-item-content {
-      gap: 8px;
+      gap: var(--editor-spacing-lg);
     }
 
     .menu-item-shortcut {
@@ -161,7 +161,7 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.6),
         inset 0 -1px 0 rgba(255, 255, 255, 0.2);
 
-      padding: 4px; // 进一步减小容器内边距
+      padding: var(--editor-spacing-sm); // 进一步减小容器内边距
       // 移除固定动画，使用方向感知动画
 
       // 顶部高光条
@@ -275,7 +275,7 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.15),
         inset 0 -1px 0 rgba(255, 255, 255, 0.05);
 
-      padding: 4px; // 进一步减小容器内边距
+      padding: var(--editor-spacing-sm); // 进一步减小容器内边距
       // 移除固定动画，使用方向感知动画
 
       // 暗色主题滚动条样式

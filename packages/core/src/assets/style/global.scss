@@ -1,79 +1,471 @@
+// ===========================
+// 编辑器主题系统 - 亮色主题（默认）
+// ===========================
 body {
-  --editor-border-radius: 8px;
-  --editor-border-color: #e5e7eb;
-  --editor-bg: #ffffff;
-  --editor-toolbar-bg: #f8fafc;
-  --editor-toolbar-border: #e2e8f0;
-  --editor-toolbar-border-bottom: #d1d5db;
-  --editor-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --editor-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --editor-text-primary: #374151;
-  --editor-text-secondary: #6b7280;
-  --editor-text-muted: #9ca3af;
-  --editor-toolbar-shadow: inset 0 -1px 0 #e2e8f0, 0 1px 2px rgba(0, 0, 0, 0.05);
-
-  --toolbar-bg: rgba(255, 255, 255, 0.95);
-  --toolbar-border: rgba(226, 232, 240, 0.8);
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --text-muted: #94a3b8;
-  --accent-color: #3b82f6;
-  --accent-light: #dbeafe;
-  --btn-hover: rgba(59, 130, 246, 0.08);
-  --btn-active: rgba(59, 130, 246, 0.12);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  // ========== 基础设计系统 ==========
+  
+  // 边框圆角
+  --editor-radius-xs: 2px;
+  --editor-radius-sm: 4px;
+  --editor-radius-md: 6px;
+  --editor-radius-lg: 8px;
+  --editor-radius-xl: 12px;
+  --editor-radius-2xl: 14px;
+  --editor-radius-3xl: 16px;
+  
+  // 间距系统
+  --editor-spacing-xs: 2px;
+  --editor-spacing-sm: 4px;
+  --editor-spacing-md: 6px;
+  --editor-spacing-lg: 8px;
+  --editor-spacing-xl: 10px;
+  --editor-spacing-2xl: 12px;
+  --editor-spacing-3xl: 16px;
+  --editor-spacing-4xl: 20px;
+  --editor-spacing-5xl: 24px;
+  
+  // 字体大小
+  --editor-font-size-xs: 10px;
+  --editor-font-size-sm: 11px;
+  --editor-font-size-base: 12px;
+  --editor-font-size-md: 13px;
+  --editor-font-size-lg: 14px;
+  --editor-font-size-xl: 16px;
+  
+  // 字体家族
+  --editor-font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  --editor-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  // 尺寸
+  --editor-size-xs: 12px;
+  --editor-size-sm: 14px;
+  --editor-size-md: 16px;
+  --editor-size-lg: 20px;
+  --editor-size-xl: 24px;
+  --editor-size-2xl: 28px;
+  --editor-size-3xl: 32px;
+  --editor-size-4xl: 36px;
+  
+  // 模糊效果
+  --editor-blur-xs: blur(4px);
+  --editor-blur-sm: blur(8px);
+  --editor-blur-md: blur(12px);
+  --editor-blur-lg: blur(16px);
+  --editor-blur-xl: blur(20px);
+  --editor-blur-2xl: blur(25px);
+  --editor-blur-3xl: blur(30px);
+  
+  // 动画缓动函数
+  --editor-ease-spring: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --editor-ease-bounce: cubic-bezier(0.2, 0, 0.13, 1.5);
+  --editor-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --editor-ease-sharp: cubic-bezier(0.4, 0, 0.6, 1);
+  
+  // 动画持续时间
+  --editor-duration-fast: 0.1s;
+  --editor-duration-normal: 0.2s;
+  --editor-duration-slow: 0.3s;
+  
+  // ========== 亮色主题颜色系统 ==========
+  
+  // 主要背景色
+  --editor-bg-primary: #ffffff;
+  --editor-bg-secondary: #f8fafc;
+  --editor-bg-tertiary: #f1f5f9;
+  --editor-bg-elevated: rgba(255, 255, 255, 0.95);
+  --editor-bg-overlay: rgba(255, 255, 255, 0.85);
+  
+  // 文字颜色
+  --editor-text-primary: #1e293b;
+  --editor-text-secondary: #64748b;
+  --editor-text-tertiary: #94a3b8;
+  --editor-text-muted: #cbd5e1;
+  --editor-text-disabled: #e2e8f0;
+  --editor-text-inverse: #ffffff;
+  
+  // 边框颜色
+  --editor-border-primary: #e2e8f0;
+  --editor-border-secondary: #cbd5e1;
+  --editor-border-focus: #3b82f6;
+  --editor-border-error: #ef4444;
+  --editor-border-success: #10b981;
+  --editor-border-warning: #f59e0b;
+  
+  // 主题色
+  --editor-primary: #3b82f6;
+  --editor-primary-hover: #2563eb;
+  --editor-primary-active: #1d4ed8;
+  --editor-primary-light: #dbeafe;
+  --editor-primary-lighter: #eff6ff;
+  
+  // 次要主题色
+  --editor-secondary: #6366f1;
+  --editor-secondary-hover: #4f46e5;
+  --editor-secondary-active: #4338ca;
+  --editor-secondary-light: #e0e7ff;
+  --editor-secondary-lighter: #f0f4ff;
+  
+  // 成功色
+  --editor-success: #10b981;
+  --editor-success-hover: #059669;
+  --editor-success-active: #047857;
+  --editor-success-light: #d1fae5;
+  --editor-success-lighter: #ecfdf5;
+  
+  // 警告色
+  --editor-warning: #f59e0b;
+  --editor-warning-hover: #d97706;
+  --editor-warning-active: #b45309;
+  --editor-warning-light: #fef3c7;
+  --editor-warning-lighter: #fffbeb;
+  
+  // 错误色
+  --editor-error: #ef4444;
+  --editor-error-hover: #dc2626;
+  --editor-error-active: #b91c1c;
+  --editor-error-light: #fecaca;
+  --editor-error-lighter: #fef2f2;
+  
+  // 信息色
+  --editor-info: #06b6d4;
+  --editor-info-hover: #0891b2;
+  --editor-info-active: #0e7490;
+  --editor-info-light: #cffafe;
+  --editor-info-lighter: #f0fdff;
+  
+  // 透明度变量
+  --editor-alpha-50: rgba(255, 255, 255, 0.5);
+  --editor-alpha-60: rgba(255, 255, 255, 0.6);
+  --editor-alpha-70: rgba(255, 255, 255, 0.7);
+  --editor-alpha-80: rgba(255, 255, 255, 0.8);
+  --editor-alpha-90: rgba(255, 255, 255, 0.9);
+  --editor-alpha-95: rgba(255, 255, 255, 0.95);
+  
+  // 黑色透明度
+  --editor-alpha-black-5: rgba(0, 0, 0, 0.05);
+  --editor-alpha-black-10: rgba(0, 0, 0, 0.1);
+  --editor-alpha-black-15: rgba(0, 0, 0, 0.15);
+  --editor-alpha-black-20: rgba(0, 0, 0, 0.2);
+  --editor-alpha-black-30: rgba(0, 0, 0, 0.3);
+  --editor-alpha-black-40: rgba(0, 0, 0, 0.4);
+  --editor-alpha-black-50: rgba(0, 0, 0, 0.5);
+  
+  // 主题色透明度
+  --editor-primary-alpha-5: rgba(59, 130, 246, 0.05);
+  --editor-primary-alpha-8: rgba(59, 130, 246, 0.08);
+  --editor-primary-alpha-10: rgba(59, 130, 246, 0.1);
+  --editor-primary-alpha-12: rgba(59, 130, 246, 0.12);
+  --editor-primary-alpha-15: rgba(59, 130, 246, 0.15);
+  --editor-primary-alpha-20: rgba(59, 130, 246, 0.2);
+  --editor-primary-alpha-25: rgba(59, 130, 246, 0.25);
+  
+  // ========== 阴影系统 ==========
+  
+  // 基础阴影
+  --editor-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --editor-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --editor-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --editor-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --editor-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --editor-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  // 特殊阴影
+  --editor-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --editor-shadow-outline: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  --editor-shadow-glass: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  
+  // 工具栏阴影
+  --editor-shadow-toolbar: 
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  
+  // 菜单阴影
+  --editor-shadow-menu: 
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+  
+  // 悬停阴影
+  --editor-shadow-hover: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 2px 8px rgba(59, 130, 246, 0.15);
+    
+  // ========== 兼容性变量 ==========
+  // 保持与现有代码的兼容性
+  --editor-border-radius: var(--editor-radius-lg);
+  --editor-border-color: var(--editor-border-primary);
+  --editor-bg: var(--editor-bg-primary);
+  --editor-toolbar-bg: var(--editor-bg-secondary);
+  --editor-toolbar-border: var(--editor-border-primary);
+  --editor-toolbar-border-bottom: var(--editor-border-secondary);
+  --editor-shadow: var(--editor-shadow-sm);
+  --editor-shadow-hover: var(--editor-shadow-lg);
+  --editor-toolbar-shadow: var(--editor-shadow-toolbar);
+  
+  --toolbar-bg: var(--editor-bg-elevated);
+  --toolbar-border: var(--editor-border-primary);
+  --text-primary: var(--editor-text-primary);
+  --text-secondary: var(--editor-text-secondary);
+  --text-muted: var(--editor-text-tertiary);
+  --accent-color: var(--editor-primary);
+  --accent-light: var(--editor-primary-light);
+  --btn-hover: var(--editor-primary-alpha-8);
+  --btn-active: var(--editor-primary-alpha-12);
+  
+  // 扩展兼容变量
+  --spacing-xs: var(--editor-spacing-xs);
+  --spacing-sm: var(--editor-spacing-sm);
+  --spacing-md: var(--editor-spacing-md);
+  --spacing-lg: var(--editor-spacing-lg);
+  --spacing-xl: var(--editor-spacing-xl);
+  --spacing-2xl: var(--editor-spacing-2xl);
+  --spacing-3xl: var(--editor-spacing-3xl);
+  --size-xs: var(--editor-size-xs);
+  --size-sm: var(--editor-size-sm);
+  --size-md: var(--editor-size-md);
+  --size-lg: var(--editor-size-lg);
+  --size-xl: var(--editor-size-xl);
+  --size-2xl: var(--editor-size-2xl);
+  --size-3xl: var(--editor-size-3xl);
+  --font-size-xs: var(--editor-font-size-xs);
+  --font-size-sm: var(--editor-font-size-sm);
+  --font-size-base: var(--editor-font-size-base);
+  --font-size-md: var(--editor-font-size-md);
+  --font-size-lg: var(--editor-font-size-lg);
+  --font-mono: var(--editor-font-mono);
+  --border-radius: var(--editor-radius-md);
+  --border-radius-md: var(--editor-radius-md);
+  --blur-sm: var(--editor-blur-sm);
+  --blur-md: var(--editor-blur-md);
+  --blur-lg: var(--editor-blur-lg);
+  --blur-xl: var(--editor-blur-xl);
+  --blur-2xl: var(--editor-blur-2xl);
+  --ease-spring: var(--editor-ease-spring);
+  
+  // 暗色主题特色变量
+  --editor-color-bg-light: var(--editor-bg-elevated);  
+  --editor-color-bg-dark: rgba(28, 28, 30, 1);
+  --editor-color-white-alpha-15: rgba(255, 255, 255, 0.15);
+  --editor-color-white-alpha-20: rgba(255, 255, 255, 0.2);
+  --editor-color-white-alpha-40: rgba(255, 255, 255, 0.4);
+  --editor-color-white-alpha-70: rgba(255, 255, 255, 0.7);
+  --editor-color-white-alpha-90: rgba(255, 255, 255, 0.9);
+  --editor-color-white-alpha-10: rgba(255, 255, 255, 0.1);
+  --editor-color-white-alpha-5: rgba(255, 255, 255, 0.05);
+  --editor-color-white-alpha-8: rgba(255, 255, 255, 0.08);
+  --editor-color-black-alpha-60: rgba(0, 0, 0, 0.6);
+  --editor-color-black-alpha-85: rgba(0, 0, 0, 0.85);
+  --editor-color-blue-light: #007aff;
+  --editor-color-blue-dark: #0a84ff;
+  --editor-color-blue-alpha-8: rgba(59, 130, 246, 0.08);
+  --editor-color-blue-alpha-10: rgba(59, 130, 246, 0.1);
+  --editor-color-blue-alpha-12: rgba(59, 130, 246, 0.12);
+  --editor-color-blue-alpha-20: rgba(10, 132, 255, 0.2);
+  --editor-color-blue-alpha-25: rgba(10, 132, 255, 0.25);
+  --editor-color-green-light: #059669;
+  --editor-color-green-dark: #34d399;
+  --editor-shadow-toolbar-light: var(--editor-shadow-toolbar);
+  --editor-shadow-toolbar-dark: 
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  --editor-shadow-hover-dark: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 2px 8px rgba(96, 165, 250, 0.3);
 }
 
+
+// ===========================
+// 编辑器主题系统 - 暗色主题
+// ===========================
 body.dark {
-  --editor-border-radius: 8px;
-  --editor-border-color: #e5e7eb;
-  --editor-bg: #ffffff;
-  --editor-toolbar-bg: #f8fafc;
-  --editor-toolbar-border: #e2e8f0;
-  --editor-toolbar-border-bottom: #d1d5db;
-  --editor-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --editor-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --editor-text-primary: #374151;
-  --editor-text-secondary: #6b7280;
-  --editor-text-muted: #9ca3af;
-  --editor-toolbar-shadow: inset 0 -1px 0 #e2e8f0, 0 1px 2px rgba(0, 0, 0, 0.05);
-
-  --toolbar-bg: rgba(15, 23, 42, 0.95);
-  --toolbar-border: rgba(51, 65, 85, 0.8);
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --accent-color: #60a5fa;
-  --accent-light: rgba(96, 165, 250, 0.1);
-  --btn-hover: rgba(96, 165, 250, 0.08);
-  --btn-active: rgba(96, 165, 250, 0.12);
+  // ========== 暗色主题颜色系统 ==========
+  
+  // 主要背景色
+  --editor-bg-primary: #0f172a;
+  --editor-bg-secondary: #1e293b;
+  --editor-bg-tertiary: #334155;
+  --editor-bg-elevated: rgba(15, 23, 42, 0.95);
+  --editor-bg-overlay: rgba(15, 23, 42, 0.85);
+  
+  // 文字颜色
+  --editor-text-primary: #f8fafc;
+  --editor-text-secondary: #e2e8f0;
+  --editor-text-tertiary: #cbd5e1;
+  --editor-text-muted: #94a3b8;
+  --editor-text-disabled: #64748b;
+  --editor-text-inverse: #0f172a;
+  
+  // 边框颜色
+  --editor-border-primary: #334155;
+  --editor-border-secondary: #475569;
+  --editor-border-focus: #60a5fa;
+  --editor-border-error: #f87171;
+  --editor-border-success: #34d399;
+  --editor-border-warning: #fbbf24;
+  
+  // 主题色（暗色适配）
+  --editor-primary: #60a5fa;
+  --editor-primary-hover: #3b82f6;
+  --editor-primary-active: #2563eb;
+  --editor-primary-light: rgba(96, 165, 250, 0.1);
+  --editor-primary-lighter: rgba(96, 165, 250, 0.05);
+  
+  // 次要主题色（暗色适配）
+  --editor-secondary: #818cf8;
+  --editor-secondary-hover: #6366f1;
+  --editor-secondary-active: #4f46e5;
+  --editor-secondary-light: rgba(129, 140, 248, 0.1);
+  --editor-secondary-lighter: rgba(129, 140, 248, 0.05);
+  
+  // 成功色（暗色适配）
+  --editor-success: #34d399;
+  --editor-success-hover: #10b981;
+  --editor-success-active: #059669;
+  --editor-success-light: rgba(52, 211, 153, 0.1);
+  --editor-success-lighter: rgba(52, 211, 153, 0.05);
+  
+  // 警告色（暗色适配）
+  --editor-warning: #fbbf24;
+  --editor-warning-hover: #f59e0b;
+  --editor-warning-active: #d97706;
+  --editor-warning-light: rgba(251, 191, 36, 0.1);
+  --editor-warning-lighter: rgba(251, 191, 36, 0.05);
+  
+  // 错误色（暗色适配）
+  --editor-error: #f87171;
+  --editor-error-hover: #ef4444;
+  --editor-error-active: #dc2626;
+  --editor-error-light: rgba(248, 113, 113, 0.1);
+  --editor-error-lighter: rgba(248, 113, 113, 0.05);
+  
+  // 信息色（暗色适配）
+  --editor-info: #22d3ee;
+  --editor-info-hover: #06b6d4;
+  --editor-info-active: #0891b2;
+  --editor-info-light: rgba(34, 211, 238, 0.1);
+  --editor-info-lighter: rgba(34, 211, 238, 0.05);
+  
+  // 透明度变量（暗色）
+  --editor-alpha-50: rgba(15, 23, 42, 0.5);
+  --editor-alpha-60: rgba(15, 23, 42, 0.6);
+  --editor-alpha-70: rgba(15, 23, 42, 0.7);
+  --editor-alpha-80: rgba(15, 23, 42, 0.8);
+  --editor-alpha-90: rgba(15, 23, 42, 0.9);
+  --editor-alpha-95: rgba(15, 23, 42, 0.95);
+  
+  // 白色透明度（暗色主题中使用）
+  --editor-alpha-white-5: rgba(255, 255, 255, 0.05);
+  --editor-alpha-white-10: rgba(255, 255, 255, 0.1);
+  --editor-alpha-white-15: rgba(255, 255, 255, 0.15);
+  --editor-alpha-white-20: rgba(255, 255, 255, 0.2);
+  --editor-alpha-white-25: rgba(255, 255, 255, 0.25);
+  --editor-alpha-white-30: rgba(255, 255, 255, 0.3);
+  --editor-alpha-white-40: rgba(255, 255, 255, 0.4);
+  
+  // 主题色透明度（暗色）
+  --editor-primary-alpha-5: rgba(96, 165, 250, 0.05);
+  --editor-primary-alpha-8: rgba(96, 165, 250, 0.08);
+  --editor-primary-alpha-10: rgba(96, 165, 250, 0.1);
+  --editor-primary-alpha-12: rgba(96, 165, 250, 0.12);
+  --editor-primary-alpha-15: rgba(96, 165, 250, 0.15);
+  --editor-primary-alpha-20: rgba(96, 165, 250, 0.2);
+  --editor-primary-alpha-25: rgba(96, 165, 250, 0.25);
+  
+  // ========== 暗色主题阴影系统 ==========
+  
+  // 基础阴影（暗色）
+  --editor-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --editor-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --editor-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --editor-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --editor-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+  --editor-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  
+  // 特殊阴影（暗色）
+  --editor-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+  --editor-shadow-outline: 0 0 0 3px rgba(96, 165, 250, 0.3);
+  --editor-shadow-glass: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  
+  // 工具栏阴影（暗色）
+  --editor-shadow-toolbar: 
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  
+  // 菜单阴影（暗色）
+  --editor-shadow-menu: 
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+  
+  // 悬停阴影（暗色）
+  --editor-shadow-hover: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 2px 8px rgba(96, 165, 250, 0.3);
+    
+  // ========== 兼容性变量覆盖 ==========
+  --editor-border-color: var(--editor-border-primary);
+  --editor-bg: var(--editor-bg-primary);
+  --editor-toolbar-bg: var(--editor-bg-secondary);
+  --editor-toolbar-border: var(--editor-border-primary);
+  --editor-toolbar-border-bottom: var(--editor-border-secondary);
+  
+  --toolbar-bg: var(--editor-bg-elevated);
+  --toolbar-border: var(--editor-border-primary);
+  --text-primary: var(--editor-text-primary);
+  --text-secondary: var(--editor-text-secondary);
+  --text-muted: var(--editor-text-tertiary);
+  --accent-color: var(--editor-primary);
+  --accent-light: var(--editor-primary-light);
+  --btn-hover: var(--editor-primary-alpha-8);
+  --btn-active: var(--editor-primary-alpha-12);
 }
 
+
+// ===========================
+// 右键菜单暗色主题特殊样式
+// ===========================
 body.dark {
   .context-menu .context-menu-content {
-    background: rgba(15, 23, 42, 0.95);
-    border-color: rgba(51, 65, 85, 0.8);
+    background: var(--editor-bg-elevated);
+    border-color: var(--editor-border-primary);
   }
 
   .context-menu .context-menu-item {
-    color: #e2e8f0;
+    color: var(--editor-text-primary);
 
     &:hover:not(.disabled) {
-      background: rgba(96, 165, 250, 0.08);
-      color: #60a5fa;
+      background: var(--editor-primary-alpha-8);
+      color: var(--editor-primary);
     }
 
     &.disabled {
-      color: #64748b;
+      color: var(--editor-text-disabled);
     }
 
     .menu-item-shortcut {
-      color: #64748b;
+      color: var(--editor-text-disabled);
     }
   }
 
   .context-menu .context-menu-separator {
-    background: rgba(51, 65, 85, 0.6);
+    background: var(--editor-border-primary);
   }
 }

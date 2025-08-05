@@ -1,22 +1,22 @@
 .monaco-editor-wrapper {
-  border-radius: var(--editor-border-radius);
+  border-radius: var(--editor-radius-lg);
   overflow: visible;
-  background: var(--editor-bg);
-  box-shadow: var(--editor-shadow);
-  transition: box-shadow 0.2s ease;
+  background: var(--editor-bg-primary);
+  box-shadow: var(--editor-shadow-sm);
+  transition: box-shadow var(--editor-duration-normal) var(--editor-ease-smooth);
   position: relative;
-  border: 1px solid var(--editor-border-color);
+  border: 1px solid var(--editor-border-primary);
 
   .monaco-editor {
     min-height: 300px;
-    background: var(--editor-bg);
+    background: var(--editor-bg-primary);
     overflow: hidden;
     box-sizing: border-box;
     outline: none !important;
-    border-radius: 0 0 var(--editor-border-radius) var(--editor-border-radius);
+    border-radius: 0 0 var(--editor-radius-lg) var(--editor-radius-lg);
   }
 
   .noHeader {
-    border-radius: var(--editor-border-radius);
+    border-radius: var(--editor-radius-lg);
   }
 }
