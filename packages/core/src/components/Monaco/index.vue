@@ -13,8 +13,8 @@ import {
   MENU_PRESETS,
   MINIMAP_MENU_PRESETS,
 } from "../../hooks/useContextMenu/editorMenu";
-// import "../../assets/style/global.scss";
-import type { MonacoProps } from "./types";
+import "../../assets/style/global.scss";
+import { MonacoProps } from "./types";
 
 const props = withDefaults(defineProps<MonacoProps>(), {
   currentLanguage: "javascript",
@@ -62,12 +62,14 @@ let monacoEditHook: ReturnType<typeof useMonacoEdit> | null = null;
 const contextMenuItems = ref<ContextMenuItem[]>([]);
 const contextMenu = useContextMenu({
   items: contextMenuItems.value,
+  target: editorRef.value as HTMLDivElement,
 });
 
 // Minimap右键菜单相关
 const minimapContextMenuItems = ref<ContextMenuItem[]>([]);
 const minimapContextMenu = useContextMenu({
   items: minimapContextMenuItems.value,
+  target: editorRef.value as HTMLDivElement,
 });
 
 watch(
@@ -281,7 +283,7 @@ const setupContextMenu = () => {
         // 忽略权限检查错误
       }
 
-      contextMenu.show(event);
+      contextMenu.show(event, contextMenuItems.value);
     });
   }
 
@@ -311,7 +313,7 @@ const setupContextMenu = () => {
         contextMenu.hide();
       }
 
-      minimapContextMenu.show(event);
+      minimapContextMenu.show(event, minimapContextMenuItems.value);
     });
   }
 };
@@ -358,25 +360,48 @@ defineExpose({
 
 <template>
   <div class="monaco-editor-wrapper" :class="props.monacoEditClass">
-    <MonacoHeader v-if="props.showToolbar" :current-language="props.currentLanguage"
-      :file-name="props.fileName ?? 'Untitled'" :theme="props.currentTheme" @copy="handleCopy" @format="handleFormat">
+    <MonacoHeader
+      v-if="props.showToolbar"
+      :current-language="props.currentLanguage"
+      :file-name="props.fileName ?? 'Untitled'"
+      :theme="props.currentTheme"
+      @copy="handleCopy"
+      @format="handleFormat"
+    >
       <template #toolbar>
         <slot name="toolbar"></slot>
       </template>
     </MonacoHeader>
-    <div ref="editorRef" class="monaco-editor" :class="{ noHeader: !props.showToolbar }"
-      :style="{ height: props.height }">
-    </div>
+    <div
+      ref="editorRef"
+      class="monaco-editor"
+      :class="{ noHeader: !props.showToolbar }"
+      :style="{ height: props.height }"
+    ></div>
 
     <!-- 自定义右键菜单 -->
-    <ContextMenu :visible="contextMenu.isVisible.value" :position="contextMenu.position" :items="contextMenuItems"
-      :variant="props.contextMenu?.variant || 'glass'" :theme="props.currentTheme"
-      @item-click="handleContextMenuItemClick" @hide="contextMenu.hide" />
+    <ContextMenu
+      v-if="editorRef"
+      :visible="contextMenu.isVisible.value"
+      :position="contextMenu.position"
+      :items="contextMenuItems"
+      :variant="props.contextMenu?.variant || 'glass'"
+      :theme="props.currentTheme"
+      @item-click="handleContextMenuItemClick"
+      @hide="contextMenu.hide"
+    />
 
     <!-- Minimap专用右键菜单 -->
-    <ContextMenu :visible="minimapContextMenu.isVisible.value" :position="minimapContextMenu.position"
-      :items="minimapContextMenuItems" :variant="props.minimapContextMenu?.variant || 'glass'"
-      :theme="props.currentTheme" @item-click="handleMinimapContextMenuItemClick" @hide="minimapContextMenu.hide" />
+    <ContextMenu
+      v-if="editorRef"
+      :visible="minimapContextMenu.isVisible.value"
+      :position="minimapContextMenu.position"
+      :items="minimapContextMenuItems"
+      :variant="props.minimapContextMenu?.variant || 'glass'"
+      :theme="props.currentTheme"
+      @item-click="handleMinimapContextMenuItemClick"
+      @hide="minimapContextMenu.hide"
+    />
   </div>
 </template>
 

@@ -24,4 +24,5 @@ export interface MonacoProps {
     customItems?: ContextMenuItem[];
     variant?: "classic" | "glass";
   };
+  teleportTarget?: string | HTMLElement; // 添加 teleportTarget 属性 用于指定菜单的挂载目标
 }

@@ -1,17 +1,15 @@
 <script lang="ts" setup>
 import { computed } from "vue";
-import type {
-  ContextMenuItem,
-  MenuItem,
-} from "../../hooks/useContextMenu";
+import type { ContextMenuItem, MenuItem } from "../../hooks/useContextMenu";
 import type { ContextMenuProps } from "./types";
 
 const props = withDefaults(defineProps<ContextMenuProps>(), {
   visible: false,
   position: () => ({ x: 0, y: 0 }),
   items: () => [],
-  variant: 'glass',
-  theme: 'light',
+  variant: "glass",
+  theme: "light",
+  teleportTarget: ".monaco-editor",
 });
 
 const emit = defineEmits<{
@@ -26,20 +24,20 @@ const menuStyle = computed(() => ({
 }));
 
 const menuClasses = computed(() => ({
-  'context-menu': true,
-  'context-menu--classic': props.variant === 'classic',
-  'context-menu--glass': props.variant === 'glass',
-  'context-menu--direction-up': props.position?.direction === 'up',
-  'context-menu--direction-down': props.position?.direction === 'down',
+  "context-menu": true,
+  "context-menu--classic": props.variant === "classic",
+  "context-menu--glass": props.variant === "glass",
+  "context-menu--direction-up": props.position?.direction === "up",
+  "context-menu--direction-down": props.position?.direction === "down",
 }));
 
 const isDarkTheme = computed(() => {
-  return props.theme && props.theme.toLowerCase().includes('dark');
+  return props.theme && props.theme.toLowerCase().includes("dark");
 });
 
 const themeClasses = computed(() => ({
-  'theme-light': !isDarkTheme.value,
-  'theme-dark': isDarkTheme.value,
+  "theme-light": !isDarkTheme.value,
+  "theme-dark": isDarkTheme.value,
 }));
 
 const handleItemClick = (item: ContextMenuItem) => {
@@ -54,12 +52,25 @@ const handleMenuClick = (event: Event) => {
 </script>
 
 <template>
-  <Teleport to="body">
-    <div v-if="visible" :class="{ ...menuClasses, ...themeClasses }" :style="menuStyle" @click="handleMenuClick">
+  <Teleport :to="props.teleportTarget">
+    <div
+      v-if="visible"
+      :class="{ ...menuClasses, ...themeClasses }"
+      :style="menuStyle"
+      @click="handleMenuClick"
+    >
       <div class="context-menu-content">
         <template v-for="(item, index) in items" :key="index">
-          <div v-if="item.type === 'separator'" class="context-menu-separator"></div>
-          <div v-else class="context-menu-item" :class="{ disabled: item.disabled }" @click="handleItemClick(item)">
+          <div
+            v-if="item.type === 'separator'"
+            class="context-menu-separator"
+          ></div>
+          <div
+            v-else
+            class="context-menu-item"
+            :class="{ disabled: item.disabled }"
+            @click="handleItemClick(item)"
+          >
             <div class="menu-item-content">
               <div class="menu-item-icon" v-if="item.icon">
                 <i :class="item.icon"></i>
