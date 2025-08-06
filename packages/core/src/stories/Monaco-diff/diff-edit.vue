@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import Monaco from "../../components/Monaco/index.vue";
 import MonacoDiff from "../../components/Monaco-Diff/index.vue";
 
-// 重复一千次
 const mockCode = `
 export type {
   ContextMenuItem,
@@ -72,10 +72,12 @@ export { useMonacoEdit } from "./useMonacoEdit";
 </script>
 
 <template>
+  <Monaco v-bind="$attrs" :value="mockCode"> </Monaco>
   <MonacoDiff
     v-bind="$attrs"
     :oldModel="mockCode"
     :newModel="mockCodeUpperCase"
   >
   </MonacoDiff>
+  <Monaco v-bind="$attrs" :value="mockCode"> </Monaco>
 </template>

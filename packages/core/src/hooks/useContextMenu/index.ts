@@ -34,9 +34,14 @@ export interface UseContextMenuReturn {
   isVisible: Ref<boolean>;
   position: ContextMenuPosition;
   items: Ref<ContextMenuItem[]>;
-  show: (event: MouseEvent, menuItems: ContextMenuItem[]) => void;
+  show: (
+    event: MouseEvent,
+    menuItems: ContextMenuItem[],
+    target?: HTMLDivElement,
+  ) => void;
   hide: () => void;
   handleItemClick: (item: MenuItem) => void;
+  updateTarget: (target: HTMLDivElement) => void;
 }
 
 export function useContextMenu(
@@ -47,14 +52,38 @@ export function useContextMenu(
   const items = computed(() => options.items);
 
   // 显示菜单
-  const show = (event: MouseEvent, menuItems: ContextMenuItem[]) => {
-    let target;
-    if (options.target instanceof HTMLDivElement) {
-      target = options.target;
+  const show = (
+    event: MouseEvent,
+    menuItems: ContextMenuItem[],
+    target?: HTMLDivElement,
+  ) => {
+    let targetElement;
+    if (target) {
+      targetElement = target;
+    } else if (options.target instanceof HTMLDivElement) {
+      targetElement = options.target;
+    } else if (typeof options.target === "string") {
+      targetElement = document.querySelector(options.target);
     } else {
-      target = document.querySelector(".monaco-editor");
+      // 如果没有指定target，尝试找到鼠标事件最近的monaco-editor容器
+      let currentElement = event.target as Element;
+      while (currentElement && currentElement !== document.body) {
+        if (
+          currentElement.classList.contains("monaco-editor") ||
+          currentElement.classList.contains("monaco-diff-editor")
+        ) {
+          targetElement = currentElement;
+          break;
+        }
+        currentElement = currentElement.parentElement!;
+      }
+
+      // 如果还是没找到，那么使用默认的选择器
+      if (!targetElement) {
+        targetElement = document.querySelector(".monaco-editor");
+      }
     }
-    if (!target) return;
+    if (!targetElement) return;
 
     event.preventDefault();
     event.stopPropagation();
@@ -73,7 +102,7 @@ export function useContextMenu(
     });
 
     // 获取编辑器容器相对视口的位置
-    const rect = target.getBoundingClientRect();
+    const rect = targetElement.getBoundingClientRect();
     const containerTop = rect.top;
     const containerLeft = rect.left;
     const containerWidth = rect.width;
@@ -169,6 +198,11 @@ export function useContextMenu(
     document.removeEventListener("keydown", handleKeyDown);
   });
 
+  // 更新target
+  const updateTarget = (target: HTMLDivElement) => {
+    options.target = target;
+  };
+
   return {
     isVisible,
     position,
@@ -176,5 +210,6 @@ export function useContextMenu(
     show,
     hide,
     handleItemClick,
+    updateTarget,
   };
 }

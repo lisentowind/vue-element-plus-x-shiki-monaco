@@ -62,14 +62,12 @@ let monacoEditHook: ReturnType<typeof useMonacoEdit> | null = null;
 const contextMenuItems = ref<ContextMenuItem[]>([]);
 const contextMenu = useContextMenu({
   items: contextMenuItems.value,
-  target: editorRef.value as HTMLDivElement,
 });
 
 // Minimap右键菜单相关
 const minimapContextMenuItems = ref<ContextMenuItem[]>([]);
 const minimapContextMenu = useContextMenu({
   items: minimapContextMenuItems.value,
-  target: editorRef.value as HTMLDivElement,
 });
 
 watch(
@@ -301,7 +299,7 @@ const setupContextMenu = () => {
         // 忽略权限检查错误
       }
 
-      contextMenu.show(event, contextMenuItems.value);
+      contextMenu.show(event, contextMenuItems.value, editorRef.value);
     });
   }
 
@@ -331,7 +329,7 @@ const setupContextMenu = () => {
         contextMenu.hide();
       }
 
-      minimapContextMenu.show(event, minimapContextMenuItems.value);
+      minimapContextMenu.show(event, minimapContextMenuItems.value, editorRef.value);
     });
   }
 };

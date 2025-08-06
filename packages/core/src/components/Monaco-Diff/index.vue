@@ -70,14 +70,12 @@ const modifiedContextMenuItems = ref<ContextMenuItem[]>([]);
 const contextMenuItems = ref<ContextMenuItem[]>([]);
 const contextMenu = useContextMenu({
   items: contextMenuItems.value,
-  target: diffEditorRef.value as HTMLDivElement,
 });
 
 // Minimap右键菜单相关
 const minimapContextMenuItems = ref<ContextMenuItem[]>([]);
 const minimapContextMenu = useContextMenu({
   items: minimapContextMenuItems.value,
-  target: diffEditorRef.value as HTMLDivElement,
 });
 
 watch(
@@ -222,7 +220,7 @@ const setupContextMenu = () => {
 
       // 设置当前菜单项为原始编辑器的菜单项
       contextMenuItems.value = originalContextMenuItems.value;
-      contextMenu.show(event, originalContextMenuItems.value);
+      contextMenu.show(event, originalContextMenuItems.value, diffEditorRef.value);
     });
 
     // 绑定修改编辑器右键菜单事件
@@ -245,7 +243,7 @@ const setupContextMenu = () => {
 
       // 设置当前菜单项为修改编辑器的菜单项
       contextMenuItems.value = modifiedContextMenuItems.value;
-      contextMenu.show(event, modifiedContextMenuItems.value);
+      contextMenu.show(event, modifiedContextMenuItems.value, diffEditorRef.value);
     });
   }
 
@@ -275,7 +273,7 @@ const setupContextMenu = () => {
         contextMenu.hide();
       }
 
-      minimapContextMenu.show(event, minimapContextMenuItems.value);
+      minimapContextMenu.show(event, minimapContextMenuItems.value, diffEditorRef.value);
     });
   }
 };
