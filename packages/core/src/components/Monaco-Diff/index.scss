@@ -1,0 +1,123 @@
+// 基础样式
+.monaco-editor-wrapper {
+    border-radius: var(--editor-radius-lg);
+    overflow: visible;
+    background: var(--editor-bg-primary);
+    box-shadow: var(--editor-shadow-sm);
+    transition: box-shadow var(--editor-duration-normal) var(--editor-ease-smooth);
+    position: relative;
+    border: 1px solid var(--editor-border-primary);
+
+    .monaco-editor {
+        min-height: 300px;
+        background: var(--editor-bg-primary);
+        overflow: hidden;
+        box-sizing: border-box;
+        outline: none !important;
+        border-radius: 0 0 var(--editor-radius-lg) var(--editor-radius-lg);
+    }
+
+    .noHeader {
+        border-radius: var(--editor-radius-lg);
+    }
+
+    .toolbar-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--editor-size-2xl);
+        height: var(--editor-size-2xl);
+        background: transparent;
+        border: none;
+        border-radius: var(--editor-radius-md);
+        cursor: pointer;
+        transition: all var(--editor-duration-normal) var(--editor-ease-smooth);
+        position: relative;
+
+        &:focus-visible {
+            outline: 2px solid;
+            outline-offset: 2px;
+        }
+
+        svg {
+            width: var(--editor-size-2xl);
+            height: var(--editor-size-2xl);
+            stroke-width: 3;
+        }
+    }
+
+    :deep(.decorationsOverviewRuler) {
+        display: none !important;
+    }
+}
+
+// 亮色主题
+.monaco-editor-diff-wrapper.theme-light {
+    .diff-info.file-language {
+        color: var(--editor-text-primary);
+        font-size: var(--editor-font-size-lg);
+    }
+
+    .toolbar-btn {
+        color: var(--editor-text-primary);
+
+        &:hover {
+            background: var(--editor-color-blue-alpha-8);
+            color: var(--editor-color-blue-light);
+            box-shadow: 0 2px 8px rgba(0, 120, 255, 0.1);
+            border: 1px solid var(--editor-color-blue-alpha-15);
+            transform: scale(1.05);
+        }
+
+        &:active {
+            background: var(--editor-color-blue-alpha-12);
+            transform: scale(0.98);
+        }
+
+        &:focus-visible {
+            outline-color: var(--editor-color-blue-light);
+        }
+    }
+
+    :deep(.diffOverview) {
+        background: var(--editor-color-bg-light) !important;
+    }
+}
+
+// 暗色主题
+.monaco-editor-diff-wrapper.theme-dark {
+    .diff-info.file-language {
+        color: var(--editor-text-primary);
+        font-size: var(--editor-font-size-lg);
+    }
+
+    .toolbar-btn {
+        color: var(--editor-text-primary);
+        -webkit-backdrop-filter: var(--editor-blur-lg);
+        backdrop-filter: var(--editor-blur-lg);
+        transition: all var(--editor-duration-slow) var(--editor-ease-spring);
+
+        &:hover {
+            background: var(--editor-success-hover);
+            border: 1px solid var(--editor-color-blue-alpha-30);
+            -webkit-backdrop-filter: var(--editor-blur-xl);
+            backdrop-filter: var(--editor-blur-xl);
+            transform: scale(1.02);
+
+            box-shadow: var(--editor-shadow-hover-dark);
+        }
+
+        &:active {
+            background: var(--editor-success-active);
+            transform: scale(0.98);
+        }
+
+        &:focus-visible {
+            outline-color: var(--editor-color-blue-dark);
+        }
+    }
+
+    :deep(.diffOverview) {
+        background: var(--editor-color-bg-dark) !important;
+    }
+}

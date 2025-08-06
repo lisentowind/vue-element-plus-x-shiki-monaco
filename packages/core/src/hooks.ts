@@ -2,4 +2,6 @@
 // Hooks导出（支持按需导入和树摇）
 
 export * from "./hooks/useContextMenu";
+export * from "./hooks/useContextMenu/editorMenu";
+export * from "./hooks/useMonacoDiffEdit";
 export * from "./hooks/useMonacoEdit";

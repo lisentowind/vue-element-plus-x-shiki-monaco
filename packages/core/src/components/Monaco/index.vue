@@ -162,32 +162,47 @@ onUnmounted(() => {
 const handleCopy = async () => {
   if (editorInstance) {
     try {
-      // 优先使用Monaco的内置复制命令
-      const copyAction = editorInstance.getAction(
-        "editor.action.clipboardCopyAction"
-      );
-      if (copyAction) {
-        copyAction.run();
-        return;
-      }
-
-      // 备选方案1: 使用trigger触发内置命令
-      try {
-        editorInstance.trigger(
-          "keyboard",
-          "editor.action.clipboardCopyAction",
-          null
-        );
-        return;
-      } catch (triggerError) {
-        console.warn("Monaco内置复制命令触发失败:", triggerError);
-      }
-
-      // 备选方案2: 自定义复制实现 (复制全部内容)
+      // 直接复制全部内容到剪贴板
       const code = editorInstance.getValue();
-      await navigator.clipboard.writeText(code);
+      
+      // 优先使用现代 API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(code);
+        console.log('代码已复制到剪贴板');
+        return;
+      }
+      
+      // 降级方案：使用传统方法
+      const textArea = document.createElement('textarea');
+      textArea.value = code;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      if (successful) {
+        console.log('代码已复制到剪贴板（降级方案）');
+      } else {
+        throw new Error('降级复制方案失败');
+      }
+      
     } catch (error) {
       console.error("复制失败:", error);
+      
+      // 最后的尝试：使用 Monaco 的内置复制命令（如果选中了文本）
+      try {
+        const selection = editorInstance.getSelection();
+        if (selection && !selection.isEmpty()) {
+          editorInstance.trigger('keyboard', 'editor.action.clipboardCopyAction', null);
+        }
+      } catch (monacoError) {
+        console.error("Monaco 内置复制也失败:", monacoError);
+      }
     }
   }
 };

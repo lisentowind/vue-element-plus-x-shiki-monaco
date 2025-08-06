@@ -20,7 +20,7 @@ export interface MinimapContextMenuOptions {
 }
 
 export function createEditorContextMenu(
-  options: EditorContextMenuOptions
+  options: EditorContextMenuOptions,
 ): ContextMenuItem[] {
   const { editor, enabledItems, customItems = [] } = options;
 
@@ -130,7 +130,7 @@ export function createEditorContextMenu(
       action: () => {
         const currentOptions = editor.getOptions();
         const minimapEnabled = currentOptions.get(
-          monaco.editor.EditorOption.minimap
+          monaco.editor.EditorOption.minimap,
         )?.enabled;
         editor.updateOptions({
           minimap: { enabled: !minimapEnabled },
@@ -145,7 +145,8 @@ export function createEditorContextMenu(
       action: () => {
         const currentOptions = editor.getOptions();
         const currentFontSize =
-          currentOptions.get(monaco.editor.EditorOption.fontSize) || DEFAULT_FONT_SIZE;
+          currentOptions.get(monaco.editor.EditorOption.fontSize) ||
+          DEFAULT_FONT_SIZE;
         const newFontSize = Math.min(currentFontSize + 1, MAX_FONT_SIZE);
         editor.updateOptions({
           fontSize: newFontSize,
@@ -160,7 +161,8 @@ export function createEditorContextMenu(
       action: () => {
         const currentOptions = editor.getOptions();
         const currentFontSize =
-          currentOptions.get(monaco.editor.EditorOption.fontSize) || DEFAULT_FONT_SIZE;
+          currentOptions.get(monaco.editor.EditorOption.fontSize) ||
+          DEFAULT_FONT_SIZE;
         const newFontSize = Math.max(currentFontSize - 1, MIN_FONT_SIZE);
         editor.updateOptions({
           fontSize: newFontSize,
@@ -174,7 +176,7 @@ export function createEditorContextMenu(
       shortcut: "Ctrl+0",
       action: () => {
         editor.updateOptions({
-          fontSize: DEFAULT_FONT_SIZE
+          fontSize: DEFAULT_FONT_SIZE,
         });
       },
     },
@@ -213,7 +215,7 @@ export function createEditorContextMenu(
   let filteredItems = defaultItems;
   if (enabledItems && enabledItems.length > 0) {
     filteredItems = defaultItems.filter(
-      (item) => item.type === "separator" || enabledItems.includes(item.id)
+      (item) => item.type === "separator" || enabledItems.includes(item.id),
     );
   }
 
@@ -229,7 +231,7 @@ export function createEditorContextMenu(
 }
 
 export function createMinimapContextMenu(
-  options: MinimapContextMenuOptions
+  options: MinimapContextMenuOptions,
 ): ContextMenuItem[] {
   const { editor, enabledItems, customItems = [] } = options;
 
@@ -241,7 +243,7 @@ export function createMinimapContextMenu(
       action: () => {
         const currentOptions = editor.getOptions();
         const minimapEnabled = currentOptions.get(
-          monaco.editor.EditorOption.minimap
+          monaco.editor.EditorOption.minimap,
         )?.enabled;
         editor.updateOptions({
           minimap: { enabled: !minimapEnabled },
@@ -274,7 +276,7 @@ export function createMinimapContextMenu(
       action: () => {
         const currentOptions = editor.getOptions();
         const showSlider = currentOptions.get(
-          monaco.editor.EditorOption.minimap
+          monaco.editor.EditorOption.minimap,
         )?.showSlider;
         const newShowSlider = showSlider === "always" ? "mouseover" : "always";
         editor.updateOptions({
@@ -291,7 +293,7 @@ export function createMinimapContextMenu(
   let filteredItems = minimapItems;
   if (enabledItems && enabledItems.length > 0) {
     filteredItems = minimapItems.filter(
-      (item) => item.type === "separator" || enabledItems.includes(item.id)
+      (item) => item.type === "separator" || enabledItems.includes(item.id),
     );
   }
 

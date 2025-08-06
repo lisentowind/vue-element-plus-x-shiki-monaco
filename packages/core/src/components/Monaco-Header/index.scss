@@ -178,8 +178,7 @@
     transition: all var(--editor-duration-slow) var(--editor-ease-spring);
 
     &:hover {
-      background: var(--editor-color-blue-alpha-25);
-      color: var(--editor-color-blue-dark);
+      background: var(--editor-success-hover);
       border: 1px solid var(--editor-color-blue-alpha-30);
       -webkit-backdrop-filter: var(--editor-blur-xl);
       backdrop-filter: var(--editor-blur-xl);
@@ -189,7 +188,7 @@
     }
 
     &:active {
-      background: var(--editor-color-blue-alpha-25);
+      background: var(--editor-success-active);
       transform: scale(0.98);
     }
 
