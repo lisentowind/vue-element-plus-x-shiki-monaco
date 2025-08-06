@@ -34,7 +34,7 @@ export type EditModelType =
   | monaco.editor.IDiffEditorViewModel
   | null;
 
-type DefaultReturn = Omit<
+export type DefaultReturn = Omit<
   UseMonacoEditReturn,
   | "initMonacoEdit"
   | "destroy"
