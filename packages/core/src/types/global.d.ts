@@ -172,16 +172,3 @@ declare module "*.vue" {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
-
-// 环境变量
-declare interface ImportMetaEnv {
-  readonly NODE_ENV: string;
-  readonly VITE_APP_TITLE?: string;
-  readonly VITE_API_URL?: string;
-  readonly DEV: boolean;
-  readonly PROD: boolean;
-}
-
-declare interface ImportMeta {
-  readonly env: ImportMetaEnv;
-}

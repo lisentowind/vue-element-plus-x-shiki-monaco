@@ -662,9 +662,14 @@ interface UseContextMenuReturn {
   isVisible: Ref<boolean>; // 菜单可见性
   position: ContextMenuPosition; // 菜单位置
   items: Ref<ContextMenuItem[]>; // 菜单项
-  show: (event: MouseEvent) => void; // 显示菜单
+  show: (
+    event: MouseEvent,
+    menuItems: ContextMenuItem[],
+    target?: HTMLDivElement,
+  ) => void; // 显示菜单，支持动态指定目标元素
   hide: () => void; // 隐藏菜单
   handleItemClick: (item: MenuItem) => void; // 处理菜单项点击
+  updateTarget: (target: HTMLDivElement) => void; // 更新目标元素
 }
 ```
 
@@ -689,6 +694,431 @@ interface MenuItemSeparator {
 
 type ContextMenuItem = MenuItem | MenuItemSeparator;
 ```
+
+---
+
+---
+
+## MonacoDiff 组件
+
+`MonacoDiff` 是专门用于显示代码差异对比的组件，基于 Monaco Editor 的 Diff Editor 构建，提供强大的代码对比功能。
+
+### 基本用法
+
+```vue
+<template>
+  <MonacoDiff
+    :old-model="oldCode"
+    :new-model="newCode"
+    language="typescript"
+    theme="vitesse-light"
+    height="500px"
+    :show-toolbar="true"
+    :auto-resize="true"
+    :context-menu="{ enabled: true, items: 'full', variant: 'glass' }"
+    :minimap-context-menu="{ enabled: true, items: 'basic', variant: 'glass' }"
+    @change="handleChange"
+    @ready="handleReady"
+  />
+</template>
+```
+
+### Props
+
+#### oldModel
+
+- **类型**: `string`
+- **必填**: `true`
+- **描述**: 原始代码内容（左侧编辑器显示）
+
+```vue
+<MonacoDiff old-model="const a = 1;" />
+```
+
+#### newModel
+
+- **类型**: `string`
+- **必填**: `true`
+- **描述**: 修改后的代码内容（右侧编辑器显示）
+
+```vue
+<MonacoDiff new-model="const a = 2;" />
+```
+
+#### diffViewType
+
+- **类型**: `'default' | 'inline' | 'unified'`
+- **默认值**: `'default'`
+- **描述**: 差异显示模式
+
+```vue
+<!-- 默认并排模式 -->
+<MonacoDiff diff-view-type="default" />
+
+<!-- 内联模式 -->
+<MonacoDiff diff-view-type="inline" />
+
+<!-- 统一模式 -->
+<MonacoDiff diff-view-type="unified" />
+```
+
+#### currentLanguage
+
+- **类型**: `BundledLanguage`
+- **默认值**: `'typescript'`
+- **描述**: 代码语言模式
+
+```vue
+<MonacoDiff current-language="javascript" />
+```
+
+#### currentTheme
+
+- **类型**: `BundledTheme`
+- **默认值**: `'vitesse-light'`
+- **描述**: 编辑器主题
+
+```vue
+<MonacoDiff current-theme="vitesse-dark" />
+```
+
+#### languages
+
+- **类型**: `BundledLanguage[]`
+- **默认值**: `['typescript']`
+- **描述**: 支持的语言列表
+
+```vue
+<MonacoDiff :languages="['typescript', 'javascript', 'vue']" />
+```
+
+#### themes
+
+- **类型**: `BundledTheme[]`
+- **默认值**: `['vitesse-light', 'vitesse-dark']`
+- **描述**: 支持的主题列表
+
+```vue
+<MonacoDiff :themes="['vitesse-light', 'vitesse-dark', 'github-light']" />
+```
+
+#### height
+
+- **类型**: `string`
+- **默认值**: `'400px'`
+- **描述**: 编辑器高度
+
+```vue
+<MonacoDiff height="600px" />
+```
+
+#### showToolbar
+
+- **类型**: `boolean`
+- **默认值**: `true`
+- **描述**: 是否显示顶部工具栏（包含差异导航）
+
+```vue
+<MonacoDiff :show-toolbar="false" />
+```
+
+#### autoResize
+
+- **类型**: `boolean`
+- **默认值**: `true`
+- **描述**: 是否启用自动尺寸调整
+
+```vue
+<MonacoDiff :auto-resize="false" />
+```
+
+#### fileName
+
+- **类型**: `string`
+- **默认值**: `'Untitled'`
+- **描述**: 工具栏显示的文件名
+
+```vue
+<MonacoDiff file-name="app.ts" />
+```
+
+#### contextMenu
+
+- **类型**: `ContextMenuConfig`
+- **默认值**: `{ enabled: true, items: 'full', variant: 'glass' }`
+- **描述**: 编辑器区域右键菜单配置
+
+```vue
+<!-- 原始编辑器（左侧）菜单项：复制、查找替换、字体调整 -->
+<!-- 修改编辑器（右侧）菜单项：完整功能菜单 -->
+<MonacoDiff
+  :context-menu="{
+    enabled: true,
+    items: 'full',
+    variant: 'glass',
+  }"
+/>
+```
+
+#### minimapContextMenu
+
+- **类型**: `MinimapContextMenuConfig`
+- **默认值**: `{ enabled: true, items: 'basic', variant: 'glass' }`
+- **描述**: Minimap区域右键菜单配置
+
+```vue
+<MonacoDiff
+  :minimap-context-menu="{
+    enabled: true,
+    items: 'basic',
+    variant: 'glass',
+  }"
+/>
+```
+
+### Events
+
+#### change
+
+- **参数**: `(value: string) => void`
+- **描述**: 当修改编辑器（右侧）内容发生变化时触发
+
+```vue
+<MonacoDiff @change="handleDiffChange" />
+```
+
+#### ready
+
+- **参数**: `(editor: DiffEditInstance) => void`
+- **描述**: 当差异编辑器初始化完成时触发
+
+```vue
+<MonacoDiff @ready="handleDiffEditorReady" />
+```
+
+### 暴露的方法
+
+通过 `ref` 可以访问以下方法：
+
+#### getEditor()
+
+- **返回**: `DiffEditInstance | null`
+- **描述**: 获取 Monaco Diff Editor 实例
+
+```vue
+<script setup>
+const diffRef = ref();
+
+const getDiffEditorInstance = () => {
+  const editor = diffRef.value?.getEditor();
+  if (editor) {
+    console.log("差异编辑器实例:", editor);
+    // 可以访问 getOriginalEditor() 和 getModifiedEditor()
+    const originalEditor = editor.getOriginalEditor();
+    const modifiedEditor = editor.getModifiedEditor();
+  }
+};
+</script>
+```
+
+#### focus()
+
+- **描述**: 让修改编辑器（右侧）获得焦点
+
+```vue
+<script setup>
+const diffRef = ref();
+
+const focusDiffEditor = () => {
+  diffRef.value?.focus();
+};
+</script>
+```
+
+#### setTheme(theme: BundledTheme)
+
+- **参数**: `theme` - 要切换的主题
+- **描述**: 动态切换编辑器主题
+
+```vue
+<script setup>
+const diffRef = ref();
+
+const switchTheme = () => {
+  diffRef.value?.setTheme("vitesse-dark");
+};
+</script>
+```
+
+#### layout()
+
+- **描述**: 手动触发编辑器布局更新
+
+```vue
+<script setup>
+const diffRef = ref();
+
+const refreshLayout = () => {
+  diffRef.value?.layout();
+};
+</script>
+```
+
+#### enableAutoResize() / disableAutoResize()
+
+- **描述**: 启用或禁用自动尺寸调整
+
+```vue
+<script setup>
+const diffRef = ref();
+
+const toggleAutoResize = () => {
+  diffRef.value?.enableAutoResize();
+  // 或
+  diffRef.value?.disableAutoResize();
+};
+</script>
+```
+
+### 工具栏功能
+
+MonacoDiff 组件的工具栏包含以下差异导航功能：
+
+- **差异计数器**: 显示当前差异位置和总数（如 "2 / 5"）
+- **上一个差异按钮**: 跳转到上一个差异位置
+- **下一个差异按钮**: 跳转到下一个差异位置
+- **折叠/展开按钮**: 折叠或展开未更改的代码区域
+
+### 特殊功能
+
+#### 差异导航
+
+- 自动检测代码差异数量
+- 支持循环导航（从最后一个差异跳转到第一个）
+- 自动滚动到差异位置并居中显示
+
+#### 右键菜单分级
+
+- **原始编辑器（左侧）**: 只读模式，提供复制、查找替换、字体调整功能
+- **修改编辑器（右侧）**: 完整编辑功能，支持所有菜单项
+
+#### 复制功能
+
+- 工具栏复制按钮默认复制修改后的内容（右侧编辑器）
+- 支持现代剪贴板API和降级方案
+
+---
+
+## useMonacoDiffEdit Hook
+
+`useMonacoDiffEdit` 是专门用于创建和管理 Monaco Diff Editor 实例的钩子。
+
+### 基本用法
+
+```typescript
+import { useMonacoDiffEdit } from "vue-shiki-monaco";
+
+const diffHook = useMonacoDiffEdit({
+  target: diffEditorElement,
+  languages: ["typescript", "javascript"],
+  themes: ["vitesse-light", "vitesse-dark"],
+  defaultTheme: "vitesse-light",
+  contextMenu: {
+    enabled: true,
+    items: "full",
+  },
+});
+
+// 初始化差异编辑器
+const diffEditor = await diffHook.initMonacoDiffEdit();
+
+// 创建模型
+const originalModel = diffHook.createModel(oldCode, "typescript");
+const modifiedModel = diffHook.createModel(newCode, "typescript");
+
+// 设置差异模型
+diffHook.setDiffModel({
+  original: originalModel,
+  modified: modifiedModel,
+});
+```
+
+### 参数
+
+#### MonacoDiffOptions
+
+```typescript
+interface MonacoDiffOptions {
+  target: HTMLElement; // 编辑器挂载的目标元素
+  languages: BundledLanguage[]; // 支持的语言列表
+  themes: BundledTheme[]; // 支持的主题列表
+  defaultTheme: BundledTheme; // 默认主题
+  diffViewType?: "default" | "inline" | "unified"; // 差异显示模式
+  contextMenu?: {
+    enabled?: boolean;
+    items?: string[] | "minimal" | "basic" | "full";
+    customItems?: ContextMenuItem[];
+  };
+}
+```
+
+### 返回值
+
+#### UseMonacoDiffEditReturn
+
+```typescript
+interface UseMonacoDiffEditReturn {
+  initMonacoDiffEdit: () => Promise<DiffEditInstance>; // 初始化差异编辑器
+  createModel: (content: string, language: string) => any; // 创建模型
+  setDiffModel: (models: { original: any; modified: any }) => void; // 设置差异模型
+  setDiffViewOptions: (viewType: string) => void; // 设置差异视图类型
+  setTheme: (theme: BundledTheme) => Promise<void>; // 切换主题
+  layout: () => void; // 重新布局
+  enableAutoResize: () => void; // 启用自动调整
+  disableAutoResize: () => void; // 禁用自动调整
+  destroy: (target: HTMLElement) => void; // 销毁编辑器
+  onOriginalContextMenu: (callback: (event: MouseEvent) => void) => void; // 原始编辑器右键菜单
+  onModifiedContextMenu: (callback: (event: MouseEvent) => void) => void; // 修改编辑器右键菜单
+  onMinimapContextMenu: (callback: (event: MouseEvent) => void) => void; // Minimap右键菜单
+}
+```
+
+### 右键菜单重构改进
+
+在最新版本中，`useContextMenu` 钩子进行了重要的重构优化：
+
+#### 智能目标查找
+
+- **自动查找容器**: 在 `show` 方法中新增了智能查找功能，当未指定目标元素时，会自动向上查找最近的 `.monaco-editor` 或 `.monaco-diff-editor` 容器
+- **动态目标指定**: `show` 方法新增 `target` 参数，允许在显示菜单时动态指定目标元素
+- **更新目标方法**: 新增 `updateTarget` 方法，允许在显示菜单前更新目标元素
+
+#### 使用示例
+
+```typescript
+import { useContextMenu } from "vue-shiki-monaco";
+
+const contextMenu = useContextMenu({
+  items: menuItems,
+});
+
+// 方式1：让系统自动查找最近的编辑器容器
+contextMenu.show(event, menuItems);
+
+// 方式2：动态指定目标容器
+const targetElement = document.querySelector(".my-editor-container");
+contextMenu.show(event, menuItems, targetElement);
+
+// 方式3：更新目标后显示
+contextMenu.updateTarget(myEditorElement);
+contextMenu.show(event, menuItems);
+```
+
+#### 改进效果
+
+- **更准确的定位**: 菜单能够自动找到正确的编辑器容器，确保菜单显示在合适的位置
+- **更灵活的使用**: 支持多编辑器场景下的动态目标切换
+- **更好的兼容性**: 同时支持 Monaco Editor 和 Monaco Diff Editor 容器
 
 ---
 
@@ -736,6 +1166,51 @@ interface MonacoEmits {
 
 // 编辑器实例类型
 type EditInstance = monaco.editor.IStandaloneCodeEditor;
+```
+
+### MonacoDiff 组件类型
+
+```typescript
+import type { BundledLanguage, BundledTheme } from "shiki";
+import type { DiffEditInstance } from "vue-shiki-monaco";
+
+// MonacoDiff 组件 Props
+interface MonacoDiffProps {
+  oldModel: string; // 原始代码内容
+  newModel: string; // 修改后的代码内容
+  diffViewType?: "default" | "inline" | "unified"; // 差异显示模式
+  currentLanguage?: BundledLanguage;
+  currentTheme?: BundledTheme;
+  languages?: BundledLanguage[];
+  themes?: BundledTheme[];
+  height?: string;
+  showToolbar?: boolean;
+  autoResize?: boolean;
+  monacoEditClass?: string;
+  fileName?: string;
+  teleportTarget?: string | HTMLElement;
+  contextMenu?: {
+    enabled?: boolean;
+    items?: string[] | "minimal" | "basic" | "full";
+    customItems?: ContextMenuItem[];
+    variant?: "classic" | "glass";
+  };
+  minimapContextMenu?: {
+    enabled?: boolean;
+    items?: string[] | "minimal" | "basic" | "full";
+    customItems?: ContextMenuItem[];
+    variant?: "classic" | "glass";
+  };
+}
+
+// MonacoDiff 组件 Emits
+interface MonacoDiffEmits {
+  change: [value: string]; // 修改编辑器内容变化
+  ready: [editor: DiffEditInstance]; // 差异编辑器就绪
+}
+
+// 差异编辑器实例类型
+type DiffEditInstance = monaco.editor.IStandaloneDiffEditor;
 ```
 
 ### Hook 类型
