@@ -1,9 +1,18 @@
 {
   "extends": "@vue-shiki-monaco/tsconfig/base.tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"]
+    }
+  },
   "include": [
     "./src/**/*",
     "./lib/**/*",
     "./__test__/**/*",
-    "./scripts/**/*"
+    "./scripts/**/*",
+    "./src/types/**/*"
   ]
 }

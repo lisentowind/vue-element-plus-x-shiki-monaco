@@ -13,8 +13,8 @@ import {
   MENU_PRESETS,
   MINIMAP_MENU_PRESETS,
 } from "../../hooks/useContextMenu/editorMenu";
-import "../../assets/style/global.scss";
-import { MonacoProps } from "./types";
+import "@assets/style/global.scss";
+import type { MonacoProps } from "./types";
 
 const props = withDefaults(defineProps<MonacoProps>(), {
   currentLanguage: "javascript",
@@ -164,41 +164,44 @@ const handleCopy = async () => {
     try {
       // 直接复制全部内容到剪贴板
       const code = editorInstance.getValue();
-      
+
       // 优先使用现代 API
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(code);
-        console.log('代码已复制到剪贴板');
+        console.log("代码已复制到剪贴板");
         return;
       }
-      
+
       // 降级方案：使用传统方法
-      const textArea = document.createElement('textarea');
+      const textArea = document.createElement("textarea");
       textArea.value = code;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      textArea.style.top = '-999999px';
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
       document.body.appendChild(textArea);
       textArea.focus();
       textArea.select();
-      
-      const successful = document.execCommand('copy');
+
+      const successful = document.execCommand("copy");
       document.body.removeChild(textArea);
-      
+
       if (successful) {
-        console.log('代码已复制到剪贴板（降级方案）');
+        console.log("代码已复制到剪贴板（降级方案）");
       } else {
-        throw new Error('降级复制方案失败');
+        throw new Error("降级复制方案失败");
       }
-      
     } catch (error) {
       console.error("复制失败:", error);
-      
+
       // 最后的尝试：使用 Monaco 的内置复制命令（如果选中了文本）
       try {
         const selection = editorInstance.getSelection();
         if (selection && !selection.isEmpty()) {
-          editorInstance.trigger('keyboard', 'editor.action.clipboardCopyAction', null);
+          editorInstance.trigger(
+            "keyboard",
+            "editor.action.clipboardCopyAction",
+            null
+          );
         }
       } catch (monacoError) {
         console.error("Monaco 内置复制也失败:", monacoError);

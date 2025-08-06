@@ -11,17 +11,15 @@ import MonacoHeader from "../Monaco-Header/index.vue";
 import ContextMenu from "../ContextMenu/index.vue";
 import type { ContextMenuItem, MenuItem } from "../../hooks/useContextMenu";
 import { useContextMenu } from "../../hooks/useContextMenu";
-import "../../assets/style/global.scss";
-import { MonacoDiffProps } from "./types";
-import {
-  DiffEditInstance,
-  useMonacoDiffEdit,
-} from "../../hooks/useMonacoDiffEdit";
+import "@assets/style/global.scss";
+import type { MonacoDiffProps } from "./types";
+import type { DiffEditInstance } from "../../hooks/useMonacoDiffEdit";
+import { useMonacoDiffEdit } from "../../hooks/useMonacoDiffEdit";
 import type { BundledTheme } from "shiki";
+import type { EditInstance } from "../../hooks";
 import {
   createEditorContextMenu,
   createMinimapContextMenu,
-  EditInstance,
   MENU_PRESETS,
   MINIMAP_MENU_PRESETS,
 } from "../../hooks";
@@ -518,7 +516,7 @@ defineExpose({
           {{
             totalDiffs > 0
               ? `${currentDiffIndex + 1} / ${totalDiffs}`
-              : "0 个不同点"
+              : "0 个差异"
           }}
         </div>
         <button

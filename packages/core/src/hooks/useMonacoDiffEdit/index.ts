@@ -3,7 +3,7 @@ import type { ContextMenuItem } from "../useContextMenu";
 import { shikiToMonaco } from "@shikijs/monaco";
 import * as monaco from "monaco-editor-core";
 import { createHighlighter } from "shiki";
-import { UseMonacoEditReturn } from "../useMonacoEdit";
+import type { UseMonacoEditReturn } from "../useMonacoEdit";
 
 export interface MonacoDiffOptions
   extends monaco.editor.IStandaloneDiffEditorConstructionOptions {
