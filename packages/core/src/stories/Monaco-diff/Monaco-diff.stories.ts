@@ -79,7 +79,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    currentLanguage: "javascript",
+    currentLanguage: "typescript",
     currentTheme: "vitesse-light",
     languages: ["typescript"],
     themes: ["vitesse-light", "vitesse-dark", "github-dark", "github-light"],
