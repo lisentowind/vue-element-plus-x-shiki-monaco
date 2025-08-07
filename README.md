@@ -150,6 +150,14 @@ const handleChange = (newValue) => {
 - 📝 [贡献代码](https://github.com/lisentowind/vue-shiki-monaco/pulls)
 - ⭐ [GitHub 仓库](https://github.com/lisentowind/vue-shiki-monaco)
 
+<a href="https://openomy.app/github/lisentowind/vue-shiki-monaco" target="_blank" style="display: block; width: 100%;" align="center">
+  <img src="https://openomy.app/svg?repo=lisentowind/vue-shiki-monaco&chart=bubble&latestMonth=3" target="_blank" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
+ </a>
+
+<a href="https://github.com/lisentowind/vue-shiki-monaco/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=lisentowind/vue-shiki-monaco" />
+</a>
+
 ---
 
 **让代码编辑变得更美好！** ✨
