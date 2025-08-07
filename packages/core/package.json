@@ -1,6 +1,6 @@
 {
   "name": "vue-shiki-monaco",
-  "version": "0.1.3",
+  "version": "0.1.4-beta.0",
   "description": "一个封shiki和monaco-editor的Vue组件",
   "homepage": "https://lisentowind.github.io/vue-shiki-monaco/",
   "repository": {
@@ -72,9 +72,6 @@
   "author": "tingfeng",
   "license": "MIT",
   "peerDependencies": {
-    "@shikijs/monaco": "^3.9.0",
-    "monaco-editor-core": "^0.52.0",
-    "shiki": "^3.9.0",
     "vue": "^3.5.18",
     "react": "^18.3.1",
     "@types/react": "^18.3.1"
