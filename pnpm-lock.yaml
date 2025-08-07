@@ -101,6 +101,9 @@ importers:
 
   packages/core:
     dependencies:
+      "@shikijs/monaco":
+        specifier: ^3.9.0
+        version: 3.9.2
       monaco-editor-core:
         specifier: ^0.52.0
         version: 0.52.2
@@ -111,9 +114,6 @@ importers:
       "@chromatic-com/storybook":
         specifier: ^3.2.7
         version: 3.2.7(react@18.3.1)(storybook@8.6.14)
-      "@shikijs/monaco":
-        specifier: ^3.9.1
-        version: 3.9.2
       "@shikijs/transformers":
         specifier: ^3.7.0
         version: 3.9.2
@@ -6425,7 +6425,7 @@ packages:
       "@shikijs/core": 3.9.2
       "@shikijs/types": 3.9.2
       "@shikijs/vscode-textmate": 10.0.2
-    dev: true
+    dev: false
 
   /@shikijs/themes@3.9.2:
     resolution:
