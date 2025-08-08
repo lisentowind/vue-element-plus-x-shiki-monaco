@@ -1,20 +1,28 @@
-// ��8�{��{
+// 核心类型和函数
 export type {
   FolderItem,
   UseFolderError,
   UseFolderOptions,
-  UseFolderReturn,
-} from "./core";
-export { createFolderCore } from "./core";
+} from './core';
+export { createFolderCore } from './core';
 
-// �� React hooks
-export type { UseFolderReturn as UseFolderReactReturn } from "./react";
-export { useFolder as useFolderReact } from "./react";
+// 懒加载相关导出
+export type {
+  LazyFolderItem,
+  UseLazyFolderOptions,
+  UseLazyFolderReturn,
+} from './lazyFolder';
+export { createLazyFolder } from './lazyFolder';
+export { useLazyFolder } from './lazyVue';
 
-// �� Vue hooks
-export type { UseFolderReturn as UseFolderVueReturn } from "./vue";
-export { useFolder as useFolderVue } from "./vue";
+// React hooks
+export { useFolder as useFolderReact } from './react';
+export type { UseFolderReactReturn } from './react';
 
-// :��|�'ؤ�� Vue H,
-export type { UseFolderReturn } from "./vue";
-export { useFolder } from "./vue";
+// Vue hooks
+export { useFolder as useFolderVue } from './vue';
+export type { UseFolderVueReturn } from './vue';
+
+// 默认导出 Vue hooks
+export { useFolder } from './vue';
+export type { UseFolderVueReturn as UseFolderReturn } from './vue';

@@ -10,6 +10,11 @@
     --shadow-sm: var(--editor-shadow-sm);
     --shadow-md: var(--editor-shadow-md);
 
+    :deep(.folder-tree),
+    :deep(.monaco-editor-wrapper) {
+        border: none !important;
+    }
+
     // 亮色主题
     &.theme-light {
         --bg-primary: var(--editor-bg-primary);
@@ -59,8 +64,8 @@
         flex-direction: column;
         background: var(--bg-secondary);
         border-right: 1px solid var(--border-primary);
-        min-width: 200px;
-        max-width: 600px;
+        min-width: 180px; // 减小最小宽度
+        max-width: 300px; // 减小最大宽度
         position: relative;
 
         &::after {
@@ -82,7 +87,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 16px;
+        padding: 8px 12px; // 减小内边距
         background: var(--bg-tertiary);
         border-bottom: 1px solid var(--border-primary);
         font-size: 11px;
@@ -90,7 +95,7 @@
         text-transform: uppercase;
         color: var(--text-secondary);
         letter-spacing: 0.5px;
-        min-height: 48px;
+        min-height: 26px; // 减小最小高度
 
         .title {
             flex: 1;
@@ -391,22 +396,22 @@
 
         .welcome-content {
             text-align: center;
-            max-width: 480px;
-            padding: 60px 40px;
+            max-width: 400px; // 减小最大宽度
+            padding: 40px 30px; // 减小内边距
 
             h2 {
-                margin: 0 0 16px 0;
-                font-size: 28px;
+                margin: 0 0 12px 0; // 减小下边距
+                font-size: 24px; // 减小字体大小
                 font-weight: 300;
                 color: var(--text-primary);
                 letter-spacing: -0.5px;
             }
 
             p {
-                margin: 0 0 32px 0;
+                margin: 0 0 24px 0; // 减小下边距
                 color: var(--text-muted);
-                font-size: 16px;
-                line-height: 1.6;
+                font-size: 14px; // 减小字体大小
+                line-height: 1.5;
             }
         }
     }
@@ -415,26 +420,26 @@
     .welcome-btn {
         display: inline-flex;
         align-items: center;
-        gap: 12px;
+        gap: 8px; // 减小间距
         background: var(--bg-selected);
         color: var(--text-on-accent);
         border: none;
-        padding: 16px 32px;
-        border-radius: 8px;
+        padding: 12px 24px; // 减小内边距
+        border-radius: 6px; // 减小圆角
         cursor: pointer;
-        font-size: 16px;
+        font-size: 14px; // 减小字体大小
         font-weight: 500;
         transition: all 0.3s ease;
         box-shadow: var(--shadow-sm);
 
         &::before {
             content: '📁';
-            font-size: 20px;
+            font-size: 16px; // 减小图标大小
         }
 
         &:hover {
             background: var(--text-accent);
-            transform: translateY(-3px);
+            transform: translateY(-2px); // 减小悬停效果
             box-shadow: var(--shadow-md);
         }
 
