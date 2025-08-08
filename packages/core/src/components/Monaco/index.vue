@@ -329,7 +329,11 @@ const setupContextMenu = () => {
         contextMenu.hide();
       }
 
-      minimapContextMenu.show(event, minimapContextMenuItems.value, editorRef.value);
+      minimapContextMenu.show(
+        event,
+        minimapContextMenuItems.value,
+        editorRef.value
+      );
     });
   }
 };
@@ -375,7 +379,11 @@ defineExpose({
 </script>
 
 <template>
-  <div class="monaco-editor-wrapper" :class="props.monacoEditClass">
+  <div
+    class="monaco-editor-wrapper"
+    :class="props.monacoEditClass"
+    style="height: 100%"
+  >
     <MonacoHeader
       v-if="props.showToolbar"
       :current-language="props.currentLanguage"
