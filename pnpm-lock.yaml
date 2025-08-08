@@ -101,6 +101,9 @@ importers:
 
   packages/core:
     dependencies:
+      "@iconify/vue":
+        specifier: ^5.0.0
+        version: 5.0.0(vue@3.5.18)
       "@shikijs/monaco":
         specifier: ^3.9.0
         version: 3.9.2
@@ -5452,6 +5455,25 @@ packages:
     engines: { node: ">=18.18" }
     dev: true
 
+  /@iconify/types@2.0.0:
+    resolution:
+      {
+        integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==,
+      }
+    dev: false
+
+  /@iconify/vue@5.0.0(vue@3.5.18):
+    resolution:
+      {
+        integrity: sha512-C+KuEWIF5nSBrobFJhT//JS87OZ++QDORB6f2q2Wm6fl2mueSTpFBeBsveK0KW9hWiZ4mNiPjsh6Zs4jjdROSg==,
+      }
+    peerDependencies:
+      vue: ">=3"
+    dependencies:
+      "@iconify/types": 2.0.0
+      vue: 3.5.18(typescript@5.6.3)
+    dev: false
+
   /@isaacs/balanced-match@4.0.1:
     resolution:
       {
@@ -8411,7 +8433,6 @@ packages:
       entities: 4.5.0
       estree-walker: 2.0.2
       source-map-js: 1.2.1
-    dev: true
 
   /@vue/compiler-dom@3.5.18:
     resolution:
@@ -8421,7 +8442,6 @@ packages:
     dependencies:
       "@vue/compiler-core": 3.5.18
       "@vue/shared": 3.5.18
-    dev: true
 
   /@vue/compiler-sfc@3.5.18:
     resolution:
@@ -8438,7 +8458,6 @@ packages:
       magic-string: 0.30.17
       postcss: 8.5.6
       source-map-js: 1.2.1
-    dev: true
 
   /@vue/compiler-ssr@3.5.18:
     resolution:
@@ -8448,7 +8467,6 @@ packages:
     dependencies:
       "@vue/compiler-dom": 3.5.18
       "@vue/shared": 3.5.18
-    dev: true
 
   /@vue/compiler-vue2@2.7.16:
     resolution:
@@ -8533,7 +8551,6 @@ packages:
       }
     dependencies:
       "@vue/shared": 3.5.18
-    dev: true
 
   /@vue/runtime-core@3.5.18:
     resolution:
@@ -8543,7 +8560,6 @@ packages:
     dependencies:
       "@vue/reactivity": 3.5.18
       "@vue/shared": 3.5.18
-    dev: true
 
   /@vue/runtime-dom@3.5.18:
     resolution:
@@ -8555,7 +8571,6 @@ packages:
       "@vue/runtime-core": 3.5.18
       "@vue/shared": 3.5.18
       csstype: 3.1.3
-    dev: true
 
   /@vue/server-renderer@3.5.18(vue@3.5.18):
     resolution:
@@ -8568,14 +8583,12 @@ packages:
       "@vue/compiler-ssr": 3.5.18
       "@vue/shared": 3.5.18
       vue: 3.5.18(typescript@5.6.3)
-    dev: true
 
   /@vue/shared@3.5.18:
     resolution:
       {
         integrity: sha512-cZy8Dq+uuIXbxCZpuLd2GJdeSO/lIzIspC2WtkqIpje5QyFbvLaI5wZtdUjLHjGZrlVX6GilejatWwVYYRc8tA==,
       }
-    dev: true
 
   /@vue/tsconfig@0.7.0(typescript@5.6.3)(vue@3.5.18):
     resolution:
@@ -12361,7 +12374,6 @@ packages:
       {
         integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==,
       }
-    dev: true
 
   /estree-walker@3.0.3:
     resolution:
@@ -14985,7 +14997,6 @@ packages:
       }
     dependencies:
       "@jridgewell/sourcemap-codec": 1.5.4
-    dev: true
 
   /map-or-similar@1.5.0:
     resolution:
@@ -21211,7 +21222,6 @@ packages:
       "@vue/server-renderer": 3.5.18(vue@3.5.18)
       "@vue/shared": 3.5.18
       typescript: 5.6.3
-    dev: true
 
   /watchpack@2.4.4:
     resolution:

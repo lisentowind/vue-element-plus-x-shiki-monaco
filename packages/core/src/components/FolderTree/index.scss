@@ -1,0 +1,456 @@
+.folder-tree {
+    border: 1px solid var(--editor-border-primary);
+    display: flex;
+    flex-direction: column;
+    font-family: var(--editor-font-sans);
+    font-size: var(--editor-font-size-lg);
+    height: 100%;
+    overflow: auto;
+    -webkit-user-select: none;
+    user-select: none;
+    border-radius: var(--editor-radius-lg);
+    padding: var(--editor-spacing-lg) var(--editor-spacing-2xl);
+}
+
+.folder-tree.theme-light {
+    --folder-tree-bg: var(--editor-color-bg-light);
+    --folder-tree-color: var(--editor-text-primary);
+    --folder-tree-hover-bg: var(--editor-color-blue-alpha-8);
+    --folder-tree-selected-bg: var(--editor-color-blue-alpha-12);
+    --folder-tree-selected-color: var(--editor-color-blue-light);
+    --folder-tree-item-height: var(--editor-size-xl);
+    background-color: var(--folder-tree-bg);
+    color: var(--folder-tree-color);
+
+    // 头部工具栏 - VS Code 风格
+    .folder-tree-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 8px;
+        height: 35px;
+        background-color: var(--folder-tree-bg);
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: var(--editor-spacing-sm);
+            color: var(--editor-text-primary);
+            font-weight: 500;
+
+            i {
+                font-size: var(--editor-font-size-lg);
+                color: var(--editor-text-secondary);
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--editor-spacing-sm);
+
+            .action-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                background: transparent;
+                border-radius: var(--editor-radius-md);
+                cursor: pointer;
+                padding: var(--editor-spacing-md);
+                color: var(--editor-text-primary);
+                transition: all var(--editor-duration-normal) var(--editor-ease-smooth);
+
+                &:hover {
+                    background: var(--editor-bg-tertiary);
+                    color: var(--editor-text-primary);
+                }
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+
+                i {
+                    font-size: var(--editor-font-size-md);
+
+                    &.spinning {
+                        animation: spin 1s linear infinite;
+                    }
+                }
+            }
+        }
+    }
+
+    // 主内容区域 - VS Code 风格
+    .folder-tree-content {
+        flex: 1;
+        overflow-y: auto;
+
+        .tree-list {
+            .tree-item {
+                display: flex;
+                align-items: center;
+                height: var(--folder-tree-item-height);
+                padding: 0 8px;
+                cursor: pointer;
+                color: var(--folder-tree-color);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                transition: background-color 0.1s ease;
+                vertical-align: middle;
+
+                &:hover {
+                    background-color: var(--folder-tree-hover-bg);
+                }
+
+                &--selected {
+                    background-color: var(--folder-tree-selected-bg);
+                    color: var(--folder-tree-selected-color);
+
+                    .tree-icon i {
+                        color: var(--editor-primary);
+                    }
+                }
+
+                .tree-arrow,
+                .tree-arrow-placeholder {
+                    width: var(--editor-size-sm);
+                    height: var(--editor-size-sm);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: var(--editor-spacing-xs);
+
+                    i {
+                        font-size: var(--editor-font-size-sm);
+                        transition: transform var(--editor-duration-normal) var(--editor-ease-spring);
+                    }
+                }
+
+                .tree-arrow--expanded i {
+                    transform: rotate(90deg);
+                }
+
+                .tree-icon {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: var(--editor-size-md);
+                    margin-right: var(--editor-spacing-md);
+
+                    i {
+                        font-size: var(--editor-font-size-md);
+                        color: var(--editor-text-secondary);
+                    }
+                }
+
+                .tree-label {
+                    flex: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .tree-meta {
+                    margin-left: var(--editor-spacing-lg);
+                    font-size: var(--editor-font-size-md);
+                    color: var(--editor-text-tertiary);
+                }
+            }
+        }
+    }
+
+    // 状态展示
+    .loading-state,
+    .error-state,
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: var(--editor-spacing-3xl);
+        gap: var(--editor-spacing-lg);
+        color: var(--editor-text-secondary);
+        text-align: center;
+
+        i {
+            font-size: var(--editor-size-xl);
+
+            &.spinning {
+                animation: spin 1s linear infinite;
+            }
+        }
+    }
+
+    .error-state {
+        color: var(--editor-border-error);
+
+        .error-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--editor-spacing-md);
+
+            .error-message {
+                color: var(--editor-text-primary);
+                font-weight: 500;
+            }
+
+            .error-code {
+                font-size: var(--editor-font-size-sm);
+                color: var(--editor-text-tertiary);
+            }
+
+            .retry-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: var(--editor-spacing-sm);
+                margin-top: var(--editor-spacing-lg);
+                padding: var(--editor-spacing-sm) var(--editor-spacing-xl);
+                border: none;
+                background: var(--editor-primary);
+                color: var(--editor-text-inverse);
+                border-radius: var(--editor-radius-sm);
+                cursor: pointer;
+                transition: all var(--editor-duration-normal) var(--editor-ease-smooth);
+
+                &:hover {
+                    background: var(--editor-primary-hover);
+                }
+
+                i {
+                    font-size: var(--editor-font-size-base);
+                }
+            }
+        }
+    }
+}
+
+.folder-tree.theme-dark {
+    --folder-tree-bg: var(--editor-color-bg-dark);
+    --folder-tree-color: #f8fafc;
+    --folder-tree-hover-bg: var(--editor-alpha-10);
+    --folder-tree-selected-bg: var(--editor-alpha-20);
+    --folder-tree-selected-color: var(--editor-success);
+    --folder-tree-item-height: var(--editor-size-xl);
+    background-color: var(--folder-tree-bg);
+    color: var(--folder-tree-color);
+
+    // 头部工具栏 - VS Code 风格
+    .folder-tree-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 8px;
+        height: 35px;
+        background-color: var(--folder-tree-bg);
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: var(--editor-spacing-sm);
+            color: var(--folder-tree-color);
+            font-weight: 500;
+
+            i {
+                font-size: var(--editor-font-size-lg);
+                color: var(--editor-text-secondary);
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--editor-spacing-sm);
+
+            .action-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                background: transparent;
+                border-radius: var(--editor-radius-md);
+                cursor: pointer;
+                padding: var(--editor-spacing-md);
+                color: var(--folder-tree-color);
+                transition: all var(--editor-duration-normal) var(--editor-ease-smooth);
+
+                &:hover {
+                    background: var(--folder-tree-hover-bg);
+                    color: var(--folder-tree-selected-color);
+                }
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+
+                i {
+                    font-size: var(--editor-font-size-md);
+
+                    &.spinning {
+                        animation: spin 1s linear infinite;
+                    }
+                }
+            }
+        }
+    }
+
+    // 主内容区域 - VS Code 风格
+    .folder-tree-content {
+        flex: 1;
+        overflow-y: auto;
+
+        .tree-list {
+            .tree-item {
+                display: flex;
+                align-items: center;
+                height: var(--folder-tree-item-height);
+                padding: 0 8px;
+                cursor: pointer;
+                color: var(--folder-tree-color);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                transition: background-color 0.1s ease;
+                vertical-align: middle;
+
+                &:hover {
+                    background-color: var(--folder-tree-hover-bg);
+                }
+
+                &--selected {
+                    background-color: var(--folder-tree-selected-bg);
+                    color: var(--folder-tree-selected-color);
+
+                    .tree-icon i {
+                        color: var(--editor-primary);
+                    }
+                }
+
+                .tree-arrow,
+                .tree-arrow-placeholder {
+                    width: var(--editor-size-sm);
+                    height: var(--editor-size-sm);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: var(--editor-spacing-xs);
+
+                    i {
+                        font-size: var(--editor-font-size-sm);
+                        transition: transform var(--editor-duration-normal) var(--editor-ease-spring);
+                    }
+                }
+
+                .tree-arrow--expanded i {
+                    transform: rotate(90deg);
+                }
+
+                .tree-icon {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: var(--editor-size-md);
+                    margin-right: var(--editor-spacing-md);
+
+                    i {
+                        font-size: var(--editor-font-size-md);
+                        color: var(--editor-text-secondary);
+                    }
+                }
+
+                .tree-label {
+                    flex: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .tree-meta {
+                    margin-left: var(--editor-spacing-lg);
+                    font-size: var(--editor-font-size-md);
+                    color: var(--editor-text-tertiary);
+                }
+            }
+        }
+    }
+
+    // 状态展示
+    .loading-state,
+    .error-state,
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: var(--editor-spacing-3xl);
+        gap: var(--editor-spacing-lg);
+        color: var(--editor-text-secondary);
+        text-align: center;
+
+        i {
+            font-size: var(--editor-size-xl);
+
+            &.spinning {
+                animation: spin 1s linear infinite;
+            }
+        }
+    }
+
+    .error-state {
+        color: var(--editor-border-error);
+
+        .error-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--editor-spacing-md);
+
+            .error-message {
+                color: var(--editor-text-primary);
+                font-weight: 500;
+            }
+
+            .error-code {
+                font-size: var(--editor-font-size-sm);
+                color: var(--editor-text-tertiary);
+            }
+
+            .retry-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: var(--editor-spacing-sm);
+                margin-top: var(--editor-spacing-lg);
+                padding: var(--editor-spacing-sm) var(--editor-spacing-xl);
+                border: none;
+                background: var(--editor-primary);
+                color: var(--editor-text-inverse);
+                border-radius: var(--editor-radius-sm);
+                cursor: pointer;
+                transition: all var(--editor-duration-normal) var(--editor-ease-smooth);
+
+                &:hover {
+                    background: var(--editor-primary-hover);
+                }
+
+                i {
+                    font-size: var(--editor-font-size-base);
+                }
+            }
+        }
+    }
+}
+
+// 动画
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

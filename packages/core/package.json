@@ -79,7 +79,8 @@
   "dependencies": {
     "@shikijs/monaco": "^3.9.0",
     "monaco-editor-core": "^0.52.0",
-    "shiki": "^3.9.0"
+    "shiki": "^3.9.0",
+    "@iconify/vue": "^5.0.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.7",
