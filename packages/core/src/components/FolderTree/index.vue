@@ -231,17 +231,19 @@ const handleRefresh = () => {
       </div>
       <div class="header-actions">
         <button
+          type="button"
           class="action-btn"
           @click="handleCollapseAll"
-          :disabled="isLoading"
+          :disabled="!!isLoading"
           title="折叠全部"
         >
           <Icon icon="codicon:collapse-all" />
         </button>
         <button
+          type="button"
           class="action-btn"
           @click="handleRefresh"
-          :disabled="isLoading"
+          :disabled="!!isLoading"
           title="刷新"
         >
           <Icon :icon="isLoading ? 'eos-icons:loading' : 'codicon:refresh'" />

@@ -1,6 +1,23 @@
-import fs from "node:fs";
-import path from "node:path";
-import process from "node:process";
+let fs: any;
+let path: any;
+let process: any;
+// 运行环境检测
+
+const isNode =
+  typeof process !== "undefined" && process.versions && process.versions.node;
+const isWebWorker =
+  typeof globalThis === "object" &&
+  globalThis.constructor &&
+  globalThis.constructor.name === "DedicatedWorkerGlobalScope";
+export const isBrowser = typeof window !== "undefined" && !isWebWorker;
+
+// 仅在 Node.js 环境下动态导入
+if (isNode) {
+  const nodeRequire = require;
+  fs = nodeRequire("fs");
+  path = nodeRequire("path");
+  process = nodeRequire("process");
+}
 
 // 扩展 Window 接口以支持 File System Access API
 declare global {
@@ -21,6 +38,105 @@ declare global {
     readonly kind: "file";
     getFile: () => Promise<File>;
   }
+}
+
+// 文件系统接口
+export interface FileSystemEntry {
+  name: string;
+  path: string;
+  type: "file" | "directory";
+  size?: number;
+  lastModified?: number;
+  children?: FileSystemEntry[];
+}
+
+// 文件系统操作结果接口
+export interface FileSystemResult {
+  success: boolean;
+  data?: FileSystemEntry[] | FileSystemEntry | null;
+  error?: UseFolderException;
+}
+
+/**
+ * 从浏览器的文件系统 API 获取文件夹内容
+ * @returns Promise<FileSystemResult>
+ */
+export async function getFolderContents(): Promise<FileSystemResult> {
+  if (!window.showDirectoryPicker) {
+    return {
+      success: false,
+      error: new UseFolderException(
+        "BROWSER_NOT_SUPPORTED",
+        "此浏览器不支持文件系统 API",
+      ),
+    };
+  }
+
+  try {
+    const dirHandle = await window.showDirectoryPicker();
+    const entries = await _processDirectoryHandle(dirHandle, "");
+    return {
+      success: true,
+      data: entries,
+    };
+  } catch (error: any) {
+    if (error.name === "AbortError") {
+      return {
+        success: false,
+        error: new UseFolderException("USER_CANCELLED", "用户取消了操作"),
+      };
+    }
+    return {
+      success: false,
+      error: new UseFolderException("READ_ERROR", "读取目录失败", error),
+    };
+  }
+}
+
+/**
+ * 处理目录句柄并返回文件系统条目数组
+ * @param handle 目录句柄
+ * @param basePath 基础路径
+ * @returns 文件系统条目数组
+ */
+async function _processDirectoryHandle(
+  handle: FileSystemDirectoryHandle,
+  basePath: string,
+): Promise<FileSystemEntry[]> {
+  const entries: FileSystemEntry[] = [];
+
+  for await (const [name, entryHandle] of handle.entries()) {
+    const currentPath = basePath ? `${basePath}/${name}` : name;
+
+    if (entryHandle.kind === "file") {
+      const fileHandle = entryHandle as FileSystemFileHandle;
+      const file = await fileHandle.getFile();
+      entries.push({
+        name,
+        path: currentPath,
+        type: "file",
+        size: file.size,
+        lastModified: file.lastModified,
+      });
+    } else if (entryHandle.kind === "directory") {
+      const dirHandle = entryHandle as FileSystemDirectoryHandle;
+      const children = await _processDirectoryHandle(dirHandle, currentPath);
+      entries.push({
+        name,
+        path: currentPath,
+        type: "directory",
+        children,
+      });
+    }
+  }
+
+  // 按类型和名称排序
+  return entries.sort((a, b) => {
+    if (a.type !== b.type) {
+      return a.type === "directory" ? -1 : 1;
+    }
+    return a.name.localeCompare(b.name);
+  });
 }
 
 // 自定义错误类
@@ -81,14 +197,6 @@ export interface UseFolderReturn {
   isSupported: boolean;
   environment: "node" | "browser";
   error: UseFolderError | null;
-}
-
-function isNode(): boolean {
-  return (
-    typeof process !== "undefined" &&
-    process.versions != null &&
-    process.versions.node != null
-  );
 }
 
 class FolderCore {

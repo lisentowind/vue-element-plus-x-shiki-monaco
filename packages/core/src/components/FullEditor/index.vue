@@ -3,9 +3,10 @@ import { ref, computed, watch, onMounted, onUnmounted, nextTick } from "vue";
 import FolderTree from "../FolderTree/index.vue";
 import Monaco from "../Monaco/index.vue";
 import type { FolderItem, FolderTreeItem } from "../FolderTree/types";
-import { BundledLanguage, BundledTheme } from "shiki";
+import type { BundledLanguage, BundledTheme } from "shiki";
 import { useLazyFolder } from "../../hooks/useFolder";
 import type { LazyFolderItem } from "../../hooks/useFolder/lazyFolder";
+import "@assets/style/global.scss";
 
 // 直接定义类型，避免导入问题
 interface TabInfo {
@@ -40,12 +41,7 @@ const emit = defineEmits<{
 }>();
 
 // 使用懒加载文件夹hook
-const {
-  folderData,
-  isLoading,
-  readFolder,
-  loadSubdirectory
-} = useLazyFolder();
+const { folderData, readFolder, loadSubdirectory } = useLazyFolder();
 
 // 响应式数据
 const selectedFile = ref<string>("");
@@ -97,14 +93,19 @@ const openFolder = async () => {
     await readFolder({
       initialDepth: 1, // 只加载第一层目录
       maxEntries: 10000, // 限制最大条目数，避免性能问题
-      includeHidden: false // 不包含隐藏文件
+      includeHidden: false, // 不包含隐藏文件
     });
 
     // 如果成功读取到文件夹，发出事件
-    if (folderData.value && folderData.value.length > 0 && folderData.value[0]?.path) {
-      const pathParts = folderData.value[0].path.split('/');
-      const folderName = pathParts.length > 0 ? pathParts[0] : "selected-folder";
-      emit("folder-open", folderName ?? '未知文件夹');
+    if (
+      folderData.value &&
+      folderData.value.length > 0 &&
+      folderData.value[0]?.path
+    ) {
+      const pathParts = folderData.value[0].path.split("/");
+      const folderName =
+        pathParts.length > 0 ? pathParts[0] : "selected-folder";
+      emit("folder-open", folderName ?? "未知文件夹");
     }
   } catch (error) {
     console.error("打开文件夹失败:", error);
@@ -112,7 +113,10 @@ const openFolder = async () => {
 };
 
 // 读取目录结构 - 这个函数已经不再使用，保留是为了兼容性
-const readDirectory = async (dirHandle: any, parentPath = ""): Promise<FolderItem[]> => {
+const readDirectory = async (
+  dirHandle: any,
+  parentPath = ""
+): Promise<FolderItem[]> => {
   const entries: FolderItem[] = [];
 
   for await (const [name, handle] of dirHandle.entries()) {
@@ -147,62 +151,62 @@ const readDirectory = async (dirHandle: any, parentPath = ""): Promise<FolderIte
 };
 
 // 构建文件夹结构（降级方案）
-const buildFolderStructure = (files: File[]): FolderItem[] => {
-  const root: Record<string, any> = {};
+// const buildFolderStructure = (files: File[]): FolderItem[] => {
+//   const root: Record<string, any> = {};
 
-  files.forEach((file) => {
-    const parts = file.webkitRelativePath.split("/");
-    let current = root;
+//   files.forEach((file) => {
+//     const parts = file.webkitRelativePath.split("/");
+//     let current = root;
 
-    parts.forEach((part, index) => {
-      if (!current[part]) {
-        if (index === parts.length - 1) {
-          // 文件
-          current[part] = {
-            name: part,
-            path: file.webkitRelativePath,
-            type: "file",
-            size: file.size,
-            lastModified: new Date(file.lastModified),
-            file,
-          };
-        } else {
-          // 文件夹
-          current[part] = {
-            name: part,
-            path: parts.slice(0, index + 1).join("/"),
-            type: "directory",
-            children: {},
-          };
-        }
-      }
-      if (index < parts.length - 1) {
-        current = current[part].children;
-      }
-    });
-  });
+//     parts.forEach((part, index) => {
+//       if (!current[part]) {
+//         if (index === parts.length - 1) {
+//           // 文件
+//           current[part] = {
+//             name: part,
+//             path: file.webkitRelativePath,
+//             type: "file",
+//             size: file.size,
+//             lastModified: new Date(file.lastModified),
+//             file,
+//           };
+//         } else {
+//           // 文件夹
+//           current[part] = {
+//             name: part,
+//             path: parts.slice(0, index + 1).join("/"),
+//             type: "directory",
+//             children: {},
+//           };
+//         }
+//       }
+//       if (index < parts.length - 1) {
+//         current = current[part].children;
+//       }
+//     });
+//   });
 
-  const convertToArray = (obj: any): FolderItem[] => {
-    return Object.values(obj)
-      .map((item: any) => {
-        if (item.type === "directory" && item.children) {
-          return {
-            ...item,
-            children: convertToArray(item.children),
-          };
-        }
-        return item;
-      })
-      .sort((a: any, b: any) => {
-        if (a.type !== b.type) {
-          return a.type === "directory" ? -1 : 1;
-        }
-        return a.name.localeCompare(b.name);
-      });
-  };
+//   const convertToArray = (obj: any): FolderItem[] => {
+//     return Object.values(obj)
+//       .map((item: any) => {
+//         if (item.type === "directory" && item.children) {
+//           return {
+//             ...item,
+//             children: convertToArray(item.children),
+//           };
+//         }
+//         return item;
+//       })
+//       .sort((a: any, b: any) => {
+//         if (a.type !== b.type) {
+//           return a.type === "directory" ? -1 : 1;
+//         }
+//         return a.name.localeCompare(b.name);
+//       });
+//   };
 
-  return convertToArray(root);
-};
+//   return convertToArray(root);
+// };
 
 // 处理文件点击
 const handleFileClick = async (item: FolderTreeItem) => {
@@ -282,15 +286,17 @@ const handleFileClick = async (item: FolderTreeItem) => {
 
 // 通过名称查找文件
 const findFileByName = (name: string): LazyFolderItem | undefined => {
-  const findInItems = (items: LazyFolderItem[] | undefined): LazyFolderItem | undefined => {
+  const findInItems = (
+    items: LazyFolderItem[] | undefined
+  ): LazyFolderItem | undefined => {
     if (!items) return undefined;
 
     for (const item of items) {
-      if (item.type === 'file' && item.name === name) {
+      if (item.type === "file" && item.name === name) {
         return item;
       }
 
-      if (item.type === 'directory' && item.children) {
+      if (item.type === "directory" && item.children) {
         const found = findInItems(item.children as LazyFolderItem[]);
         if (found) return found;
       }
@@ -299,13 +305,18 @@ const findFileByName = (name: string): LazyFolderItem | undefined => {
     return undefined;
   };
 
-  return folderData.value ? findInItems(folderData.value as LazyFolderItem[]) : undefined;
+  return folderData.value
+    ? findInItems(folderData.value as LazyFolderItem[])
+    : undefined;
 };
 
 // 根据路径查找懒加载文件项
 const findLazyFileItem = (path: string): LazyFolderItem | undefined => {
   // 递归查找函数
-  const findInItems = (items: LazyFolderItem[] | undefined, targetPath: string): LazyFolderItem | undefined => {
+  const findInItems = (
+    items: LazyFolderItem[] | undefined,
+    targetPath: string
+  ): LazyFolderItem | undefined => {
     if (!items) return undefined;
 
     for (const item of items) {
@@ -316,13 +327,16 @@ const findLazyFileItem = (path: string): LazyFolderItem | undefined => {
       }
 
       // 检查名称是否匹配（作为备选方案）
-      if (item.name === targetPath.split('/').pop()) {
+      if (item.name === targetPath.split("/").pop()) {
         console.log("通过名称找到可能匹配项:", item.path, item.type);
       }
 
       // 递归检查子目录
-      if (item.type === 'directory' && item.children) {
-        const found = findInItems(item.children as LazyFolderItem[], targetPath);
+      if (item.type === "directory" && item.children) {
+        const found = findInItems(
+          item.children as LazyFolderItem[],
+          targetPath
+        );
         if (found) return found;
       }
     }
@@ -348,7 +362,14 @@ const findLazyFileItem = (path: string): LazyFolderItem | undefined => {
 
 // 处理文件夹点击
 const handleFolderClick = async (item: FolderTreeItem, isExpanded: boolean) => {
-  console.log("文件夹点击:", item.name, "路径:", item.path, "展开状态:", isExpanded);
+  console.log(
+    "文件夹点击:",
+    item.name,
+    "路径:",
+    item.path,
+    "展开状态:",
+    isExpanded
+  );
 
   // 如果是展开操作，则尝试加载子目录
   if (isExpanded && item.type === "directory" && item.path) {
@@ -374,7 +395,10 @@ const handleFolderClick = async (item: FolderTreeItem, isExpanded: boolean) => {
 // 根据路径查找懒加载文件夹项
 const findLazyFolderItem = (path: string): LazyFolderItem | undefined => {
   // 递归查找函数
-  const findInItems = (items: LazyFolderItem[] | undefined, targetPath: string): LazyFolderItem | undefined => {
+  const findInItems = (
+    items: LazyFolderItem[] | undefined,
+    targetPath: string
+  ): LazyFolderItem | undefined => {
     if (!items) return undefined;
 
     for (const item of items) {
@@ -385,14 +409,20 @@ const findLazyFolderItem = (path: string): LazyFolderItem | undefined => {
       }
 
       // 检查名称是否匹配（作为备选方案）
-      const pathParts = targetPath.split('/');
-      if (pathParts.length > 0 && item.name === pathParts[pathParts.length - 1]) {
+      const pathParts = targetPath.split("/");
+      if (
+        pathParts.length > 0 &&
+        item.name === pathParts[pathParts.length - 1]
+      ) {
         console.log("通过名称找到可能匹配的文件夹:", item.path, item.type);
       }
 
       // 递归检查子目录
-      if (item.type === 'directory' && item.children) {
-        const found = findInItems(item.children as LazyFolderItem[], targetPath);
+      if (item.type === "directory" && item.children) {
+        const found = findInItems(
+          item.children as LazyFolderItem[],
+          targetPath
+        );
         if (found) return found;
       }
     }
@@ -413,22 +443,24 @@ const findLazyFolderItem = (path: string): LazyFolderItem | undefined => {
     console.warn("未找到文件夹:", path);
 
     // 尝试通过名称查找
-    const pathParts = path.split('/');
+    const pathParts = path.split("/");
     if (pathParts.length > 0) {
       const name = pathParts[pathParts.length - 1];
       console.log("尝试通过名称查找文件夹:", name);
 
       // 查找具有相同名称的文件夹
-      const findByName = (items: LazyFolderItem[] | undefined): LazyFolderItem | undefined => {
+      const findByName = (
+        items: LazyFolderItem[] | undefined
+      ): LazyFolderItem | undefined => {
         if (!items) return undefined;
 
         for (const item of items) {
-          if (item.type === 'directory' && item.name === name) {
+          if (item.type === "directory" && item.name === name) {
             console.log("通过名称找到文件夹:", item.path);
             return item;
           }
 
-          if (item.type === 'directory' && item.children) {
+          if (item.type === "directory" && item.children) {
             const found = findByName(item.children as LazyFolderItem[]);
             if (found) return found;
           }
@@ -499,15 +531,15 @@ const handleContentChange = (value: string) => {
 };
 
 // 处理保存
-const handleSave = () => {
-  const tab = openTabs.value.find(
-    (t: { path: string }) => t.path === activeTab.value
-  );
-  if (tab) {
-    tab.modified = false;
-    emit("file-save", activeTab.value, tab.content);
-  }
-};
+// const handleSave = () => {
+//   const tab = openTabs.value.find(
+//     (t: { path: string }) => t.path === activeTab.value
+//   );
+//   if (tab) {
+//     tab.modified = false;
+//     emit("file-save", activeTab.value, tab.content);
+//   }
+// };
 
 // 刷新文件夹
 const refreshFolder = () => {
@@ -570,9 +602,12 @@ watch(currentFileContent, () => {
 });
 
 // 监听主题变化，确保Monaco编辑器使用正确的主题
-watch(() => props.theme, () => {
-  ensureMonacoTheme();
-});
+watch(
+  () => props.theme,
+  () => {
+    ensureMonacoTheme();
+  }
+);
 
 onMounted(() => {
   // 初始化
@@ -600,23 +635,41 @@ onUnmounted(() => {
 
       <!-- 文件树 -->
       <div v-else class="folder-tree-container">
-        <FolderTree :folder-items="folderData" :theme="theme.includes('dark') ? 'dark' : 'light'"
-          :expand-by-default="false" @file-select="handleFileClick" @folder-toggle="handleFolderClick"
-          @refresh="handleFolderTreeRefresh" />
+        <FolderTree
+          :folder-items="folderData"
+          :theme="(theme || '').includes('dark') ? 'dark' : 'light'"
+          :expand-by-default="false"
+          @file-select="handleFileClick"
+          @folder-toggle="handleFolderClick"
+          @refresh="handleFolderTreeRefresh"
+        />
       </div>
     </div>
 
     <!-- 分割线 -->
-    <div class="resizer" @mousedown="startResize" :class="{ resizing: isResizing }"></div>
+    <div
+      class="resizer"
+      @mousedown="startResize"
+      :class="{ resizing: isResizing }"
+    ></div>
 
     <!-- 右侧编辑器区域 -->
     <div class="editor-area">
       <!-- 标签页 -->
       <div class="tabs" v-if="openTabs.length > 0">
-        <div v-for="tab in openTabs" :key="tab.path" class="tab" :class="{ active: tab.path === activeTab }"
-          @click="switchTab(tab.path)">
+        <div
+          v-for="tab in openTabs"
+          :key="tab.path"
+          class="tab"
+          :class="{ active: tab.path === activeTab }"
+          @click="switchTab(tab.path)"
+        >
           <span class="tab-name">{{ tab.name }}</span>
-          <button class="tab-close" @click.stop="closeTab(tab.path)" v-if="openTabs.length > 1">
+          <button
+            class="tab-close"
+            @click.stop="closeTab(tab.path)"
+            v-if="openTabs.length > 1"
+          >
             ×
           </button>
         </div>
@@ -635,9 +688,16 @@ onUnmounted(() => {
 
         <!-- Monaco编辑器 -->
         <div v-else class="monaco-container">
-          <Monaco v-if="currentFileContent !== null" ref="monacoRef" :value="currentFileContent"
-            :current-language="currentLanguage" :current-theme="theme" :show-toolbar="false" :height="'99%'"
-            @change="handleContentChange" />
+          <Monaco
+            v-if="currentFileContent !== null"
+            ref="monacoRef"
+            :value="currentFileContent"
+            :current-language="currentLanguage"
+            :current-theme="theme || 'vitesse-light'"
+            :show-toolbar="false"
+            :height="'99%'"
+            @change="handleContentChange"
+          />
           <div v-else class="loading">加载中...</div>
         </div>
       </div>
