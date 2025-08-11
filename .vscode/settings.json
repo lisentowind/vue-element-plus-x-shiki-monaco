@@ -94,13 +94,18 @@
     "Customisations",
     "esno",
     "iconify",
+    "indexvuedts",
     "lisentowind",
     "nord",
     "oxlint",
+    "reactjs",
+    "reactts",
     "rolldown",
     "shiki",
     "shikijs",
+    "typescriptdef",
     "unplugin",
-    "vitesse"
+    "vitesse",
+    "vuedts"
   ]
 }

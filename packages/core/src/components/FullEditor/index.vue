@@ -48,13 +48,21 @@ const selectedFile = ref<string>("");
 const openTabs = ref<TabInfo[]>([]);
 const activeTab = ref<string>("");
 const currentFileContent = ref<string | null>(null);
+const currentFile = ref<FolderTreeItem>();
 const sidebarWidth = ref(props.sidebarWidth);
 const isResizing = ref(false);
 const monacoRef = ref<any>(null); // Monaco编辑器实例引用
 
+const isPicture = (fileName: string) => {
+  return /\.(png|jpg|jpeg|gif|webp|ico)$/.test(fileName);
+};
+
 // 计算属性
 const themeClass = computed(() => {
   return props.theme.includes("dark") ? "theme-dark" : "theme-light";
+});
+const nowFileIsPicture = computed(() => {
+  return isPicture(currentFile.value?.name || "");
 });
 
 const currentLanguage = computed(() => {
@@ -277,6 +285,7 @@ const handleFileClick = async (item: FolderTreeItem) => {
     openTabs.value.push(newTab);
     activeTab.value = item.path;
     currentFileContent.value = content;
+    currentFile.value = item;
 
     emit("file-open", item.path, content);
   } catch (error) {
@@ -665,13 +674,7 @@ onUnmounted(() => {
           @click="switchTab(tab.path)"
         >
           <span class="tab-name">{{ tab.name }}</span>
-          <button
-            class="tab-close"
-            @click.stop="closeTab(tab.path)"
-            v-if="openTabs.length > 1"
-          >
-            ×
-          </button>
+          <button class="tab-close" @click.stop="closeTab(tab.path)">×</button>
         </div>
       </div>
 
@@ -689,14 +692,19 @@ onUnmounted(() => {
         <!-- Monaco编辑器 -->
         <div v-else class="monaco-container">
           <Monaco
-            v-if="currentFileContent !== null"
+            v-if="currentFileContent !== null && !nowFileIsPicture"
             ref="monacoRef"
             :value="currentFileContent"
             :current-language="currentLanguage"
-            :current-theme="theme || 'vitesse-light'"
+            :current-theme="theme"
             :show-toolbar="false"
-            :height="'99%'"
+            :height="'100%'"
             @change="handleContentChange"
+          />
+          <img
+            v-else-if="nowFileIsPicture"
+            :src="currentFile?.path ?? ''"
+            class="picture"
           />
           <div v-else class="loading">加载中...</div>
         </div>

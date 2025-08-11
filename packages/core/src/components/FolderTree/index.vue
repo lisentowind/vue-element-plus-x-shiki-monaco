@@ -132,6 +132,34 @@ const selectItem = (item: FolderTreeItem) => {
   }
 };
 
+const needSpecial = ["dts", "indexvuedts", "vuedts"];
+const specialIconMap: Record<string, string> = {
+  indexvuedts: "vscode-icons:file-type-typescriptdef",
+  vuedts: "vscode-icons:file-type-typescriptdef",
+  dts: "vscode-icons:file-type-typescriptdef",
+};
+const iconMap: Record<string, string> = {
+  js: "vscode-icons:file-type-js",
+  mjs: "vscode-icons:file-type-js",
+  cjs: "vscode-icons:file-type-js",
+  ts: "vscode-icons:file-type-typescript",
+  cts: "vscode-icons:file-type-typescript",
+  mts: "vscode-icons:file-type-typescript",
+  jsx: "vscode-icons:file-type-reactjs",
+  tsx: "vscode-icons:file-type-reactts",
+  md: "vscode-icons:file-type-markdown",
+  txt: "vscode-icons:file-type-text",
+  webp: "vscode-icons:file-type-webp",
+  ico: "vscode-icons:file-type-favicon",
+  png: "vscode-icons:file-type-image",
+  jpg: "vscode-icons:file-type-image",
+  jpeg: "vscode-icons:file-type-image",
+  gif: "vscode-icons:file-type-image",
+  svg: "vscode-icons:file-type-svg",
+  zip: "vscode-icons:file-type-zip",
+  tgz: "vscode-icons:file-type-zip",
+  rar: "vscode-icons:file-type-zip",
+};
 // 获取文件图标
 const getFileIcon = (item: FolderTreeItem) => {
   if (item.type === "directory") {
@@ -141,30 +169,16 @@ const getFileIcon = (item: FolderTreeItem) => {
   }
 
   const ext = item.name.split(".").pop()?.toLowerCase();
-  const iconMap: Record<string, string> = {
-    js: "vscode-icons:file-type-js",
-    ts: "vscode-icons:file-type-typescript",
-    vue: "vscode-icons:file-type-vue",
-    jsx: "vscode-icons:file-type-reactjs",
-    tsx: "vscode-icons:file-type-reactts",
-    json: "vscode-icons:file-type-json",
-    html: "vscode-icons:file-type-html",
-    css: "vscode-icons:file-type-css",
-    scss: "vscode-icons:file-type-sass",
-    sass: "vscode-icons:file-type-sass",
-    less: "vscode-icons:file-type-less",
-    md: "vscode-icons:file-type-markdown",
-    txt: "vscode-icons:file-type-text",
-    png: "vscode-icons:file-type-image",
-    jpg: "vscode-icons:file-type-image",
-    jpeg: "vscode-icons:file-type-image",
-    gif: "vscode-icons:file-type-image",
-    svg: "vscode-icons:file-type-svg",
-    pdf: "vscode-icons:file-type-pdf",
-    zip: "vscode-icons:file-type-zip",
-  };
+  const pointAfter = item.name.split(".").slice(1);
 
-  return iconMap[ext || ""] || "vscode-icons:file-type-default";
+  if (pointAfter.length > 0 && needSpecial.includes(pointAfter.join(""))) {
+    return (
+      specialIconMap[pointAfter.join("") ?? ""] ||
+      `vscode-icons:file-type-${ext}`
+    );
+  }
+
+  return iconMap[ext || ""] || `vscode-icons:file-type-${ext}`;
 };
 
 // 获取文件大小显示
